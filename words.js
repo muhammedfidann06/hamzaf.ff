@@ -1,14 +1,6 @@
 
 // words.js
 
-function add(lang, level, category, word, translation, type, exampleSource, exampleTarget) {
-  words.push({
-    lang, level, category, word, translation, type,
-    exampleSource, exampleTarget
-  });
-}
-
-const words = [];
 
 // ALMANCA KELİMELER (Goethe Uyumlu)
 add("de", "A1", "Selamlaşma", "Hallo", "Merhaba", "ünlem", "Hallo! Wie geht es dir?", "Merhaba! Nasılsın?");
