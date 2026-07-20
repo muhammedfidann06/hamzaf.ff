@@ -1,4 +1,4 @@
-```javascript
+
 // words.js
 
 function add(lang, level, category, word, translation, type, exampleSource, exampleTarget) {
@@ -1934,4 +1934,3 @@ add("en", "B2", "Concepts", "cognitive", "bilişsel", "adjective", "Cognitive de
 add("en", "B2", "Concepts", "resilience", "dayanıklılık / esneklik", "noun", "The team showed great resilience during the crisis.", "Takım kriz sırasında büyük bir dayanıklılık gösterdi.");
 add("en", "B2", "Concepts", "inherent", "doğasında olan / içsel", "adjective", "Every investment has an inherent risk.", "Her yatırımın doğasında olan bir risk vardır.");
 add("en", "B2", "Concepts", "advocate", "savunmak / desteklemek", "verb", "She advocates for sustainable energy solutions.", "Sürdürülebilir enerji çözümlerini savunuyor.");
-```
