@@ -488,9 +488,12 @@ function add(lang, level, cat, w, tr, pos, ex, exTr){
   const c = pair(_i++);
   VOCAB.push({lang, level, cat, w, tr, pos, ex, exTr, c1:c[0], c2:c[1]});
 }
+</script>
 
-/* VOCAB_DATA_PLACEHOLDER */
+<!-- Kelimelerin dışarıdan çekildiği dosya -->
+<script src="words.js"></script>
 
+<script>
 /* ======================= CONFIG ======================= */
 const LANGS = {
   de:{ label:"Almanca", native:"Deutsch", levels:["A1","A2"], voice:"de-DE", dir:"ltr" },
