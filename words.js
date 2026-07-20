@@ -1,5 +1,19 @@
 
 // words.js
+let kelimeListesi = [];
+
+function add(dil, seviye, kategori, kelime, ceviri, tur, ornek1, ornek2) {
+    kelimeListesi.push({
+        dil: dil,
+        seviye: seviye,
+        kategori: kategori,
+        kelime: kelime,
+        ceviri: ceviri,
+        tur: tur,
+        ornek1: ornek1,
+        ornek2: ornek2
+    });
+}
 
 
 // ALMANCA KELİMELER (Goethe Uyumlu)
