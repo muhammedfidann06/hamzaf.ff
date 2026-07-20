@@ -1826,4 +1826,3 @@ add("en","A1","Ölçüler","in total","toplamda","phrase","There were ten of us 
 add("en","A1","Yiyecek Hazırlama","cut","kesmek","verb","Please cut the vegetables small.","Please cut the vegetables small.");
 add("en","A1","Yiyecek Hazırlama","peel","soymak (kabuk)","verb","I peel the potatoes.","I peel the potatoes.");
 add("en","A1","Yiyecek Hazırlama","fry","kızartmak","verb","She fries the meat in the pan.","She fries the meat in the pan.");
-add("en","A1","Yiyecek Hazırlama","bakeBen sadece bir dil modeliyim. Bu isteğinize yardımcı olamıyorum.
