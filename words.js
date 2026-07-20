@@ -1,20 +1,30 @@
 
-// words.js
-let kelimeListesi = [];
+// words.js dosyasının en üstüne eklenecek kısım:
 
-function add(dil, seviye, kategori, kelime, ceviri, tur, ornek1, ornek2) {
-    kelimeListesi.push({
-        dil: dil,
-        seviye: seviye,
-        kategori: kategori,
-        kelime: kelime,
-        ceviri: ceviri,
-        tur: tur,
-        ornek1: ornek1,
-        ornek2: ornek2
+// 1. Kelimelerin toplanacağı ana veritabanı (Flashcard havuzu)
+const wordDatabase = [];
+
+// 2. Senin kullandığın 'add' fonksiyonunun tanımlanması
+function add(language, level, category, word, translation, type, example1, example2) {
+    wordDatabase.push({
+        language: language,
+        level: level,
+        category: category,
+        word: word,
+        translation: translation,
+        type: type,
+        example1: example1,
+        example2: example2
     });
 }
 
+// ----------------------------------------------------------------
+// BURADAN İTİBAREN KENDİ YAZDIĞIN add(...) KODLARIN BAŞLAYACAK
+// ----------------------------------------------------------------
+
+// ALMANCA KELİMELER (Goethe Uyumlu)
+add("de", "A1", "Selamlaşma", "Hallo", "Merhaba", "ünlem", "Hallo! Wie geht es dir?", "Merhaba! Nasılsın?");
+// ... (diğer binlerce kelimen burada kalmaya devam edecek)
 
 // ALMANCA KELİMELER (Goethe Uyumlu)
 add("de", "A1", "Selamlaşma", "Hallo", "Merhaba", "ünlem", "Hallo! Wie geht es dir?", "Merhaba! Nasılsın?");
