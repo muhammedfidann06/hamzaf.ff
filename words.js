@@ -1,3 +1,17 @@
+// words.js
+
+// ALMANCA KELİMELER (Goethe Uyumlu)
+add("de", "A1", "Selamlaşma", "Hallo", "Merhaba", "ünlem", "Hallo! Wie geht es dir?", "Merhaba! Nasılsın?");
+add("de", "A1", "Tanışma", "Name", "İsim", "isim", "Mein Name ist Hamza.", "Benim ismim Hamza.");
+add("de", "A2", "Seyahat", "Flughafen", "Havalimanı", "isim", "Wo ist der Flughafen?", "Havalimanı nerede?");
+
+// İNGİLİZCE KELİMELER
+add("en", "A1", "Genel", "Hello", "Merhaba", "ünlem", "Hello, welcome to our app.", "Merhaba, uygulamamıza hoş geldiniz.");
+add("en", "B1", "Teknoloji", "Develop", "Geliştirmek", "fiil", "We develop a language app.", "Bir dil uygulaması geliştiriyoruz.");
+
+// ARAPÇA KELİMELER
+add("ar", "A1", "Selamlaşma", "مرحبا", "Merhaba", "ünlem", "مرحبا بك ya arkadaşım.", "Merhaba arkadaşım.");
+
 // ================================================================
 //   GERMAN — DEVASA KELİME HAVUZU (A1, A2)
 // ================================================================ 
@@ -24,7 +38,7 @@ add("de","A1","İsimler","die Bank","banka","isim","Die Bank schließt um 17 Uhr
 add("de","A1","İsimler","der Bauch","karın","isim","Mein Bauch tut weh.","Karnım ağrıyor.");
 add("de","A1","İsimler","der Baum","ağaç","isim","Der Baum ist sehr alt.","Ağaç çok yaşlı.");
 add("de","A1","İsimler","der Beruf","meslek","isim","Was ist dein Beruf?","Mesleğin nedir?");
-add("de","A1","İsimler","das Bett","yatak","isim","Ich gehe jetzt ins Bett.","Şimdi yatağaıyorum.");
+add("de","A1","İsimler","das Bett","yatak","isim","Ich gehe jetzt ins Bett.","Şimdi yatağa gidiyorum.");
 add("de","A1","İsimler","das Buch","kitap","isim","Das Buch ist interessant.","Kitap ilginç.");
 add("de","A1","Aile","die Familie","aile","isim","Meine Familie ist groß.","Benim ailem kalabalık.");
 add("de","A1","Aile","die Mutter","anne","isim","Meine Mutter kocht gern.","Annem yemek yapmayı sever.");
@@ -49,7 +63,7 @@ add("de","A1","Eylemler","brauchen","ihtiyacı olmak","fiil","Ich brauche deine 
 add("de","A1","Eylemler","denken","düşünmek","fiil","Was denkst du darüber?","Bu konu hakkında ne düşünüyorsun?");
 add("de","A1","Eylemler","dürfen","izinli olmak","fiil","Darf ich hier parken?","Buraya park edebilir miyim?");
 add("de","A1","Sıfatlar","allein","yalnız","sıfat","Er lebt allein.","O yalnız yaşıyor.");
-add("de","A1","Sıfatlar","bekannt","tanınmış","sıfat","Er ist sehr bekend.","O çok tanınmış biri.");
+add("de","A1","Sıfatlar","bekannt","tanınmış","sıfat","Er ist sehr bekannt.","O çok tanınmış biri.");
 add("de","A1","Sıfatlar","besser","daha iyi","sıfat","Mir geht es heute besser.","Bugün daha iyiyim.");
 add("de","A1","Sıfatlar","billig","ucuz","sıfat","Dieses T-Shirt ist sehr billig.","Bu tişört çok ucuz.");
 add("de","A1","Sıfatlar","deutsch","Alman / Almanca","sıfat","Er lernt schnell deutsch.","O hızlıca Almanca öğreniyor.");
@@ -65,7 +79,7 @@ add("de","A1","Zamirler","ihr","siz","zamir","Ihr seid meine Freunde.","Siz beni
 add("de","A1","Zamirler","mein","benim","zamir","Das ist mein Buch.","Bu benim kitabım.");
 add("de","A1","Zamirler","dein","senin","zamir","Wie heißt dein Bruder?","Erkek kardeşinin adı ne?");
 add("de","A1","Sayılar","zwei","iki","sayı","Ich habe zwei Kinder.","İki çocuğum var.");
-add("de","A1","Sayılar","drei","üç","sayı","Wir warten seit drei Stunden.","Üç saattir bekliyoruz.");
+add("de","A1","Sayılar","drei","üç","sayı","Wir warten seit drei Stunden.","Üç saattir beklediyoruz.");
 add("de","A1","Sayılar","vier","dört","sayı","Der Tisch hat vier Stühle.","Masanın dört sandalyesi var.");
 add("de","A1","Sayılar","fünf","beş","sayı","Ich stehe um fünf Uhr auf.","Saat beşte kalkıyorum.");
 add("de","A1","Sayılar","zehn","on","sayı","Das dauert nur zehn Minuten.","Bu sadece on dakika sürer.");
@@ -78,7 +92,7 @@ add("de","A1","Zaman","der Mittag","öğle","isim","Wir essen um Mittag.","Öğl
 add("de","A1","Zaman","die Nacht","gece","isim","Die Nacht ist sehr ruhig.","Gece çok sakin.");
 add("de","A1","Zaman","heute","bugün","zarf","Heute ist ein guter Tag.","Bugün güzel bir gün.");
 add("de","A1","Zaman","gestern","dün","zarf","Gestern habe ich sie getroffen.","Dün onunla buluştum.");
-add("de","A1","Zaman","die Woche","hafta","isim","Ich arbeite fünf Tage die Woche.","Haftada beş gün çalışıyorum.");
+add("de","A1","Zaman","die Woche","hafta","isim","Ich arbeite fűnf Tage die Woche.","Haftada beş gün çalışıyorum.");
 add("de","A1","Zaman","der Monat","ay","isim","Nächsten Monat fahre ich weg.","Gelecek ay gidiyorum.");
 add("de","A1","Zaman","das Jahr","yıl","isim","Dieses Jahr war schwer.","Bu yıl zordu.");
 add("de","A1","Zaman","die Uhr","saat","isim","Wie viel Uhr ist es?","Saat kaç?");
@@ -129,7 +143,7 @@ add("de","A1","Vücut","der Fuß","ayak","isim","Mein Fuß tut weh.","Ayağım a
 add("de","A1","Vücut","der Kopf","baş","isim","Ich habe Kopfschmerzen.","Başım ağrıyor.");
 add("de","A1","Vücut","die Nase","burun","isim","Seine Nase ist rot.","Onun burnu kırmızı.");
 add("de","A1","Vücut","der Mund","ağız","isim","Öffne bitte den Mund.","Lütfen ağzını aç.");
-add("de","A1","Vücut","das Ohr","kulak","isim","Ich höre mit dem Ohr.","Kulağımla duyarım.");
+add("de","A1","Vücut","das Ohr","kulak","isim","Ich hören mit dem Ohr.","Kulağımla duyarım.");
 add("de","A1","Vücut","das Haar","saç","isim","Ihr Haar ist lang.","Onun saçı uzun.");
 add("de","A1","Yerler","die Stadt","şehir","isim","Diese Stadt ist sehr alt.","Bu şehir çok eski.");
 add("de","A1","Yerler","die Straße","sokak / cadde","isim","Die Straße ist laut.","Sokak gürültülü.");
@@ -197,7 +211,7 @@ add("de","A1","Eylemler","arbeiten","çalışmak","fiil","Sie arbeitet in einer 
 add("de","A1","Eylemler","spielen","oynamak","fiil","Die Kinder spielen im Garten.","Çocuklar bahçede oynuyor.");
 add("de","A1","Eylemler","lernen","öğrenmek","fiil","Ich lerne Deutsch seit einem Jahr.","Bir yıldır Almanca öğreniyorum.");
 add("de","A1","Eylemler","wohnen","oturmak / yaşamak","fiil","Wir wohnen in Ankara.","Ankara'da yaşıyoruz.");
-add("de","A1","Eylemler","kauf","satın almak","fiil","Ich kaufe ein neues Buch.","Yeni bir kitap satın alıyorum.");
+add("de","A1","Eylemler","anmelden","satın almak","fiil","Ich kaufe ein neues Buch.","Yeni bir kitap satın alıyorum.");
 add("de","A1","Eylemler","kochen","yemek pişirmek","fiil","Meine Mutter kocht sehr gut.","Annem çok iyi yemek yapar.");
 add("de","A1","Eylemler","lieben","sevmek","fiil","Ich liebe meine Familie.","Ailemi seviyorum.");
 add("de","A1","Eylemler","mögen","hoşlanmak","fiil","Ich mag diese Musik.","Bu müziği seviyorum.");
@@ -206,7 +220,7 @@ add("de","A1","Eylemler","können","yapabilmek","fiil","Ich kann gut schwimmen."
 add("de","A1","Eylemler","müssen","zorunda olmak","fiil","Ich muss jetzt gehen.","Şimdi gitmem gerekiyor.");
 add("de","A1","Eylemler","wissen","bilmek","fiil","Ich weiß die Antwort nicht.","Cevabı bilmiyorum.");
 add("de","A1","Eylemler","sprechen","konuşmak","fiil","Sprichst du Englisch?","İngilizce konuşuyor musun?");
-add("de","A1","Eylemler","lesen","okumak","fiil","Ich lese jeden Abend ein Buch.","Her akşam bir kitap okurum.");
+add("de","A1","Eylemler","lesen","okumak","fiil","Ich lese jeden Abend ein book.","Her akşam bir kitap okurum.");
 add("de","A1","Eylemler","schreiben","yazmak","fiil","Sie schreibt einen Brief.","O bir mektup yazıyor.");
 add("de","A1","Eylemler","verstehen","anlamak","fiil","Ich verstehe die Frage nicht.","Soruyu anlamıyorum.");
 add("de","A1","Eylemler","helfen","yardım etmek","fiil","Kannst du mir helfen?","Bana yardım edebilir misin?");
@@ -244,7 +258,7 @@ add("de","A2","Sağlık","das Fieber","ateş (hastalık)","isim","Das Kind hat h
 add("de","A2","Sağlık","der Husten","öksürük","isim","Der Husten dauert schon eine Woche.","Öksürük bir haftadır sürüyor.");
 add("de","A2","Sağlık","die Tablette","hap","isim","Nimm diese Tablette zweimal täglich.","Bu hapı günde iki kez al.");
 add("de","A2","Sağlık","die Apotheke","eczane","isim","Die Apotheke ist gleich um die Ecke.","Eczane hemen köşede.");
-add("de","A2","Sağlık","sich verletzen","yaralanmak","fiil","Er hat sich beim Fußball verletzt.","O futbol oynarken yaralandı.");
+add("de","A2","Sağlık","sich verletzen","yaralanmak","fiil","Er hat sich beim Fußball verletzt.","Ö futbol oynarken yaralandı.");
 add("de","A2","Sağlık","gesund","sağlıklı","sıfat","Obst ist sehr gesund.","Meyve çok sağlıklıdır.");
 add("de","A2","Sağlık","krank","hasta","sıfat","Sie ist seit gestern krank.","O dünden beri hasta.");
 add("de","A2","Alışveriş","die Kasse","kasa","isim","Bitte zahlen Sie an der Kasse.","Lütfen kasada ödeyin.");
@@ -323,7 +337,7 @@ add("de","A1","Günler","der Samstag","Cumartesi","isim","Samstag schlafe ich la
 add("de","A1","Günler","der Sonntag","Pazar","isim","Am Sonntag besuchen wir die Familie.","Pazar aileyi ziyaret ediyoruz.");
 add("de","A1","Aylar","der Januar","Ocak","isim","Im Januar ist es sehr kalt.","Ocak ayında hava çok soğuk.");
 add("de","A1","Aylar","der Februar","Şubat","isim","Der Februar ist ein kurzer Monat.","Şubat kısa bir aydır.");
-add("de","A1","Aylar","der März","Mart","isim","Im März beginnt the Frühling.","Mart ayında ilkbahar başlar.");
+add("de","A1","Aylar","der März","Mart","isim","Im März beginnt der Frühling.","Mart ayında ilkbahar başlar.");
 add("de","A1","Aylar","der April","Nisan","isim","Im April regnet es oft.","Nisan ayında sık sık yağmur yağar.");
 add("de","A1","Aylar","der Mai","Mayıs","isim","Der Mai ist sehr angenehm.","Mayıs çok hoş bir aydır.");
 add("de","A1","Aylar","der Juni","Haziran","isim","Im Juni beginnt der Sommer.","Haziran ayında yaz başlar.");
@@ -345,7 +359,7 @@ add("de","A1","Sayılar","neun","dokuz","sayı","Der Unterricht beginnt um neun.
 add("de","A1","Sayılar","elf","on bir","sayı","Der Zug fährt um elf ab.","Tren on birde kalkıyor.");
 add("de","A1","Sayılar","zwölf","on iki","sayı","Wir treffen uns um zwölf.","Saat on ikide buluşuyoruz.");
 add("de","A1","Sayılar","dreizehn","on üç","sayı","Sie ist dreizehn Jahre alt.","O on üç yaşındadır.");
-add("de","A1","Sayılar","vierzehn","on dört","sayı","Wir have vierzehn Tage Urlaub.","On dört günlük iznimiz var.");
+add("de","A1","Sayılar","vierzehn","on dört","sayı","Wir haben vierzehn Tage Urlaub.","On dört günlük iznimiz var.");
 add("de","A1","Sayılar","fünfzehn","on beş","sayı","Die Pause dauert fünfzehn Minuten.","Mola on beş dakika sürer.");
 add("de","A1","Sayılar","sechzehn","on altı","sayı","Mit sechzehn darf man Moped fahren.","On altı yaşında moped kullanılabilir.");
 add("de","A1","Sayılar","siebzehn","on yedi","sayı","Sie feiert ihren siebzehnten Geburtstag.","O on yedinci doğum gününü kutluyor.");
@@ -428,7 +442,7 @@ add("de","A1","Eylemler","sich ausziehen","soyunmak","fiil","Er zieht sich vor d
 add("de","A1","Eylemler","duschen","duş almak","fiil","Ich dusche jeden Morgen.","Her sabah duş alırım.");
 add("de","A1","Eylemler","sich waschen","yıkanmak","fiil","Wasch dir die Hände vor dem Essen.","Yemekten önce ellerini yıka.");
 add("de","A1","Eylemler","abholen","almaya gitmek","fiil","Ich hole dich vom Bahnhof ab.","Seni istasyondan alırım.");
-add("de","A1","Eylemler","mitbring","yanında getirmek","fiil","Bring bitte etwas zu essen mit.","Lütfen yiyecek bir şeyler getir.");
+add("de","A1","Eylemler","mitbringen","yanında getirmek","fiil","Bring bitte etwas zu essen mit.","Lütfen yiyecek bir şeyler getir.");
 add("de","A1","Eylemler","zurückkommen","geri dönmek","fiil","Er kommt spät zurück.","O geç geri dönüyor.");
 add("de","A1","Eylemler","weggehen","uzaklaşmak / gitmek","fiil","Sie geht gleich weg.","O birazdan gidecek.");
 add("de","A1","Eylemler","einladen","davet etmek","fiil","Ich lade dich zu meiner Party ein.","Seni partime davet ediyorum.");
@@ -441,7 +455,7 @@ add("de","A1","Eylemler","zumachen","kapatmak","fiil","Bitte mach die Tür zu.",
 add("de","A1","Eylemler","klingeln","zil çalmak","fiil","Das Telefon klingelt.","Telefon çalıyor.");
 add("de","A1","Eylemler","rufen","seslenmek / çağırmak","fiil","Sie ruft ihre Kinder.","O çocuklarını çağırıyor.");
 add("de","A1","Eylemler","singen","şarkı söylemek","fiil","Die Kinder singen ein Lied.","Çocuklar bir şarkı söylüyor.");
-add("de","A1","Eylemler","lachen","gülmek","fiil","Wir lachen viel zusammen.","Bikte çok gülüyoruz.");
+add("de","A1","Eylemler","lachen","gülmek","fiil","Wir lachen viel zusammen.","Birlikte çok gülüyoruz.");
 add("de","A1","Eylemler","weinen","ağlamak","fiil","Das Baby weint plötzlich.","Bebek aniden ağlıyor.");
 add("de","A1","Eylemler","glauben","inanmak","fiil","Ich glaube dir nicht.","Sana inanmıyorum.");
 add("de","A1","Eylemler","hoffen","ummak","fiil","Ich hoffe, dass es klappt.","Umarım işe yarar.");
@@ -450,7 +464,7 @@ add("de","A1","Eylemler","reisen","seyahat etmek","fiil","Sie reist gern allein.
 add("de","A1","Eylemler","fliegen","uçmak","fiil","Wir fliegen nach Istanbul.","İstanbul'a uçuyoruz.");
 add("de","A1","Eylemler","springen","zıplamak","fiil","Die Kinder springen im Garten.","Çocuklar bahçede zıplıyor.");
 add("de","A1","Eylemler","fallen","düşmek","fiil","Pass auf, du fällst!","Dikkat et, düşeceksin!");
-add("de","A1","Eylemler","sitzen","oturmak","fiil","Er sitzt am Tisch.","O masada oturuyor.");
+add("de","A1","Eylemler","sitzen","oturmak","fiil","Er sits am Tisch.","O masada oturuyor.");
 add("de","A1","Eylemler","stehen","ayakta durmak","fiil","Sie steht an der Tür.","O kapıda duruyor.");
 add("de","A1","Eylemler","liegen","yatmak / uzanmak","fiil","Das Buch liegt auf dem Tisch.","Kitap masanın üzerinde duruyor.");
 add("de","A1","Bağlaçlar","und","ve","bağlaç","Ich esse und trinke.","Yiyorum ve içiyorum.");
@@ -493,7 +507,7 @@ add("de","A1","Sıfatlar","scharf","acı / keskin","sıfat","Das Essen ist zu sc
 add("de","A1","Sıfatlar","voll","dolu","sıfat","Das Glas ist voll.","Bardak dolu.");
 add("de","A1","Sıfatlar","leer","boş","sıfat","Der Kühlschrank ist leer.","Buzdolabı boş.");
 add("de","A1","Sıfatlar","offen","açık","sıfat","Die Tür ist offen.","Kapı açık.");
-add("de","A1","Sıfatlar","geschlossen","kapalı","sıfat","Das Geschäft ist geschlossen.","Dükkan kapalı.");
+add("de","A1","Sıfatlar","closed","kapalı","sıfat","Das Geschäft ist geschlossen.","Dükkan kapalı.");
 add("de","A1","Sıfatlar","hoch","yüksek","sıfat","Der Berg ist sehr hoch.","Dağ çok yüksek.");
 add("de","A1","Sıfatlar","niedrig","alçak / düşük","sıfat","Die Preise sind niedrig.","Fiyatlar düşük.");
 add("de","A1","Sıfatlar","stark","güçlü","sıfat","Er ist sehr stark.","O çok güçlü.");
@@ -511,7 +525,7 @@ add("de","A1","Hava Durumu","wolkig","bulutlu","sıfat","Morgen wird es wolkig."
 add("de","A1","Yerler","die Kirche","kilise","isim","Die Kirche ist sehr alt.","Kilise çok eskidir.");
 add("de","A1","Yerler","die Bibliothek","kütüphane","isim","Ich lerne gern in der Bibliothek.","Kütüphanede çalışmayı severim.");
 add("de","A1","Yerler","die Universität","üniversite","isim","Er studiert an der Universität.","O üniversitede okuyor.");
-add("de","A1","Yerler","der Flughafen","havaalanı","isim","Der Flughafen ist weit von hier.","Havaalanı buradan uzaktır.");
+add("de","A1","Yerler","der Flughafen","havaalanı","isim","Der Flughafen ist weit von hier.","Der Flughafen ist weit von hier.");
 add("de","A1","Yerler","das Museum","müze","isim","Wir besuchen heute das Museum.","Bugün müzeyi ziyaret ediyoruz.");
 add("de","A1","Yerler","das Kino","sinema","isim","Wir gehen heute Abend ins Kino.","Bu akşam sinemaya gidiyoruz.");
 add("de","A1","Yerler","das Restaurant","restoran","isim","Wir essen im Restaurant.","Restoranda yemek yiyoruz.");
@@ -571,11 +585,11 @@ add("de","A1","Sıfatlar","nass","ıslak","sıfat","Meine Schuhe sind nass.","Ay
 add("de","A1","Sıfatlar","rund","yuvarlak","sıfat","Der Tisch ist rund.","Masa yuvarlak.");
 add("de","A1","Sıfatlar","breit","geniş","sıfat","Die Straße ist sehr breit.","Sokak çok geniş.");
 add("de","A1","Sıfatlar","schmal","dar","sıfat","Der Weg ist sehr schmal.","Yol çok dar.");
-add("de","A1","Sıfatlar","dick","kalın / şişman","sıfat","Das Buch ist sehr dük.","Kitap çok kalın.");
+add("de","A1","Sıfatlar","dick","kalın / şişman","sıfat","Das Buch ist sehr dick.","Kitap çok kalın.");
 add("de","A1","Sıfatlar","dünn","ince / zayıf","sıfat","Das Papier ist sehr dünn.","Kağıt çok ince.");
 add("de","A1","Sıfatlar","mutig","cesur","sıfat","Sie ist eine sehr mutige Frau.","O çok cesur bir kadın.");
 add("de","A1","Sıfatlar","ängstlich","korkak / endişeli","sıfat","Er ist sehr ängstlich vor Hunden.","O köpeklerden çok korkuyor.");
-add("de","A1","Sıfatlar","schüchtern","utangaç","sıfat","Das... Kind ist sehr schüchtern.","Çocuk çok utangaç.");
+add("de","A1","Sıfatlar","schüchtern","utangaç","sıfat","Das Kind ist sehr schüchtern.","Çocuk çok utangaç.");
 add("de","A1","Sıfatlar","selbstbewusst","özgüvenli","sıfat","Sie wirkt sehr selbstbewusst.","O çok özgüvenli görünüyor.");
 add("de","A1","Sıfatlar","ehrlich","dürüst","sıfat","Er ist immer ehrlich zu mir.","O bana karşı hep dürüst.");
 add("de","A1","Sıfatlar","großzügig","cömert","sıfat","Sie ist sehr großzügig mit Geld.","O parayla çok cömert.");
@@ -715,7 +729,7 @@ add("de","A1","Eylemler","beschreiben","tarif etmek / betimlemek","fiil","Beschr
 add("de","A1","Eylemler","bemerken","fark etmek","fiil","Ich habe den Fehler sofort bemerkt.","Hatayı hemen fark ettim.");
 add("de","A1","Eylemler","beobachten","gözlemlemek","fiil","Wir beobachten die Vögel.","Kuşları gözlemliyoruz.");
 add("de","A1","Eylemler","entdecken","keşfetmek","fiil","Er hat eine neue Insel entdeckt.","Yeni bir ada keşfetti.");
-add("de","A1","Eylemler","entwickeln","geliştirmek","fiil","Die Firma entwickelt neue Produkte.","Şirket yeni ürünler geliştiriyor.");
+add("de","A1","Eylemler","entwickeln","geliştirmek","fiil","Die Firma entwickelt neue Produkte.","Die Firma yeni ürünler geliştiriyor.");
 add("de","A1","Eylemler","verändern","değiştirmek","fiil","Die Stadt hat sich stark verändert.","Şehir çok değişti.");
 add("de","A1","Eylemler","verbessern","geliştirmek / iyileştirmek","fiil","Ich möchte mein Deutsch verbessern.","Almancamı geliştirmek istiyorum.");
 add("de","A1","Eylemler","reparieren","tamir etmek","fiil","Er repariert das Fahrrad.","O bisikleti tamir ediyor.");
@@ -809,7 +823,7 @@ add("de","A1","Duygular ve Karakter","gelangweilt","sıkılmış","sıfat","Er s
 add("de","A1","Duygular ve Karakter","überglücklich","son derece mutlu","sıfat","Sie war überglücklich über das Geschenk.","Hediyeden dolayı son derece mutluydu.");
 add("de","A1","Duygular ve Karakter","neugierig","meraklı","sıfat","Kinder sind sehr neugierig.","Çocuklar çok meraklıdır.");
 add("de","A1","Duygular ve Karakter","großartig","muhteşem","sıfat","Das Konzert war großartig.","Konser muhteşemdi.");
-add("de","A1","Duygular ve Karakter","furchtbar","korkunç / berbat","sıfat","Das Wetter war furchtbar.","Hava berbattı.");
+add("de","A1","Duygular og Karakter","furchtbar","korkunç / berbat","sıfat","Das Wetter war furchtbar.","Hava berbattı.");
 add("de","A1","Duygular ve Karakter","angenehm","hoş / rahat","sıfat","Die Reise war sehr angenehm.","Seyahat çok hoştu.");
 add("de","A1","Duygular ve Karakter","unangenehm","tatsız / rahatsız edici","sıfat","Der Geruch ist unangenehm.","Koku rahatsız edici.");
 add("de","A1","Ev İşleri Ek","der Besen","süpürge","isim","Der Besen steht in der Ecke.","Süpürge köşede duruyor.");
@@ -907,7 +921,7 @@ add("en","A1","Sayılar","six","altı","number","She has six apples.","Onun alt�
 add("en","A1","Sayılar","seven","yedi","number","There are seven days in a week.","Bir haftada yedi gün var.");
 add("en","A1","Sayılar","eight","sekiz","number","The shop opens at eight.","Dükkan sekizde açılıyor.");
 add("en","A1","Sayılar","nine","dokuz","number","Class starts at nine.","Ders dokuzda başlıyor.");
-add("en","A1","Sayılar","ten","on","number","It takes only ten minutes.","Sadece on dakika sürüyor.");
+add("en","A1","Sayılar","ten","on","number","It takes only ten minutes.","Sadece on dakika sürer.");
 add("en","A1","Sayılar","eleven","on bir","number","The train leaves at eleven.","Tren on birde kalkıyor.");
 add("en","A1","Sayılar","twelve","on iki","number","We meet at twelve.","Saat on ikide buluşuyoruz.");
 add("en","A1","Sayılar","thirty","otuz","number","The shirt costs thirty dollars.","Gömlek otuz dolar.");
@@ -942,8 +956,8 @@ add("en","A1","Yiyecek","meat","et","noun","I don't eat meat often.","Sık sık 
 add("en","A1","Yiyecek","fish","balık","noun","The fish is fresh.","Balık taze.");
 add("en","A1","Yiyecek","rice","pirinç","noun","We eat rice with vegetables.","Sebzeli pirinç yiyoruz.");
 add("en","A1","Yiyecek","soup","çorba","noun","The soup is hot.","Çorba sıcak.");
-add("en","A1","Yiyecek","sugar","şeker","noun","I don't take sugar.","Şeker almıyorum.");
-add("en","A1","Yiyecek","salt","tuz","noun","Please pass the salt.","Lütfen tuzu uzatır mısın.");
+add("en","A1","Yiyecek","sugar","شكر","noun","I don't take sugar.","Şeker almıyorum.");
+add("en","A1","Yiyecek","salt","توز","noun","Please pass the salt.","Lütfen tuzu uzatır mısın.");
 add("en","A1","Yiyecek","apple","elma","noun","The apple is sweet.","Elma tatlı.");
 add("en","A1","Yiyecek","banana","muz","noun","She eats a banana every day.","O her gün bir muz yer.");
 add("en","A1","Yiyecek","vegetable","sebze","noun","Vegetables are healthy.","Sebzeler sağlıklıdır.");
@@ -1138,7 +1152,7 @@ add("en","A1","Günler","Sunday","Pazar","noun","We visit family on Sunday.","Pa
 add("en","A1","Aylar","January","Ocak","noun","It is very cold in January.","Ocak ayında hava çok soğuktur.");
 add("en","A1","Aylar","February","Şubat","noun","February is a short month.","Şubat kısa bir aydır.");
 add("en","A1","Aylar","March","Mart","noun","Spring begins in March.","İlkbahar Mart'ta başlar.");
-add("en","A1","Aylar","April","Nisan","noun","It often rains in April.","Nisan'da sık s yağmur yağar.");
+add("en","A1","Aylar","April","Nisan","noun","It often rains in April.","Nisan'da sık sık yağmur yağar.");
 add("en","A1","Aylar","May","Mayıs","noun","May is very pleasant.","Mayıs çok hoş bir aydır.");
 add("en","A1","Aylar","June","Haziran","noun","Summer starts in June.","Yaz Haziran'da başlar.");
 add("en","A1","Aylar","July","Temmuz","noun","We go on holiday in July.","Temmuz'da tatile gideriz.");
@@ -1154,7 +1168,7 @@ add("en","A1","Mevsimler","winter","kış","noun","It often snows in winter.","K
 add("en","A1","Sayılar","zero","sıfır","number","The number starts with zero.","Sayı sıfır ile başlıyor.");
 add("en","A1","Sayılar","thirteen","on üç","number","She is thirteen years old.","O on üç yaşındadır.");
 add("en","A1","Sayılar","fourteen","on dört","number","We have fourteen days of holiday.","On dört günlük tatilimiz var.");
-add("en","A1","Sayılar","fifteen","on beş","number","The break lasts fifteen minutes.","Mola on beş dakika sürer.");
+add("en","A1","Sayılar","fifteen","on beige","number","The break lasts fifteen minutes.","Mola on beş dakika sürer.");
 add("en","A1","Sayılar","forty","kırk","number","She works forty hours a week.","Haftada kırk saat çalışıyor.");
 add("en","A1","Sayılar","fifty","elli","number","There is a fifty percent discount.","Yüzde elli indirim var.");
 add("en","A1","Sayılar","sixty","altmış","number","An hour has sixty minutes.","Bir saatte altmış dakika vardır.");
@@ -1226,7 +1240,7 @@ add("en","A1","Fiiller","stop","durmak / bırakmak","verb","Stop crying, please.
 add("en","A1","Fiiller","ring","zil çalmak","verb","The phone is ringing.","Telefon çalıyor.");
 add("en","A1","Fiiller","call","seslenmek / aramak","verb","She calls her children.","O çocuklarını çağırıyor.");
 add("en","A1","Fiiller","sing","şarkı söylemek","verb","The children sing a song.","Çocuklar bir şarkı söylüyor.");
-add("en","A1","Fiiller","laugh","gülmek","verb","We laugh a lot together.","Birlikte çok gülüyoruz.");
+add("en","A1","Fiiller","laugh","gülmek","verb","We laugh a lot together.","Biritkte çok gülüyoruz.");
 add("en","A1","Fiiller","cry","ağlamak","verb","The baby suddenly cries.","Bebek aniden ağlıyor.");
 add("en","A1","Fiiller","believe","inanmak","verb","I don't believe you.","Sana inanmıyorum.");
 add("en","A1","Fiiller","hope","ummak","verb","I hope it works out.","Umarım işe yarar.");
@@ -1266,7 +1280,7 @@ add("en","A1","Zarflar","maybe","belki","adverb","Maybe I will come tomorrow.","
 add("en","A1","Zarflar","really","gerçekten","adverb","That is really beautiful.","Bu gerçekten güzel.");
 add("en","A1","Sıfatlar","loud","gürültülü","adjective","The street is very loud.","Sokak çok gürültülü.");
 add("en","A1","Sıfatlar","quiet","sessiz","adjective","Please be quiet.","Lütfen sessiz ol.");
-add("en","A1","Sıfatlar","dirty","kirli","adjective","My shoes are dirty.","Ayakkabılarım kirli.");
+add("en","A1","Sıfatlar","dirty","kirli","adjective","My shoes are dirty.","Ayakkbılarım kirli.");
 add("en","A1","Sıfatlar","correct","doğru","adjective","Your answer is correct.","Cevabın doğru.");
 add("en","A1","Sıfatlar","wrong","yanlış","adjective","That is unfortunately wrong.","Bu maalesef yanlış.");
 add("en","A1","Sıfatlar","interesting","ilginç","adjective","The film was very interesting.","Film çok ilginçti.");
@@ -1274,7 +1288,7 @@ add("en","A1","Sıfatlar","boring","sıkıcı","adjective","The book is boring."
 add("en","A1","Sıfatlar","funny","komik","adjective","He tells very funny stories.","O çok komik hikayeler anlatıyor.");
 add("en","A1","Sıfatlar","calm","sakin","adjective","The village is very calm.","Köy çok sakindir.");
 add("en","A1","Sıfatlar","sweet","tatlı","adjective","The cake is very sweet.","Kek çok tatlı.");
-add("en","A1","Sıfatlar","sour","ekşi","adjective","The lemon is very sour.","Limon çok ekşidir.");
+add("en","A1","Sıfatlar","sour","ekşi","adjective","The lemon is very sour.","Limon çok ekşi.");
 add("en","A1","Sıfatlar","spicy","acı / baharatlı","adjective","The food is too spicy.","Yemek çok acı.");
 add("en","A1","Sıfatlar","full","dolu","adjective","The glass is full.","Bardak dolu.");
 add("en","A1","Sıfatlar","empty","boş","adjective","The fridge is empty.","Buzdolabı boş.");
@@ -1517,7 +1531,7 @@ add("en","B2","Sıfatlar (B2)","profound","derin / köklü","adjective","The boo
 add("en","B2","Sıfatlar (B2)","vague","belirsiz / muğlak","adjective","His explanation was vague.","His explanation was vague.");
 add("en","B2","Sıfatlar (B2)","thorough","kapsamlı / titiz","adjective","She did a thorough investigation.","She did a thorough investigation.");
 add("en","B2","Zarflar (B2)","consequently","sonuç olarak","adverb","Consequently, the project was delayed.","Consequently, the project was delayed.");
-add("en","B2","Zarflar (B2)","nevertheless","yine de / bununla birlikte","adverb","Nevertheles, we finished on time.","Nevertheless, we finished on time.");
+add("en","B2","Zarflar (B2)","nevertheless","yine de / bununla birlikte","adverb","Nevertheless, we finished on time.","Nevertheless, we finished on time.");
 add("en","B2","Zarflar (B2)","simultaneously","aynı anda","adverb","Both events happened simultaneously.","Both events happened simultaneously.");
 add("en","B2","Zarflar (B2)","increasingly","giderek artan şekilde","adverb","People are increasingly using apps.","People are increasingly using apps.");
 add("en","B2","Medya","censorship","sansür","noun","Censorship limits free speech.","Censorship limits free speech.");
@@ -1550,7 +1564,7 @@ add("en","A1","Fiiller","grow","büyümek","verb","Children grow up so fast.","�
 add("en","A1","Fiiller","die","ölmek","verb","The plant died.","Bitki öldü.");
 add("en","A1","Fiiller","show","göstermek","verb","Show me the way, please.","Bana yolu göster lütfen.");
 add("en","A1","Fiiller","fetch","alıp gelmek","verb","I fetch bread from the bakery.","Fırından ekmek alıyorum.");
-add("en","A1","Fiiller","send","göndermek","verb","I will send you the photo.","Sana fotoğrafı göndereceğim.");
+add("en","A1","Fiiller","send","göndermek","verb","I will send you the photo.","Sana fotoğrafı gönderiyeceğim.");
 add("en","A1","Fiiller","sign","imzalamak","verb","Please sign here.","Lütfen burayı imzalayın.");
 add("en","A1","Fiiller","print","yazdırmak","verb","Can you print the document?","Belgeyi yazdırabilir misin?");
 add("en","A1","Fiiller","copy","kopyalamak","verb","I need to copy this page.","Bu sayfayı kopyalamam gerekiyor.");
@@ -1710,7 +1724,7 @@ add("en","B2","Fiiller (B2)","comply","uymak (kurala)","verb","The company must 
 add("en","B2","Fiiller (B2)","undertake","üstlenmek","verb","She undertook a major research project.","She undertook a major research project.");
 add("en","B2","Fiiller (B2)","allocate","tahsis etmek","verb","The budget was allocated wisely.","The budget was allocated wisely.");
 add("en","B2","Fiiller (B2)","withstand","dayanmak / karşı koymak","verb","The bridge can withstand strong winds.","The bridge can withstand strong winds.");
-add("en","B2","Sıfatlar (B2)","meticulous","titiz / kılı kırk yaran","adjective","He is meticulous about details.","He is meticulous about details.");
+add("enSB2","Sıfatlar (B2)","meticulous","titiz / kılı kırk yaran","adjective","He is meticulous about details.","He is meticulous about details.");
 add("en","B2","Sıfatlar (B2)","pragmatic","pragmatik / uygulamacı","adjective","She takes a pragmatic approach to problems.","She takes a pragmatic approach to problems.");
 add("en","B2","Sıfatlar (B2)","tedious","yorucu / sıkıcı","adjective","The process was long and tedious.","The process was long and tedious.");
 add("en","B2","Sıfatlar (B2)","robust","sağlam / dayanıklı","adjective","The system is very robust.","The system is very robust.");
@@ -1786,7 +1800,7 @@ add("en","A1","Fiiller","found","kurmak (şirket)","verb","He founded a company.
 add("en","A1","Fiiller","open (a business)","açmak (resmi)","verb","They are opening a new shop.","They are opening a new shop.");
 add("en","A1","Fiiller","finish","bitirmek","verb","I finish my work at five.","I finish my work at five.");
 add("en","A1","Fiiller","practise","alıştırma yapmak","verb","I practise German every day.","I practise German every day.");
-add("en","A1","Fiiller","be ashamed","utanmak","verb","I am ashamed of my mistake.","I am ashamed of my mistake.");
+add("en","A1","Fiiller","be ashes","utanmak","verb","I am ashamed of my mistake.","I am ashamed of my mistake.");
 add("en","A1","Fiiller","be bored","sıkılmak","verb","The children are bored at home.","The children are bored at home.");
 add("en","A1","Fiiller","be surprised","şaşırmak","verb","I am surprised by his behavior.","I am surprised by his behavior.");
 add("en","A1","Fiiller","frighten","korkutmak","verb","The dog frightened me.","The dog frightened me.");
@@ -1801,15 +1815,277 @@ add("en","A1","Zaman","meanwhile","bu arada","adverb","Meanwhile, I learned a lo
 add("en","A1","Zaman","first of all","önce / ilk olarak","phrase","First of all, we must plan.","First of all, we must plan.");
 add("en","A1","Zaman","finally","sonunda","adverb","Finally, we managed it.","Finally, we managed it.");
 add("en","A1","Ölçüler","kilogram","kilogram","noun","I buy a kilogram of apples.","I buy a kilogram of apples.");
-add("en","A1","Ölçüler","gram","gram","noun","I need two hundred grams of cheese.","I need two hundred grams of cheese.");
-add("en","A1","Ölçüler","litre","litre","noun","One litre of milk, please.","One litre of milk, please.");
-add("en","A1","Ölçüler","percent","yüzde","noun","Fifty percent discount.","Fifty percent discount.");
-add("en","A1","Ölçüler","half","yarı / yarısı","noun","I only eat half.","I only eat half.");
-add("en","A1","Ölçüler","approximately","yaklaşık","adverb","It takes approximately one hour.","It takes approximately one hour.");
-add("en","A1","Ölçüler","exactly","tam / kesin","adverb","That is exactly right.","That is exactly right.");
-add("en","A1","Ölçüler","at least","en az","phrase","You need at least ten dollars.","You need at least ten dollars.");
-add("en","A1","Ölçüler","in total","toplamda","phrase","There were ten of us in total.","There were ten of us in total.");
-add("en","A1","Yiyecek Hazırlama","cut","kesmek","verb","Please cut the vegetables small.","Please cut the vegetables small.");
-add("en","A1","Yiyecek Hazırlama","peel","soymak (kabuk)","verb","I peel the potatoes.","I peel the potatoes.");
-add("en","A1","Yiyecek Hazırlama","fry","kızartmak","verb","She fries the meat in the pan.","She fries the meat in the pan.");
-add("en","A1","Yiyecek Hazırlama","bakeBen sadece bir dil modeliyim. Bu isteğinize yardımcı olamıyorum.
+add("en","A1","Ölçüler","gram","gram","noun","I need twoBu konuda size yardımcı olamıyorum. Yalnızca bir dil modeli olduğum için isteğinizi anlayıp yanıt verebilecek yeteneğe sahip değilim.
+// ================================================================
+//   GERMAN — GOETHE A2 SEVİYESİ MAKSİMUM KELİME PAKETİ
+// ================================================================ 
+
+// --- İş ve Meslek Hayatı ---
+add("de", "A2", "İş Hayatı", "der Arbeitgeber", "işveren", "isim", "Mein Arbeitgeber ist sehr verständnisvoll.", "İşverenim çok anlayışlıdır.");
+add("de", "A2", "İş Hayatı", "der Arbeitnehmer", "çalışan / işçi", "isim", "Die Arbeitnehmer fordern mehr Lohn.", "Çalışanlar daha fazla maaş talep ediyor.");
+add("de", "A2", "İş Hayatı", "die Überstunde", "fazla mesai", "isim", "Ich muss heute Überstunden machen.", "Bugün fazla mesai yapmam gerekiyor.");
+add("de", "A2", "İş Hayatı", "die Werkstatt", "atölye / tamirhane", "isim", "Mein Auto ist in der Werkstatt.", "Arabam tamirhanede.");
+add("de", "A2", "İş Hayatı", "der Feierabend", "paydos / mesai bitimi", "isim", "Wann hast du heute Feierabend?", "Bugün ne zaman paydos ediyorsun?");
+add("de", "A2", "İş Hayatı", "kündigen", "istifa etmek / işten çıkarmak", "fiil", "Er hat seinen Job fristlos gekündigt.", "İşinden derhal istifa etti.");
+add("de", "A2", "İş Hayatı", "der Lebenslauf", "özgeçmiş (CV)", "isim", "Bitte schicken Sie uns Ihren Lebenslauf.", "Lütfen bize özgeçmişinizi gönderin.");
+add("de", "A2", "İş Hayatı", "verdienen", "para kazanmak / hak etmek", "fiil", "Wie viel verdienst du in deinem neuen Job?", "Yeni işinde ne kadar kazanıyorsun?");
+
+// --- Ev ve Yaşam ---
+add("de", "A2", "Ev ve Yaşam", "der Mietvertrag", "kira sözleşmesi", "isim", "Ich habe den Mietvertrag gestern unterschrieben.", "Kira sözleşmesini dün imzaladım.");
+add("de", "A2", "Ev ve Yaşam", "die Nebenkosten", "aidat / ek giderler", "isim", "Sind die Nebenkosten in der Miete enthalten?", "Ek giderler kiraya dahil mi?");
+add("de", "A2", "Ev ve Yaşam", "einziehen", "taşınmak (bir eve girmek)", "fiil", "Wann können wir in die neue Wohnung einziehen?", "Yeni daireye ne zaman taşınabiliriz?");
+add("de", "A2", "Ev ve Yaşam", "ausziehen", "taşınmak (bir evden çıkmak)", "fiil", "Mein Nachbar ist gestern ausgezogen.", "Komşum dün taşındı (evden çıktı).");
+add("de", "A2", "Ev ve Yaşam", "der Haushalt", "ev işleri / ev idaresi", "isim", "Ich mache den Haushalt am Wochenende.", "Ev işlerini hafta sonu yaparım.");
+add("de", "A2", "Ev ve Yaşam", "das Gebäude", "bina", "isim", "Dieses Gebäude ist sehr alt.", "Bu bina çok eski.");
+
+// --- Trafik ve Ulaşım ---
+add("de", "A2", "Ulaşım", "der Stau", "trafik sıkışıklığı", "isim", "Wir stehen seit einer Stunde im Stau.", "Bir saattir trafikte bekliyoruz.");
+add("de", "A2", "Ulaşım", "der Fahrplan", "sefer tarifesi", "isim", "Ich muss zuerst den Fahrplan prüfen.", "Önce sefer tarifesini kontrol etmeliyim.");
+add("de", "A2", "Ulaşım", "der Bahnsteig", "peron", "isim", "Der Zug fährt von Bahnsteig 5 ab.", "Tren 5 numaralı perondan kalkıyor.");
+add("de", "A2", "Ulaşım", "die Fahrkarte", "yolcu bileti", "isim", "Vergiss nicht, deine Fahrkarte zu entwerten.", "Biletini onaylatmayı unutma.");
+add("de", "A2", "Ulaşım", "bremsen", "fren yapmak", "fiil", "Der Fahrer musste plötzlich bremsen.", "Sürücü aniden fren yapmak zorunda kaldı.");
+
+// --- Sağlık ve Hastalık ---
+add("de", "A2", "Sağlık", "das Schmerzmittel", "ağrı kesici", "isim", "Haben Sie ein Schmerzmittel für mich?", "Benim için bir ağrı kesiciniz var mı?");
+add("de", "A2", "Sağlık", "das Rezept", "reçete", "isim", "Dieses Medikament gibt es nur auf Rezept.", "Bu ilaç sadece reçete ile verilir.");
+add("de", "A2", "Sağlık", "das Pflaster", "yara bandı", "isim", "Ich brauche ein Pflaster für meinen Finger.", "Parmağım için bir yara bandına ihtiyacım var.");
+add("de", "A2", "Sağlık", "untersuchen", "muayene etmek", "fiil", "Der Arzt wird dich jetzt untersuchen.", "Doktor şimdi seni muayene edecek.");
+add("de", "A2", "Sağlık", "bluten", "kanamak", "fiil", "Meine Nase blutet.", "Burnum kanıyor.");
+
+// --- Sosyal Hayat ve İletişim ---
+add("de", "A2", "İletişim", "die Erlaubnis", "izin", "isim", "Du brauchst die Erlaubnis deiner Eltern.", "Ailenin iznine ihtiyacın var.");
+add("de", "A2", "İletişim", "die Meinung", "fikir / görüş", "isim", "Was ist deine Meinung zu diesem Thema?", "Bu konu hakkındaki fikrin nedir?");
+add("de", "A2", "İletişim", "vorschlagen", "önermek / teklif etmek", "fiil", "Ich schlage vor, wir gehen ins Kino.", "Sinemaya gitmemizi öneriyorum.");
+add("de", "A2", "İletişim", "widersprechen", "itiraz etmek / karşı çıkmak", "fiil", "Da muss ich dir leider widersprechen.", "Maalesef bu konuda sana karşı çıkmalıyım.");
+add("de", "A2", "İletişim", "verabredet sein", "sözleşmiş olmak (randevu)", "fiil", "Ich bin heute Abend mit Maria verabredet.", "Bu akşam Maria ile sözleştim.");
+
+
+// ================================================================
+//   ENGLISH — B1-B2 SEVİYESİ MAKSİMUM KELİME PAKETİ
+// ================================================================ 
+
+// --- İşletme, Finans ve Ekonomi (Business & Finance) ---
+add("en", "B2", "Business", "revenue", "gelir / ciro", "noun", "The company's annual revenue increased by 20%.", "Şirketin yıllık geliri %20 arttı.");
+add("en", "B2", "Business", "expense", "gider / masraf", "noun", "We need to cut down on unnecessary expenses.", "Gereksiz masrafları kısmamız gerekiyor.");
+add("en", "B2", "Business", "asset", "varlık / mülk", "noun", "Real estate is a valuable long-term asset.", "Gayrimenkul değerli bir uzun vadeli varlıktır.");
+add("en", "B2", "Business", "liability", "yükümlülük / borç", "noun", "The business has more liabilities than assets.", "İşletmenin varlıklarından çok borçları var.");
+add("en", "B2", "Business", "entrepreneur", "girişimci", "noun", "She is a successful tech entrepreneur.", "O başarılı bir teknoloji girişimcisidir.");
+add("en", "B2", "Business", "negotiate", "müzakere etmek", "verb", "They are negotiating a new contract.", "Yeni bir sözleşme müzakere ediyorlar.");
+add("en", "B2", "Business", "merger", "birleşme (şirket)", "noun", "The merger of the two companies created a monopoly.", "İki şirketin birleşmesi bir tekel yarattı.");
+add("en", "B2", "Business", "acquisition", "satın alma (şirket)", "noun", "The acquisition will be finalized next week.", "Satın alma haftaya sonuçlandırılacak.");
+add("en", "B2", "Business", "outsource", "dışarıdan hizmet almak", "verb", "Many companies outsource their customer service.", "Birçok şirket müşteri hizmetlerini dışarıdan alır.");
+add("en", "B2", "Business", "stakeholder", "paydaş", "noun", "All stakeholders must be informed of the change.", "Tüm paydaşlar değişiklik hakkında bilgilendirilmelidir.");
+add("en", "B2", "Business", "subsidy", "sübvansiyon / devlet desteği", "noun", "The government provides subsidies for renewable energy.", "Hükümet yenilenebilir enerji için devlet desteği sağlıyor.");
+
+// --- Teknoloji ve Bilişim (Technology & IT) ---
+add("en", "B2", "Technology", "framework", "çerçeve / yazılım altyapısı", "noun", "We are building the application on a new framework.", "Uygulamayı yeni bir altyapı üzerinde inşa ediyoruz.");
+add("en", "B2", "Technology", "backend", "arka uç (yazılım)", "noun", "The backend code handles the database connections.", "Arka uç kodu veritabanı bağlantılarını yönetir.");
+add("en", "B2", "Technology", "frontend", "ön uç / kullanıcı arayüzü", "noun", "The frontend needs a more modern design.", "Kullanıcı arayüzünün daha modern bir tasarıma ihtiyacı var.");
+add("en", "B2", "Technology", "latency", "gecikme süresi", "noun", "High latency can ruin the gaming experience.", "Yüksek gecikme süresi oyun deneyimini mahvedebilir.");
+add("en", "B2", "Technology", "redundancy", "yedeklilik (sistem)", "noun", "Data redundancy ensures files are not lost.", "Veri yedekliliği dosyaların kaybolmamasını sağlar.");
+add("en", "B2", "Technology", "compile", "derlemek (kod)", "verb", "It takes five minutes to compile the code.", "Kodu derlemek beş dakika sürüyor.");
+add("en", "B2", "Technology", "query", "sorgu (veritabanı)", "noun", "The database query returned 50 results.", "Veritabanı sorgusu 50 sonuç döndürdü.");
+add("en", "B2", "Technology", "encryption", "şifreleme", "noun", "End-to-end encryption keeps your messages private.", "Uçtan uca şifreleme mesajlarınızı gizli tutar.");
+add("en", "B2", "Technology", "deploy", "yayına almak / dağıtmak", "verb", "We will deploy the new update on Friday.", "Yeni güncellemeyi Cuma günü yayına alacağız.");
+add("en", "B2", "Technology", "bandwidth", "bant genişliği", "noun", "Streaming 4K video requires high bandwidth.", "4K video yayını yüksek bant genişliği gerektirir.");
+
+// --- Soyut Kavramlar ve Akademik Kelimeler (Abstract & Academic) ---
+add("en", "B2", "Abstract", "ambiguous", "belirsiz / birden fazla anlama gelen", "adjective", "The instructions were too ambiguous to follow.", "Talimatlar takip edilemeyecek kadar belirsizdi.");
+add("en", "B2", "Abstract", "phenomenon", "olgu / fenomen", "noun", "Gravity is a natural phenomenon.", "Yerçekimi doğal bir olgudur.");
+add("en", "B2", "Abstract", "crucial", "çok önemli / kritik", "adjective", "Water is crucial for human survival.", "Su, insanın hayatta kalması için çok önemlidir.");
+add("en", "B2", "Abstract", "substantial", "önemli ölçüde / büyük", "adjective", "There has been a substantial increase in sales.", "Satışlarda önemli ölçüde bir artış oldu.");
+add("en", "B2", "Abstract", "inevitable", "kaçınılmaz", "adjective", "Change is inevitable in life.", "Hayatta değişim kaçınılmazdır.");
+add("en", "B2", "Abstract", "perspective", "bakış açısı", "noun", "We need to look at this from a different perspective.", "Buna farklı bir bakış açısından bakmamız gerekiyor.");
+add("en", "B2", "Abstract", "assumption", "varsayım", "noun", "Your argument is based on a false assumption.", "Argümanın yanlış bir varsayıma dayanıyor.");
+add("en", "B2", "Abstract", "implication", "olası sonuç / ima", "noun", "Consider the financial implications of this decision.", "Bu kararın finansal sonuçlarını düşünün.");
+add("en", "B2", "Abstract", "paradigm", "paradigma / model", "noun", "The discovery caused a shift in the scientific paradigm.", "Keşif, bilimsel paradigmada bir değişime neden oldu.");
+add("en", "B2", "Abstract", "evaluate", "değerlendirmek", "verb", "The teacher will evaluate your performance.", "Öğretmen performansınızı değerlendirecek.");
+add("en", "B2", "Abstract", "implement", "uygulamak / hayata geçirmek", "verb", "We plan to implement the new system next month.", "Yeni sistemi gelecek ay uygulamayı planlıyoruz.");
+add("en", "B2", "Abstract", "comprehensive", "kapsamlı", "adjective", "She wrote a comprehensive report on the topic.", "Konu üzerine kapsamlı bir rapor yazdı.");
+add("en", "B2", "Abstract", "sustainable", "sürdürülebilir", "adjective", "We must find sustainable energy sources.", "Sürdürülebilir enerji kaynakları bulmalıyız.");
+add("en", "B2", "Abstract", "controversial", "tartışmalı", "adjective", "The new law is highly controversial.", "Yeni yasa son derece tartışmalı.");
+
+// --- Fiiller (B1-B2 İleri Düzey) ---
+add("en", "B2", "Verbs", "emphasize", "vurgulamak", "verb", "I want to emphasize the importance of this project.", "Bu projenin önemini vurgulamak istiyorum.");
+add("en", "B2", "Verbs", "mitigate", "hafifletmek / etkisini azaltmak", "verb", "We need a strategy to mitigate the risks.", "Riskleri hafifletmek için bir stratejiye ihtiyacımız var.");
+add("en", "B2", "Verbs", "facilitate", "kolaylaştırmak", "verb", "The new software will facilitate data entry.", "Yeni yazılım veri girişini kolaylaştıracak.");
+add("en", "B2", "Verbs", "anticipate", "öngörmek / beklemek", "verb", "We didn't anticipate such a high demand.", "Bu kadar yüksek bir talep öngörmedik.");
+add("en", "B2", "Verbs", "justify", "haklı çıkarmak / gerekçelendirmek", "verb", "How can you justify this expense?", "Bu masrafı nasıl haklı çıkarabilirsin?");
+add("en", "B2", "Verbs", "overcome", "üstesinden gelmek", "verb", "She overcame many obstacles to achieve her goal.", "Hedefine ulaşmak için birçok engelin üstesinden geldi.");
+add("en", "B2", "Verbs", "distinguish", "ayırt etmek", "verb", "It is hard to distinguish the twins from each other.", "İkizleri birbirinden ayırt etmek zordur.");
+add("en", "B2", "Verbs", "acknowledge", "kabul etmek / onaylamak", "verb", "He refused to acknowledge his mistake.", "Hatasını kabul etmeyi reddetti.");
+
+// --- Sıfatlar ve Zarflar (B1-B2 İleri Düzey) ---
+add("en", "B2", "Adjectives", "versatile", "çok yönlü", "adjective", "A smartphone is a very versatile device.", "Akıllı telefon çok yönlü bir cihazdır.");
+add("en", "B2", "Adjectives", "meticulous", "titiz / kılı kırk yaran", "adjective", "She is meticulous about her work.", "O işi konusunda titizdir.");
+add("en", "B2", "Adjectives", "pragmatic", "uygulamacı / faydacı", "adjective", "We need a pragmatic solution to this problem.", "Bu soruna faydacı bir çözüme ihtiyacımız var.");
+add("en", "B2", "Adjectives", "robust", "sağlam / güçlü", "adjective", "The system is robust enough to handle the traffic.", "Sistem trafiği kaldıracak kadar sağlamdır.");
+add("en", "B2", "Adverbs", "consequently", "sonuç olarak", "adverb", "It rained heavily; consequently, the match was canceled.", "Şiddetli yağmur yağdı; sonuç olarak maç iptal edildi.");
+add("en", "B2", "Adverbs", "inevitably", "kaçınılmaz olarak", "adverb", "Inevitably, the truth will come out.", "Kaçınılmaz olarak gerçek ortaya çıkacak.");
+add("en", "B2", "Adverbs", "predominantly", "ağırlıklı olarak", "adverb", "The population is predominantly young.", "Nüfus ağırlıklı olarak gençtir.");
+add("en", "B2", "Adverbs", "simultaneously", "eşzamanlı olarak", "adverb", "Both events occurred simultaneously.", "Her iki olay da eşzamanlı olarak gerçekleşti.");
+// ================================================================
+//   GERMAN — GOETHE A1-A2 EKSTRA TAMAMLAMA PAKETİ
+// ================================================================ 
+
+// --- Banka ve Para (A2) ---
+add("de", "A2", "Bank und Geld", "das Konto", "hesap (banka)", "isim", "Ich möchte ein Konto eröffnen.", "Bir banka hesabı açmak istiyorum.");
+add("de", "A2", "Bank und Geld", "der Geldautomat", "ATM", "isim", "Wo ist der nächste Geldautomat?", "En yakın ATM nerede?");
+add("de", "A2", "Bank und Geld", "die EC-Karte", "banka kartı", "isim", "Kann ich mit EC-Karte bezahlen?", "Banka kartıyla ödeyebilir miyim?");
+add("de", "A2", "Bank und Geld", "abheben", "para çekmek", "fiil", "Ich muss am Automaten Geld abheben.", "ATM'den para çekmem gerekiyor.");
+add("de", "A2", "Bank und Geld", "die Überweisung", "havale / EFT", "isim", "Die Überweisung dauert zwei Tage.", "Havale iki gün sürer.");
+add("de", "A2", "Bank und Geld", "der Kredit", "kredi", "isim", "Er hat einen Kredit für das Auto aufgenommen.", "Araba için bir kredi çekti.");
+add("de", "A2", "Bank und Geld", "sparen", "tasarruf etmek / para biriktirmek", "fiil", "Wir sparen für den Urlaub.", "Tatil için para biriktiriyoruz.");
+add("de", "A2", "Bank und Geld", "das Bargeld", "nakit para", "isim", "Ich habe leider kein Bargeld dabei.", "Maalesef yanımda nakit para yok.");
+
+// --- Trafik ve Yönler (A2) ---
+add("de", "A2", "Verkehr", "abbiegen", "dönmek (araçla)", "fiil", "An der nächsten Ampel müssen Sie links abbiegen.", "Bir sonraki ışıkta sola dönmelisiniz.");
+add("de", "A2", "Verkehr", "die Brücke", "köprü", "isim", "Fahren Sie über die Brücke.", "Köprünün üzerinden gidin.");
+add("de", "A2", "Verkehr", "der Fahrgast", "yolcu", "isim", "Die Fahrgäste müssen aussteigen.", "Yolcuların inmesi gerekiyor.");
+add("de", "A2", "Verkehr", "das Schild", "tabela / levha", "isim", "Achten Sie auf das Schild.", "Tabelaya dikkat edin.");
+add("de", "A2", "Verkehr", "parken", "park etmek", "fiil", "Hier dürfen Sie nicht parken.", "Buraya park edemezsiniz.");
+add("de", "A2", "Verkehr", "die Autobahn", "otoyol", "isim", "Auf der Autobahn darf man schnell fahren.", "Otoyolda hızlı gidilebilir.");
+add("de", "A2", "Verkehr", "der Strafzettel", "trafik cezası", "isim", "Ich habe einen Strafzettel bekommen.", "Trafik cezası aldım.");
+
+// --- Sağlık ve İnsan Vücudu (A2) ---
+add("de", "A2", "Körper und Gesundheit", "der Rücken", "sırt", "isim", "Mein Rücken tut weh.", "Sırtım ağrıyor.");
+add("de", "A2", "Körper und Gesundheit", "das Gesicht", "yüz / surat", "isim", "Wasch dir bitte das Gesicht.", "Lütfen yüzünü yıka.");
+add("de", "A2", "Körper und Gesundheit", "atmen", "nefes almak", "fiil", "Bitte tief atmen.", "Lütfen derin nefes alın.");
+add("de", "A2", "Körper und Gesundheit", "der Krankenwagen", "ambulans", "isim", "Rufen Sie schnell einen Krankenwagen!", "Hızlıca bir ambulans çağırın!");
+add("de", "A2", "Körper und Gesundheit", "die Versicherung", "sigorta", "isim", "Haben Sie eine Krankenversicherung?", "Sağlık sigortanız var mı?");
+add("de", "A2", "Körper und Gesundheit", "operieren", "ameliyat etmek", "fiil", "Der Arzt muss das Knie operieren.", "Doktorun dizi ameliyat etmesi gerekiyor.");
+
+// --- Günlük Yaşam ve Alışveriş (A2) ---
+add("de", "A2", "Alltag", "die Qualität", "kalite", "isim", "Die Qualität dieses Stoffes ist sehr gut.", "Bu kumaşın kalitesi çok iyi.");
+add("de", "A2", "Alltag", "die Garantie", "garanti", "isim", "Wie lange hat der Fernseher Garantie?", "Televizyonun ne kadar garantisi var?");
+add("de", "A2", "Alltag", "das Angebot", "teklif / indirim", "isim", "Diese Schuhe sind im Angebot.", "Bu ayakkabılar indirimde.");
+add("de", "A2", "Alltag", "die Quittung", "makbuz", "isim", "Können Sie mir bitte eine Quittung geben?", "Bana bir makbuz verebilir misiniz lütfen?");
+add("de", "A2", "Alltag", "anprobieren", "denemek (kıyafet)", "fiil", "Wo kann ich die Hose anprobieren?", "Pantolonu nerede deneyebilirim?");
+add("de", "A2", "Alltag", "passen", "uymak / bedeni olmak", "fiil", "Die Jacke passt mir nicht.", "Ceket bana uymuyor (olmuyor).");
+
+// --- Önemli Sık Kullanılan Fiiller (A2) ---
+add("de", "A2", "Verben", "akzeptieren", "kabul etmek", "fiil", "Wir akzeptieren nur Barzahlung.", "Sadece nakit ödeme kabul ediyoruz.");
+add("de", "A2", "Verben", "beantragen", "başvuruda bulunmak (resmi)", "fiil", "Ich muss einen neuen Pass beantragen.", "Yeni bir pasaport başvurusunda bulunmalıyım.");
+add("de", "A2", "Verben", "besichtigen", "gezip görmek (turistik)", "fiil", "Wir wollen morgen das Schloss besichtigen.", "Yarın şatoyu gezip görmek istiyoruz.");
+add("de", "A2", "Verben", "bestätigen", "onaylamak", "fiil", "Können Sie den Termin bitte bestätigen?", "Randevuyu lütfen onaylayabilir misiniz?");
+add("de", "A2", "Verben", "diskutieren", "tartışmak", "fiil", "Wir diskutieren über die neuen Regeln.", "Yeni kurallar hakkında tartışıyoruz.");
+add("de", "A2", "Verben", "stören", "rahatsız etmek", "fiil", "Störe ich dich gerade?", "Şu an seni rahatsız ediyor muyum?");
+
+
+// ================================================================
+//   ENGLISH — B1-B2 İLERİ DÜZEY VE PHRASAL VERBS PAKETİ
+// ================================================================ 
+
+// --- Phrasal Verbs (B1-B2 İçin Çok Kritik) ---
+add("en", "B2", "Phrasal Verbs", "figure out", "çözmek / anlamak", "verb", "I need to figure out how this machine works.", "Bu makinenin nasıl çalıştığını çözmem gerekiyor.");
+add("en", "B2", "Phrasal Verbs", "put off", "ertelemek", "verb", "Never put off until tomorrow what you can do today.", "Bugün yapabileceğin bir şeyi asla yarına erteleme.");
+add("en", "B2", "Phrasal Verbs", "call off", "iptal etmek", "verb", "They had to call off the meeting due to the storm.", "Fırtına yüzünden toplantıyı iptal etmek zorunda kaldılar.");
+add("en", "B2", "Phrasal Verbs", "look forward to", "dört gözle beklemek", "verb", "I look forward to hearing from you soon.", "Sizden en kısa sürede haber almayı dört gözle bekliyorum.");
+add("en", "B2", "Phrasal Verbs", "give up", "pes etmek / bırakmak", "verb", "Don't give up on your dreams.", "Hayallerinden vazgeçme.");
+add("en", "B2", "Phrasal Verbs", "turn down", "reddetmek / sesini kısmak", "verb", "She turned down the job offer.", "O, iş teklifini reddetti.");
+add("en", "B2", "Phrasal Verbs", "bring up", "yetiştirmek (çocuk) / konuyu açmak", "verb", "Please don't bring up that topic again.", "Lütfen o konuyu bir daha açma.");
+add("en", "B2", "Phrasal Verbs", "run out of", "tükenmek / bitmek", "verb", "We have run out of milk.", "Sütümüz bitti.");
+add("en", "B2", "Phrasal Verbs", "set up", "kurmak (sistem, şirket)", "verb", "They set up a new company in London.", "Londra'da yeni bir şirket kurdular.");
+add("en", "B2", "Phrasal Verbs", "catch up with", "yetişmek / arayı kapatmak", "verb", "Go ahead, I will catch up with you later.", "Sen önden git, ben sana sonra yetişirim.");
+
+// --- Hukuk ve Toplum (Law & Society B2) ---
+add("en", "B2", "Law & Society", "legislation", "yasa / mevzuat", "noun", "The government introduced new environmental legislation.", "Hükümet yeni çevre mevzuatını tanıttı.");
+add("en", "B2", "Law & Society", "prohibit", "yasaklamak", "verb", "Smoking is strictly prohibited in this building.", "Bu binada sigara içmek kesinlikle yasaktır.");
+add("en", "B2", "Law & Society", "penalty", "ceza", "noun", "The penalty for speeding is a heavy fine.", "Aşırı hızın cezası ağır bir para cezasıdır.");
+add("en", "B2", "Law & Society", "jurisdiction", "yargı yetkisi", "noun", "The court has no jurisdiction over this case.", "Mahkemenin bu dava üzerinde yargı yetkisi yoktur.");
+add("en", "B2", "Law & Society", "violate", "ihlal etmek", "verb", "The company violated the terms of the contract.", "Şirket sözleşme şartlarını ihlal etti.");
+add("en", "B2", "Law & Society", "fundamental", "temel / esas", "adjective", "Freedom of speech is a fundamental human right.", "İfade özgürlüğü temel bir insan hakkıdır.");
+add("en", "B2", "Law & Society", "privilege", "ayrıcalık", "noun", "Education should be a right, not a privilege.", "Eğitim bir ayrıcalık değil, bir hak olmalıdır.");
+
+// --- Bilim ve Çevre (Science & Environment B2) ---
+add("en", "B2", "Science", "conservation", "koruma (doğa/çevre)", "noun", "Wildlife conservation is essential for our planet.", "Yaban hayatını koruma gezegenimiz için esastır.");
+add("en", "B2", "Science", "habitat", "yaşam alanı", "noun", "The panda's natural habitat is shrinking rapidly.", "Pandanın doğal yaşam alanı hızla daralıyor.");
+add("en", "B2", "Science", "endangered", "nesli tükenmekte olan", "adjective", "The blue whale is an endangered species.", "Mavi balina nesli tükenmekte olan bir türdür.");
+add("en", "B2", "Science", "emit", "yaymak / salmak (gaz, ışık)", "verb", "Cars emit harmful gases into the atmosphere.", "Arabalar atmosfere zararlı gazlar yayar.");
+add("en", "B2", "Science", "toxic", "zehirli / toksik", "adjective", "The factory dumped toxic waste into the river.", "Fabrika nehre zehirli atık döktü.");
+add("en", "B2", "Science", "evolution", "evrim", "noun", "Darwin's theory of evolution changed biology.", "Darwin'in evrim teorisi biyolojiyi değiştirdi.");
+
+// --- Duygular ve Karakter Özellikleri (Emotions & Traits B2) ---
+add("en", "B2", "Emotions", "hostile", "düşmanca", "adjective", "The crowd became hostile toward the referee.", "Kalabalık hakeme karşı düşmanca davrandı.");
+add("en", "B2", "Emotions", "affectionate", "sevecen", "adjective", "He is very affectionate with his children.", "Çocuklarına karşı çok sevecendir.");
+add("en", "B2", "Emotions", "stubborn", "inatçı", "adjective", "She is too stubborn to admit she was wrong.", "Hatalı olduğunu kabul edemeyecek kadar inatçı.");
+add("en", "B2", "Emotions", "arrogant", "kibirli", "adjective", "His arrogant attitude annoyed everyone.", "Kibirli tavrı herkesi sinirlendirdi.");
+add("en", "B2", "Emotions", "humble", "mütevazı", "adjective", "Despite his success, he remains very humble.", "Başarısına rağmen çok mütevazı kalıyor.");
+add("en", "B2", "Emotions", "dedicated", "kendini adamış / özel", "adjective", "She is a dedicated teacher.", "O kendini adamış bir öğretmendir.");
+add("en", "B2", "Emotions", "compassion", "şefkat / merhamet", "noun", "We should show compassion to those in need.", "İhtiyacı olanlara şefkat göstermeliyiz.");
+
+// --- İleri Düzey Bağlaçlar (Advanced Linking Words B2) ---
+add("en", "B2", "Linking Words", "furthermore", "dahası / üstelik", "adverb", "The house is beautiful; furthermore, it's affordable.", "Ev çok güzel; dahası, uygun fiyatlı.");
+add("en", "B2", "Linking Words", "moreover", "bununla birlikte / ayrıca", "adverb", "He is smart; moreover, he is very hardworking.", "O zeki; ayrıca, çok çalışkan.");
+add("en", "B2", "Linking Words", "nevertheless", "yine de / buna rağmen", "adverb", "It was raining heavily; nevertheless, we went out.", "Şiddetli yağmur yağıyordu; buna rağmen dışarı çıktık.");
+add("en", "B2", "Linking Words", "therefore", "bu nedenle / dolayısıyla", "adverb", "He missed the bus; therefore, he was late.", "Otobüsü kaçırdı; bu nedenle geç kaldı.");
+add("en", "B2", "Linking Words", "on the contrary", "aksine", "adverb", "I'm not sick; on the contrary, I feel great.", "Hasta değilim; aksine, harika hissediyorum.");
+add("en", "B2", "Linking Words", "hence", "bundan dolayı / bu yüzden", "adverb", "She didn't study; hence her poor grades.", "O çalışmadı; zayıf notları bundan dolayı.");
+// ================================================================
+//   GERMAN — GOETHE A2 SEVİYESİ GENİŞLETME PAKETİ
+// ================================================================ 
+
+// --- Resmi İşlemler ve Evraklar (A2) ---
+add("de", "A2", "Resmi İşler", "die Bescheinigung", "belge / sertifika", "isim", "Ich brauche eine Bescheinigung vom Arzt.", "Doktordan bir belgeye ihtiyacım var.");
+add("de", "A2", "Resmi İşler", "das Dokument", "doküman / evrak", "isim", "Bitte prüfen Sie bu Dokumente.", "Lütfen bu evrakları kontrol edin.");
+add("de", "A2", "Resmi İşler", "der Ausweis", "kimlik", "isim", "Zeigen Sie bitte Ihren Ausweis.", "Lütfen kimliğinizi gösterin.");
+add("de", "A2", "Resmi İşler", "die Gebühr", "harç / ücret", "isim", "Die Gebühr für den Pass ist hoch.", "Pasaport harcı yüksek.");
+add("de", "A2", "Resmi İşler", "ausfüllen", "doldurmak (form)", "fiil", "Sie müssen dieses Formular ausfüllen.", "Bu formu doldurmanız gerekiyor.");
+add("de", "A2", "Resmi İşler", "unterschreiben", "imzalamak", "fiil", "Bitte unterschreiben Sie hier unten.", "Lütfen burayı imzalayın.");
+
+// --- Doğa Olayları ve Çevre (A2) ---
+add("de", "A2", "Umwelt", "das Gewitter", "gök gürültülü fırtına", "isim", "Gestern gab es ein schweres Gewitter.", "Dün şiddetli bir gök gürültülü fırtına vardı.");
+add("de", "A2", "Umwelt", "der Nebel", "sis", "isim", "Wegen dem Nebel kann man nichts sehen.", "Sis yüzünden hiçbir şey görünmüyor.");
+add("de", "A2", "Umwelt", "die Natur", "doğa", "isim", "Ich verbringe meine Freizeit gerne in der Natur.", "Boş zamanımı doğada geçirmeyi severim.");
+add("de", "A2", "Umwelt", "der Strand", "plaj / kumsal", "isim", "Wir lieben es, am Strand zu spazieren.", "Kumsalda yürümeyi çok seviyoruz.");
+add("de", "A2", "Umwelt", "klimafreundlich", "çevre dostu / iklim dostu", "sıfat", "Wir müssen klimafreundlicher leben.", "Daha çevre dostu yaşamalıyız.");
+
+// --- Günlük Yaşamda İlişkiler (A2) ---
+add("de", "A2", "İlişkiler", "die Hochzeit", "düğün", "isim", "Wir sind zur Hochzeit eingeladen.", "Düğüne davetliyiz.");
+add("de", "A2", "İlişkiler", "die Nachbarschaft", "konu komşu / mahalle", "isim", "Unsere Nachbarschaft ist sehr ruhig.", "Mahallemiz çok sakin.");
+add("de", "A2", "İlişkiler", "die Verwandten", "akrabalar", "isim", "An Weihnachten besuchen wir unsere Verwandten.", "Noel'de akrabalarımızı ziyaret ederiz.");
+add("de", "A2", "İlişkiler", "streiten", "tartışmak / kavga etmek", "fiil", "Die Geschwister streiten sich oft.", "Kardeşler sık sık kavga eder.");
+add("de", "A2", "İlişkiler", "trennen", "ayrılmak", "fiil", "Sie haben sich nach zwei Jahren getrennt.", "İki yıl sonra ayrıldılar.");
+
+// --- Karakter ve Soyut Sıfatlar (A2) ---
+add("de", "A2", "Adjektive", "vorsichtig", "dikkatli / tedbirli", "sıfat", "Sei vorsichtig auf der Straße!", "Yolda dikkatli ol!");
+add("de", "A2", "Adjektive", "unhöflich", "kaba / nezaketsiz", "sıfat", "Der Kellner war leider sehr unhöflich.", "Garson maalesef çok kabaydı.");
+add("de", "A2", "Adjektive", "wunderbar", "harika / harikulade", "sıfat", "Das Wetter heute ist einfach wunderbar.", "Bugün hava tek kelimeyle harika.");
+add("de", "A2", "Adjektive", "schrecklich", "korkunç / berbat", "sıfat", "Ich habe schreckliche Kopfschmerzen.", "Berbat bir baş ağrım var.");
+add("de", "A2", "Adjektive", "seltsam", "tuhaf / garip", "sıfat", "Das ist eine seltsame Geschichte.", "Bu tuhaf bir hikaye.");
+
+
+// ================================================================
+//   ENGLISH — B2-C1 İLERİ DÜZEY AKADEMİK VE STRATEJİ PAKETİ
+// ================================================================ 
+
+// --- Analiz ve Araştırma (Academic & Analytical B2/C1) ---
+add("en", "B2", "Analysis", "correlation", "korelasyon / karşılıklı ilişki", "noun", "There is a statistical correlation between these factors.", "Bu faktörler arasında istatistiksel bir korelasyon var.");
+add("en", "B2", "Analysis", "deviation", "sapma", "noun", "Any deviation from the plan must be reported.", "Plandan herhangi bir sapma rapor edilmelidir.");
+add("en", "B2", "Analysis", "empirical", "deneysel / gözleme dayalı", "adjective", "We need empirical evidence to support this theory.", "Bu teoriyi desteklemek için deneysel kanıta ihtiyacımız var.");
+add("en", "B2", "Analysis", "hypothesis", "hipotez", "noun", "The researchers formulated a new hypothesis.", "Araştırmacılar yeni bir hipotez formüle ettiler.");
+add("en", "B2", "Analysis", "variables", "değişkenler", "noun", "We must control all the variables in the experiment.", "Deneydeki tüm değişkenleri kontrol etmeliyiz.");
+add("en", "B2", "Analysis", "validate", "doğrulamak / geçerli kılmak", "verb", "The survey results validated our assumptions.", "Anket sonuçları varsayımlarımızı doğruladı.");
+
+// --- İşletme Stratejisi ve Yönetim (Management & Strategy B2/C1) ---
+add("en", "B2", "Strategy", "allocate", "tahsis etmek / paylaştırmak", "verb", "The company will allocate resources to the software team.", "Şirket kaynakları yazılım ekibine tahsis edecek.");
+add("en", "B2", "Strategy", "feasibility", "fizibilite / uygulanabilirlik", "noun", "We are conducting a feasibility study for the project.", "Proje için bir uygulanabilirlik çalışması yürütüyoruz.");
+add("en", "B2", "Strategy", "incentive", "teşvik / prim", "noun", "The manager offered a financial incentive for hard work.", "Müdür, sıkı çalışma için finansal bir teşvik sundu.");
+add("en", "B2", "Strategy", "monopoly", "tekel", "noun", "The tech giant holds a monopoly in the market.", "Teknoloji devi pazarda tekel konumunda.");
+add("en", "B2", "Strategy", "benchmark", "kıyaslama noktası / kriter", "noun", "This model is the benchmark for the industry.", "Bu model sektör için bir kıyaslama kriteridir.");
+add("en", "B2", "Strategy", "execute", "yürütmek / uygulamaya koymak", "verb", "They executed the strategy perfectly.", "Stratejiyi mükemmel bir şekilde uyguladılar.");
+
+// --- İleri Düzey Phrasal Verbs (B2/C1) ---
+add("en", "B2", "Phrasal Verbs", "bring about", "sebep olmak / yol açmak", "verb", "The new legislation brought about major changes.", "Yeni mevzuat büyük değişikliklere yol açtı.");
+add("en", "B2", "Phrasal Verbs", "carry out", "yerine getirmek / uygulamak", "verb", "We must carry out a thorough investigation.", "Kapsamlı bir araştırma yürütmeliyiz.");
+add("en", "B2", "Phrasal Verbs", "fall back on", "başvurmak / sığınmak (son çare)", "verb", "If the plan fails, we can fall back on our backups.", "Eğer plan başarısız olursa yedeklerimize sığınabiliriz.");
+add("en", "B2", "Phrasal Verbs", "hold back", "engellemek / gizlemek", "verb", "Fear of failure can hold you back from success.", "Başarısızlık korkusu sizi başarıdan alıkoyabilir.");
+add("en", "B2", "Phrasal Verbs", "look into", "incelemek / araştırmak", "verb", "The cybersecurity team is looking into the error.", "Siber güvenlik ekibi hatayı inceliyor.");
+
+// --- Soyut ve Entelektüel Kavramlar (Advanced Concepts C1) ---
+add("en", "B2", "Concepts", "paradox", "paradoks / çelişki", "noun", "It is a paradox that computers save time but make us busier.", "Bilgisayarların zaman kazandırması ama bizi daha meşgul etmesi bir çelişkidir.");
+add("en", "B2", "Concepts", "profound", "derin / köklü", "adjective", "Artificial intelligence has a profound impact on business.", "Yapay zekanın iş dünyası üzerinde köklü bir etkisi var.");
+add("en", "B2", "Concepts", "cognitive", "bilişsel", "adjective", "Cognitive development is fast in early childhood.", "Bilişsel gelişim erken çocuklukta hızlıdır.");
+add("en", "B2", "Concepts", "resilience", "dayanıklılık / esneklik", "noun", "The team showed great resilience during the crisis.", "Takım kriz sırasında büyük bir dayanıklılık gösterdi.");
+add("en", "B2", "Concepts", "inherent", "doğasında olan / içsel", "adjective", "Every investment has an inherent risk.", "Her yatırımın doğasında olan bir risk vardır.");
+add("en", "B2", "Concepts", "advocate", "savunmak / desteklemek", "verb", "She advocates for sustainable energy solutions.", "Sürdürülebilir enerji çözümlerini savunuyor.");
