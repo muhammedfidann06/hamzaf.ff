@@ -1,5 +1,22 @@
 // words.js
 
+// 1. Önce VOCAB dizisini ve ekleme yapacak add() fonksiyonunu tanımlıyoruz:
+const VOCAB = [];
+
+function add(lang, level, category, word, translation, type, exampleWord, exampleTranslation) {
+  VOCAB.push({
+    lang: lang,
+    level: level,
+    category: category,
+    word: word,
+    translation: translation,
+    type: type,
+    exampleWord: exampleWord,
+    exampleTranslation: exampleTranslation
+  });
+}
+
+// 2. Ardından dosyanın EN ALTINA (en son satıra) eğer kullanıyorsanız dışa aktarım kodunu veya bildirimini ekleyebilirsiniz.
 
 
 // ================================================================
