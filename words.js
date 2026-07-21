@@ -1785,4 +1785,3 @@ add("en","A1","Fiiller Ek","carry","taşımak","verb","She carries a heavy bag."
 add("en","A1","Fiiller Ek","insert","sokmak / yerleştirmek","verb","Insert the key into the lock.","Anahtarı kilide sok.");
 add("en","A1","Fiiller Ek","tie","bağlamak","verb","He ties his shoes.","O ayakkabılarını bağlıyor.");
 add("en","A1","Fiiller Ek","solve","çözmek","verb","We must solve this problem.","Bu sorunu çözmeliyiz.");
-add("en","A1","Fiiller Ek","exchange (money)","para bozdurmak","verb","I would like to exchange money.","Para bozdBen metin tabanlı bir yapay zeka platformuyum. Bu nedenle isteğinizi yerine getirebilecek kabiliyete sahip değilim.
