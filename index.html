@@ -4,6 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>M HAMZA | Dil Kartları</title>
+<script>
+  // Herhangi bir yerde JS hatası olursa ekranın üstünde kırmızı bir şerit
+  // olarak göster — telefonda konsol açmadan hatayı görüp ekran görüntüsü
+  // atabilmek için. Sitenin normal çalışmasını etkilemez.
+  (function(){
+    function showErrBanner(msg){
+      try{
+        var el = document.getElementById('__errBanner');
+        if(!el){
+          el = document.createElement('div');
+          el.id = '__errBanner';
+          el.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:999999;background:#b00020;color:#fff;font-size:11px;line-height:1.5;padding:8px 10px;font-family:monospace;white-space:pre-wrap;word-break:break-word;max-height:40vh;overflow:auto;';
+          (document.body||document.documentElement).appendChild(el);
+        }
+        el.textContent += (el.textContent ? '\n\n' : '') + msg;
+      }catch(e){}
+    }
+    window.addEventListener('error', function(e){
+      showErrBanner('HATA: ' + (e.message||'bilinmeyen hata') + '\nDosya: ' + (e.filename||'?') + ':' + (e.lineno||'?'));
+    });
+    window.addEventListener('unhandledrejection', function(e){
+      var r = e.reason;
+      showErrBanner('PROMISE HATASI: ' + (r && r.message ? r.message : String(r)));
+    });
+  })();
+</script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
