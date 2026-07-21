@@ -1083,38 +1083,45 @@ document.getElementById('backToDoneBtn').onclick = () => {
 };
 
 /* ======================= TABS ======================= */
+// $ : küçük bir yardımcı — eleman yoksa (ör. dosyalardan biri eski kaldıysa)
+// sessizce atlar, TÜM script'in çökmesine (ve giriş tıklamasının bile
+// çalışmamasına) yol açmaz.
+function $(id){ return document.getElementById(id); }
+function setDisplay(id, val){ const el = $(id); if(el) el.style.display = val; }
+function toggleActive(id, on){ const el = $(id); if(el) el.classList.toggle('active', on); }
+
 function deactivateAllTabs(){
-  document.getElementById('tabCards').classList.remove('active');
-  document.getElementById('tabQuiz').classList.remove('active');
-  document.getElementById('tabPersonal').classList.remove('active');
-  document.getElementById('cardsView').style.display = 'none';
-  document.getElementById('quizView').style.display = 'none';
-  document.getElementById('doneView').style.display = 'none';
-  document.getElementById('mistakesView').style.display = 'none';
-  document.getElementById('personalView').style.display = 'none';
+  toggleActive('tabCards', false);
+  toggleActive('tabQuiz', false);
+  toggleActive('tabPersonal', false);
+  setDisplay('cardsView', 'none');
+  setDisplay('quizView', 'none');
+  setDisplay('doneView', 'none');
+  setDisplay('mistakesView', 'none');
+  setDisplay('personalView', 'none');
   // Kişisel mod farklı bir tema/arkaplan kullandığı için sekmeden çıkınca
   // ana chip/level seçicilerini tekrar görünür yapıyoruz.
-  document.getElementById('levelBox').style.display = '';
-  document.getElementById('chips').style.display = '';
-  document.getElementById('langBox').style.display = '';
+  setDisplay('levelBox', '');
+  setDisplay('chips', '');
+  setDisplay('langBox', '');
 }
-document.getElementById('tabCards').onclick = () => {
+if($('tabCards')) $('tabCards').onclick = () => {
   deactivateAllTabs();
-  document.getElementById('tabCards').classList.add('active');
-  document.getElementById('cardsView').style.display = 'block';
+  toggleActive('tabCards', true);
+  setDisplay('cardsView', 'block');
 };
-document.getElementById('tabQuiz').onclick = () => {
+if($('tabQuiz')) $('tabQuiz').onclick = () => {
   deactivateAllTabs();
-  document.getElementById('tabQuiz').classList.add('active');
-  document.getElementById('quizView').style.display = 'block';
+  toggleActive('tabQuiz', true);
+  setDisplay('quizView', 'block');
   buildQuizDeck();
 };
-document.getElementById('tabPersonal').onclick = () => {
+if($('tabPersonal')) $('tabPersonal').onclick = () => {
   deactivateAllTabs();
-  document.getElementById('tabPersonal').classList.add('active');
-  document.getElementById('personalView').style.display = 'block';
-  document.getElementById('levelBox').style.display = 'none';
-  document.getElementById('chips').style.display = 'none';
+  toggleActive('tabPersonal', true);
+  setDisplay('personalView', 'block');
+  setDisplay('levelBox', 'none');
+  setDisplay('chips', 'none');
   if(window.PM_open) window.PM_open();
 };
 
