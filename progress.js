@@ -839,6 +839,7 @@
 
   /* ---------------- GİRİŞ NOKTASI ---------------- */
   function openPersonalMode(){
+    if(!root) return; // index.html eski kalmış olabilir — sessizce çık, sayfanın geri kalanını bozma
     injectStyles();
     const name = window.LB_getUserName ? window.LB_getUserName() : '';
     if(!name){
