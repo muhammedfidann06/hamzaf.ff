@@ -299,4 +299,3 @@ if(document.readyState === 'loading'){
 } else {
   initLeaderboard();
 }
- 
