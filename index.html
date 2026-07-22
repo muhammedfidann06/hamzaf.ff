@@ -246,8 +246,15 @@
     filter:drop-shadow(0 0 6px rgba(255,59,48,0.3));
   }
   .level-badge{position:absolute;top:14px;right:16px;font-size:10px;font-weight:800;letter-spacing:.05em;padding:3px 9px;border-radius:999px;background:rgba(79,232,255,0.18);color:var(--cyan-soft);border:1px solid rgba(79,232,255,0.45);}
-  .speak-badge{position:absolute;top:14px;left:16px;width:26px;height:26px;border-radius:999px;background:rgba(79,232,255,0.14);border:1px solid rgba(79,232,255,0.3);display:flex;align-items:center;justify-content:center;}
-  .speak-badge svg{width:13px;height:13px;stroke:var(--cyan-soft);}
+  .speak-controls{position:absolute;top:12px;left:14px;display:flex;gap:6px;z-index:5;}
+  .speak-icon-btn{
+    width:30px;height:30px;border-radius:999px;font-size:14px;line-height:1;
+    background:rgba(79,232,255,0.14);border:1px solid rgba(79,232,255,0.3);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .speak-icon-btn:active{opacity:.6;transform:scale(.92);}
+  #turtleBtn{background:rgba(155,123,255,0.14);border-color:rgba(155,123,255,0.3);}
   .word{font-size:29px;font-weight:700;line-height:1.25;font-family:Georgia,'Iowan Old Style',serif;}
   .word[dir="rtl"]{font-family:'Segoe UI',Tahoma,sans-serif;}
   .pos{font-size:12px;color:var(--muted);margin-top:8px;}
@@ -606,7 +613,10 @@
       <div class="card" id="card">
         <div class="face face-front">
           <div class="level-badge" id="levelBadgeFront">A1</div>
-          <div class="speak-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9v6h4l5 4V5L8 9H4z"/></svg></div>
+          <div class="speak-controls">
+            <button type="button" class="speak-icon-btn" id="rabbitBtn" title="Hızlı dinle">🐰</button>
+            <button type="button" class="speak-icon-btn" id="turtleBtn" title="Yavaş dinle">🐢</button>
+          </div>
           <div class="tag" id="tagFront">Deutsch</div>
           <div class="word" id="frontWord">Hallo</div>
           <div class="pos" id="frontPos">ünlem</div>
@@ -725,20 +735,53 @@ function pickVoice(langCode){
   return pool[0];
 }
 
-function speak(text, lang){
-  if(!soundOn) return;
-  if(lang.startsWith('tr')) return; // TÜRKÇE OKUMAYI ENGELLER
+/* Google Translate'in gayriresmi ses uç noktası kullanılıyor — resmi/desteklenen
+   bir API değildir, bu yüzden bazen yavaşlayabilir ya da engellenebilir. Bu
+   yüzden HER ZAMAN tarayıcının kendi sesine (speechSynthesis) yedek olarak
+   düşüyoruz; site bu ses hiç çalışmasa bile bozulmaz. */
+function googleTTSUrl(text, langCode, slow){
+  const speed = slow ? 0.24 : 1;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${langCode}&client=tw-ob&ttsspeed=${speed}`;
+}
+function speakGoogle(text, langCode, slow, onEnd){
+  try{
+    const audio = new Audio(googleTTSUrl(text, langCode, slow));
+    let done = false;
+    const finish = (ok) => { if(done) return; done = true; if(onEnd) onEnd(ok); };
+    audio.onended = () => finish(true);
+    audio.onerror = () => finish(false);
+    const timeout = setTimeout(() => finish(false), 4000);
+    audio.addEventListener('playing', () => clearTimeout(timeout), { once:true });
+    audio.play().catch(() => finish(false));
+  }catch(e){ if(onEnd) onEnd(false); }
+}
+window.PM_speakGoogle = speakGoogle;
+
+function speakNative(text, lang, rate){
   if(!('speechSynthesis' in window)) return;
   try{
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     const voice = pickVoice(lang);
     if(voice){ u.voice = voice; u.lang = voice.lang; } else { u.lang = lang; }
-    u.rate = 0.92;
+    u.rate = rate || 0.92;
     u.pitch = 1.0;
     u.volume = 1.0;
     window.speechSynthesis.speak(u);
   }catch(e){}
+}
+
+function speak(text, lang){
+  if(!soundOn) return;
+  if(lang.startsWith('tr')) return; // TÜRKÇE OKUMAYI ENGELLER
+  const code = lang.split('-')[0];
+  speakGoogle(text, code, false, (ok) => { if(!ok) speakNative(text, lang, 0.92); });
+}
+function speakSlow(text, lang){
+  if(!soundOn) return;
+  if(lang.startsWith('tr')) return;
+  const code = lang.split('-')[0];
+  speakGoogle(text, code, true, (ok) => { if(!ok) speakNative(text, lang, 0.55); });
 }
 
 function warmUpSpeech(){
@@ -936,6 +979,7 @@ function applyFilter(){
   const pool = poolForLevel();
   deck = activeCat==='Tümü' ? [...pool] : pool.filter(v=>v.cat===activeCat);
   idx = 0; flipped = false;
+  restoreCardPosition();
   renderCard();
   buildQuizDeck();
 }
@@ -975,12 +1019,24 @@ function renderCard(){
   flipped = false;
 }
 
+document.getElementById('rabbitBtn').onclick = (e) => {
+  e.stopPropagation();
+  const v = deck[idx]; if(!v) return;
+  speak(v.w, LANGS[v.lang].voice);
+};
+document.getElementById('turtleBtn').onclick = (e) => {
+  e.stopPropagation();
+  const v = deck[idx]; if(!v) return;
+  speakSlow(v.w, LANGS[v.lang].voice);
+};
+
 document.getElementById('card').onclick = () => {
   flipped = !flipped;
   document.getElementById('card').classList.toggle('flipped', flipped);
   const v = deck[idx];
   if(!v) return;
   if(!flipped){ speak(v.w, LANGS[v.lang].voice); }
+  saveCardPosition();
 };
 
 document.getElementById('nextBtn').onclick = () => {
@@ -990,6 +1046,7 @@ document.getElementById('nextBtn').onclick = () => {
   const v = deck[idx];
   speak(v.w, LANGS[v.lang].voice);
   spawnShootingStar();
+  saveCardPosition();
 };
 document.getElementById('prevBtn').onclick = () => {
   if(deck.length===0) return;
@@ -997,11 +1054,35 @@ document.getElementById('prevBtn').onclick = () => {
   renderCard();
   const v = deck[idx];
   speak(v.w, LANGS[v.lang].voice);
+  saveCardPosition();
 };
 document.getElementById('shuffleBtn').onclick = () => {
   for(let i=deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [deck[i],deck[j]]=[deck[j],deck[i]]; }
   idx = 0; renderCard();
+  saveCardPosition();
 };
+
+/* ======================= KART KONUMU HAFIZASI (sessionStorage) =======================
+   Sekme/uygulama arka plana atılsa veya ekran kilitlense bile kaldığı yerden
+   devam etsin diye sessionStorage kullanıyoruz (localStorage DEĞİL): tarayıcı
+   sekmesi tamamen kapatılıp yeniden açıldığında (yeni gün, yeni oturum) bu
+   veri otomatik silinir ve kullanıcı en baştan başlar — istenen davranış budur. */
+const CARD_POS_KEY = 'cardPos_v1';
+function saveCardPosition(){
+  try{
+    sessionStorage.setItem(CARD_POS_KEY, JSON.stringify({ lang:activeLang, level:activeLevel, cat:activeCat, idx }));
+  }catch(e){}
+}
+function restoreCardPosition(){
+  try{
+    const raw = sessionStorage.getItem(CARD_POS_KEY);
+    if(!raw) return;
+    const saved = JSON.parse(raw);
+    if(saved.lang===activeLang && saved.level===activeLevel && saved.cat===activeCat && saved.idx < deck.length){
+      idx = saved.idx;
+    }
+  }catch(e){}
+}
 
 /* ======================= QUIZ ======================= */
 function buildQuizDeck(){
