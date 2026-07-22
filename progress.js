@@ -1,13 +1,13 @@
 /* ================================================================
-   PROGRESS.JS - "Kisisel Mod": isme ozel ilerleme takibi (v2)
-   - Bir kelime quiz'de dogru cevaplaninca bilindigi varsayilir, bir
-     daha normal calismada karsimiza cikmaz (self-report yalani yok).
-   - Calismaya Basla: ayni kategoriden 10 kelime -> kart (tanisma) ->
-     yazili quiz -> dinleme quizi. Iki turda da dogruysa bilinir;
-     yanlissa bir sonraki degil ondan sonraki oturumda tekrar cikar.
+   PROGRESS.JS - "Kişisel Mod": isme özel ilerleme takibi (v2)
+   - Bir kelime quiz'de doğru cevaplanınca bilindiği varsayılır, bir
+     daha normal çalışmada karşımıza çıkmaz (self-report yalanı yok).
+   - Çalışmaya Başla: aynı kategoriden 10 kelime -> kart (tanışma) ->
+     yazılı quiz -> dinleme quizi. İki turda da doğruysa bilinir;
+     yanlışsa bir sonraki değil ondan sonraki oturumda tekrar çıkar.
    - Genel Tekrar: seviye grubunda (A1-A2/B1-B2) bilinen kelimeleri
-     tekrar sorar; yanlissa bilinmiyor listesine geri duser.
-   - Gorevler + XP sistemi, gunluk tekrar kuyrugu.
+     tekrar sorar; yanlışsa bilinmiyor listesine geri düşer.
+   - Görevler + XP sistemi, günlük tekrar kuyruğu (dün öğrenilenler).
 ================================================================ */
 (function(){
 
@@ -16,7 +16,7 @@
   const BATCH_SIZE = 10;
   const RETRY_SESSION_GAP = 1; // 1: hemen bir sonraki oturumu atlar, ondan sonraki oturumda tekrar çıkar
   const XP_PER_NEW_WORD = 3;
-  const TASK_XP = { t1:100, t2:300, t5:150 };
+  const TASK_XP = { t1:25, t2:100, t3:300, t5:200 };
   const TASK5_SECONDS = 60*60;
 
   let currentName = '';
@@ -155,7 +155,7 @@
         meta.badges = meta.badges || {};
         meta.badges[t] = true;
         sessionStats.newBadges.push(t);
-        showToast('Rozet kazandin: '+t+' kelime ogrenildi!');
+        showToast('Rozet kazandın: '+t+' kelime öğrenildi!');
       }
     });
   }
@@ -174,7 +174,7 @@
     }
     const t = document.createElement('div');
     t.textContent = msg;
-    t.style.cssText = 'background:linear-gradient(135deg,#3a2410,#1c1006);border:1px solid rgba(255,180,84,0.6);color:#ffe9c7;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:700;box-shadow:0 6px 22px rgba(0,0,0,0.4),0 0 18px rgba(255,180,84,0.3);opacity:0;transform:translateY(-8px);transition:opacity .35s ease, transform .35s ease;';
+    t.style.cssText = 'background:linear-gradient(135deg,#1a1235,#0a0715);border:1px solid rgba(79,232,255,0.6);color:#eef4ff;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:700;box-shadow:0 6px 22px rgba(0,0,0,0.4),0 0 18px rgba(79,232,255,0.3);opacity:0;transform:translateY(-8px);transition:opacity .35s ease, transform .35s ease;';
     layer.appendChild(t);
     requestAnimationFrame(()=>{ t.style.opacity='1'; t.style.transform='translateY(0)'; });
     setTimeout(()=>{
@@ -184,32 +184,24 @@
   }
   function getRecord(v){ return wordProgress[wordKeyFor(v)] || null; }
 
-  function checkTask1and2(){
+  function checkThresholdTasks(){
     const t = meta.todayCount||0;
-    if(t>=50 && !meta.tasks.t1){ meta.tasks.t1 = true; addXp(TASK_XP.t1, 'Gorev: bugun 50 yeni kelime'); }
-    if(t>=100 && !meta.tasks.t2){ meta.tasks.t2 = true; addXp(TASK_XP.t2, 'Gorev: bugun 100 yeni kelime'); }
+    if(t>=10 && !meta.tasks.t1){ meta.tasks.t1 = true; addXp(TASK_XP.t1, 'Görev: bugün 10 yeni kelime'); }
+    if(t>=50 && !meta.tasks.t2){ meta.tasks.t2 = true; addXp(TASK_XP.t2, 'Görev: bugün 50 yeni kelime'); }
+    if(t>=100 && !meta.tasks.t3){ meta.tasks.t3 = true; addXp(TASK_XP.t3, 'Görev: bugün 100 yeni kelime'); }
   }
   function checkTask5(){
     if(meta.tasks.t5) return;
     const secs = (window.APP_getActiveSeconds ? window.APP_getActiveSeconds() : 0);
     if(secs >= TASK5_SECONDS){
-      meta.tasks.t5 = true; addXp(TASK_XP.t5, 'Gorev: 60dk calisma');
+      meta.tasks.t5 = true; addXp(TASK_XP.t5, 'Görev: 60dk çalışma');
       persistMeta();
     }
   }
-  function awardTask3(reviewedCount){
-    if(meta.tasks.t3 || reviewedCount<=0) return;
-    meta.tasks.t3 = true;
-    const xp = Math.round(reviewedCount*1.25);
-    addXp(xp, 'Gorev: genel tekrar');
-  }
-  function awardTask4IfQueueCleared(){
-    const nowCount = dueWords().length;
-    if(nowCount === 0 && meta.lastDueCount > 0 && !meta.tasks.t4){
-      meta.tasks.t4 = true;
-      addXp(meta.lastDueCount*2, 'Gorev: gunluk tekrari tamamla');
-    }
-    meta.lastDueCount = nowCount;
+  function awardTask4(reviewedCount){
+    if(meta.tasks.t4 || reviewedCount<=0) return;
+    meta.tasks.t4 = true;
+    addXp(reviewedCount*2, 'Görev: günlük tekrarı tamamla');
   }
 
   function levelGroups(){
@@ -255,7 +247,11 @@
     });
     return {best, worst};
   }
-  function dueWords(){
+  // ESKİ (dahili) mekanik: bir çalışma oturumunda yanlış yapılan kelimeler,
+  // bir sonraki oturumu atlayıp ondan sonraki oturumda normal çalışma
+  // havuzuna geri döner. Bu, kullanıcıya AYRI bir "kuyruk" olarak GÖSTERİLMEZ,
+  // sadece pickBatch() içinde sessizce çalışır.
+  function sessionRetryDueWords(){
     const pool = poolForActiveFilter();
     const out = [];
     pool.forEach(v=>{
@@ -266,6 +262,21 @@
     });
     return out;
   }
+  // YENİ Günlük Tekrar: DÜN öğrenilmiş (bilinen işaretlenmiş) kelimeleri bugün
+  // tekrar sormak için. Aktif dile göre (seviye filtresinden bağımsız).
+  function yesterdayStr(){
+    const d = new Date();
+    d.setDate(d.getDate()-1);
+    const p = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
+  }
+  function dailyReviewWords(){
+    const y = yesterdayStr();
+    return poolForActiveLang().filter(v=>{
+      const r = getRecord(v);
+      return r && r.known && r.learnedDate === y;
+    });
+  }
 
   function injectStyles(){
     if(document.getElementById('pmStyles')) return;
@@ -273,28 +284,35 @@
     style.id = 'pmStyles';
     style.textContent = `
       .pm-root{
-        --pm-accent:#ffb454; --pm-accent2:#ff7a6b; --pm-good:#3dffa0; --pm-bad:#ff5f7a;
-        --pm-panel: linear-gradient(160deg, rgba(58,36,16,0.38), rgba(20,12,6,0.42));
-        --pm-border: rgba(255,180,84,0.35);
+        --pm-accent:#4fe8ff; --pm-accent2:#ff5fb8; --pm-accent3:#9b7bff; --pm-good:#3dffa0; --pm-bad:#ff5f7a;
+        --pm-panel: linear-gradient(160deg, rgba(18,14,38,0.38), rgba(10,8,22,0.42));
+        --pm-border: rgba(79,232,255,0.35);
         font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
       }
       .pm-root .pm-head{
         text-align:center;padding:18px 14px 22px;border-radius:22px;margin-bottom:16px;
-        background: radial-gradient(circle at 50% -10%, rgba(255,180,84,0.16), transparent 60%), var(--pm-panel);
+        background: radial-gradient(circle at 50% -10%, rgba(79,232,255,0.16), transparent 60%), var(--pm-panel);
         border:1px solid var(--pm-border);
-        box-shadow:0 8px 30px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,180,84,0.12);
+        box-shadow:0 8px 30px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(79,232,255,0.12);
       }
       .pm-root .pm-eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--pm-accent);margin-bottom:6px;}
-      .pm-root .pm-title{font-family:Georgia,'Iowan Old Style',serif;font-size:22px;font-weight:700;color:#ffe9c7;margin-bottom:2px;}
-      .pm-root .pm-sub{font-size:11.5px;color:#c9a37a;}
+      .pm-root .pm-title{font-family:Georgia,'Iowan Old Style',serif;font-size:22px;font-weight:700;color:#eef4ff;margin-bottom:2px;}
+      .pm-root .pm-sub{font-size:11.5px;color:#8291b3;}
       .pm-root .pm-pill-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
-      .pm-root .pm-pill{padding:6px 12px;border-radius:999px;font-size:11.5px;font-weight:700;background:rgba(255,180,84,0.1);border:1px solid var(--pm-border);color:#ffe9c7;}
-      .pm-root .pm-pill.flame{background:rgba(255,122,107,0.14);border-color:rgba(255,122,107,0.4);}
+      .pm-root .pm-pill{padding:6px 12px;border-radius:999px;font-size:11.5px;font-weight:700;background:rgba(79,232,255,0.1);border:1px solid var(--pm-border);color:#eef4ff;}
+      .pm-root .pm-pill.flame{background:rgba(255,95,184,0.14);border-color:rgba(255,95,184,0.4);}
       .pm-root .pm-mini-select{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:14px;}
-      .pm-root .pm-chip{padding:6px 11px;border-radius:10px;font-size:11.5px;font-weight:700;color:#c9a37a;background:rgba(255,255,255,0.03);border:1px solid rgba(255,180,84,0.18);cursor:pointer;}
-      .pm-root .pm-chip.active{color:#1c1006;background:linear-gradient(135deg,var(--pm-accent),var(--pm-accent2));border-color:transparent;}
+      .pm-root .pm-chip{padding:6px 11px;border-radius:10px;font-size:11.5px;font-weight:700;color:#8291b3;background:rgba(255,255,255,0.03);border:1px solid rgba(79,232,255,0.18);cursor:pointer;}
+      .pm-root .pm-chip.active{
+        color:#0a0715;
+        background:linear-gradient(120deg,var(--pm-accent),var(--pm-accent3),var(--pm-accent2));
+        background-size:250% 250%;
+        animation:pmNeonShift 6s ease-in-out infinite;
+        border-color:transparent;
+        box-shadow:0 0 14px rgba(79,232,255,0.35);
+      }
       .pm-root .pm-goal-wrap{margin-top:14px;text-align:left;}
-      .pm-root .pm-goal-row{display:flex;justify-content:space-between;font-size:11px;color:#c9a37a;margin-bottom:5px;}
+      .pm-root .pm-goal-row{display:flex;justify-content:space-between;font-size:11px;color:#8291b3;margin-bottom:5px;}
       .pm-root .pm-bar{height:6px;border-radius:6px;background:rgba(255,255,255,0.08);overflow:hidden;}
       .pm-root .pm-bar-fill{height:100%;background:linear-gradient(90deg,var(--pm-accent),var(--pm-accent2));transition:width .3s ease;}
       .pm-root .pm-card{
@@ -302,21 +320,21 @@
         box-shadow:0 6px 22px rgba(0,0,0,0.3);
       }
       .pm-root .pm-card h4{margin:0 0 10px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--pm-accent);}
-      .pm-root .pm-level-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#ffe9c7;margin-bottom:8px;}
+      .pm-root .pm-level-row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#eef4ff;margin-bottom:8px;}
       .pm-root .pm-level-row .pm-bar{flex:1;margin:0 10px;}
       .pm-root .pm-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-      .pm-root .pm-stat-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,180,84,0.14);border-radius:12px;padding:10px 12px;}
-      .pm-root .pm-stat-num{font-size:19px;font-weight:800;color:#ffe9c7;font-family:Georgia,serif;}
-      .pm-root .pm-stat-label{font-size:10.5px;color:#c9a37a;margin-top:2px;}
+      .pm-root .pm-stat-box{background:rgba(255,255,255,0.03);border:1px solid rgba(79,232,255,0.14);border-radius:12px;padding:10px 12px;}
+      .pm-root .pm-stat-num{font-size:19px;font-weight:800;color:#eef4ff;font-family:Georgia,serif;}
+      .pm-root .pm-stat-label{font-size:10.5px;color:#8291b3;margin-top:2px;}
       .pm-root .pm-badges{display:flex;gap:8px;flex-wrap:wrap;}
-      .pm-root .pm-badge{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(255,180,84,0.12);border:1px solid var(--pm-border);}
+      .pm-root .pm-badge{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(79,232,255,0.12);border:1px solid var(--pm-border);}
       .pm-root .pm-badge.locked{opacity:.25;filter:grayscale(1);}
-      .pm-root .pm-task{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,180,84,0.12);}
+      .pm-root .pm-task{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(79,232,255,0.12);}
       .pm-root .pm-task:last-child{border-bottom:none;}
       .pm-root .pm-task-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0;}
       .pm-root .pm-task-body{flex:1;min-width:0;}
-      .pm-root .pm-task-label{font-size:12.5px;color:#ffe9c7;}
-      .pm-root .pm-task-sub{font-size:10.5px;color:#c9a37a;margin-top:2px;}
+      .pm-root .pm-task-label{font-size:12.5px;color:#eef4ff;}
+      .pm-root .pm-task-sub{font-size:10.5px;color:#8291b3;margin-top:2px;}
       .pm-root .pm-task.done .pm-task-label{color:var(--pm-good);text-decoration:line-through;opacity:.8;}
       .pm-root .pm-due-banner{
         display:flex;justify-content:space-between;align-items:center;gap:10px;
@@ -325,45 +343,54 @@
       .pm-root .pm-due-banner .pm-due-text{font-size:12.5px;color:#ffd2d9;}
       .pm-root .pm-due-banner button{flex-shrink:0;padding:8px 14px;border-radius:10px;border:1px solid rgba(255,95,122,0.5);background:rgba(255,95,122,0.18);color:#ffd2d9;font-size:12px;font-weight:700;cursor:pointer;}
       .pm-root .pm-group-row{display:flex;gap:8px;margin-top:8px;}
-      .pm-root .pm-group-btn{flex:1;padding:12px 6px;border-radius:12px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid var(--pm-border);color:#ffe9c7;font-size:12.5px;font-weight:700;cursor:pointer;}
-      .pm-root .pm-group-btn .g-count{display:block;font-size:10px;color:#c9a37a;font-weight:400;margin-top:2px;}
+      .pm-root .pm-group-btn{flex:1;padding:12px 6px;border-radius:12px;text-align:center;background:rgba(255,255,255,0.03);border:1px solid var(--pm-border);color:#eef4ff;font-size:12.5px;font-weight:700;cursor:pointer;}
+      .pm-root .pm-group-btn .g-count{display:block;font-size:10px;color:#8291b3;font-weight:400;margin-top:2px;}
       .pm-root button.pm-btn{
         width:100%;padding:14px 0;border-radius:14px;border:1px solid var(--pm-border);
-        background:rgba(255,255,255,0.03);color:#ffe9c7;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;
+        background:rgba(255,255,255,0.03);color:#eef4ff;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px;
       }
       .pm-root button.pm-btn.primary{
-        background:linear-gradient(135deg,var(--pm-accent),var(--pm-accent2));color:#241206;border:none;
-        box-shadow:0 6px 22px rgba(255,122,107,0.35);
+        position:relative;overflow:hidden;
+        background:linear-gradient(120deg, var(--pm-accent), var(--pm-accent3), var(--pm-accent2), var(--pm-accent));
+        background-size:300% 300%;
+        animation:pmNeonShift 5s ease-in-out infinite;
+        color:#04050a;border:none;font-weight:800;
+        box-shadow:0 6px 24px rgba(79,232,255,0.35), 0 0 34px rgba(255,95,184,0.28);
+      }
+      @keyframes pmNeonShift{
+        0%{background-position:0% 50%;}
+        50%{background-position:100% 50%;}
+        100%{background-position:0% 50%;}
       }
       .pm-root button.pm-btn:active{opacity:.7;transform:scale(.98);}
       .pm-root button.pm-btn.small{padding:10px 0;font-size:12.5px;}
-      .pm-root .pm-session-bar{display:flex;justify-content:space-between;font-size:11.5px;color:#c9a37a;margin-bottom:8px;}
+      .pm-root .pm-session-bar{display:flex;justify-content:space-between;font-size:11.5px;color:#8291b3;margin-bottom:8px;}
       .pm-root .pm-study-card{
         background:var(--pm-panel);border:1px solid var(--pm-border);border-radius:20px;padding:26px 20px;text-align:center;margin-bottom:16px;
         box-shadow:0 10px 30px rgba(0,0,0,0.35);cursor:pointer;
       }
       .pm-root .pm-mode-tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--pm-accent);margin-bottom:10px;}
-      .pm-root .pm-word{font-size:27px;font-weight:700;font-family:Georgia,'Iowan Old Style',serif;color:#ffe9c7;margin-bottom:6px;}
-      .pm-root .pm-word-sub{font-size:12px;color:#c9a37a;margin-bottom:8px;}
+      .pm-root .pm-word{font-size:27px;font-weight:700;font-family:Georgia,'Iowan Old Style',serif;color:#eef4ff;margin-bottom:6px;}
+      .pm-root .pm-word-sub{font-size:12px;color:#8291b3;margin-bottom:8px;}
       .pm-root .pm-speak-row{display:flex;justify-content:center;gap:10px;margin:10px 0 4px;}
       .pm-root .pm-speak-btn{
         display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;font-size:19px;
-        background:rgba(255,180,84,0.14);border:1px solid var(--pm-border);cursor:pointer;
+        background:rgba(79,232,255,0.14);border:1px solid var(--pm-border);cursor:pointer;
       }
       .pm-root .pm-options{display:flex;flex-direction:column;gap:9px;margin-top:6px;}
-      .pm-root .pm-opt{padding:12px 14px;border-radius:12px;border:1px solid var(--pm-border);background:rgba(255,255,255,0.03);color:#ffe9c7;font-size:14px;text-align:left;cursor:pointer;}
+      .pm-root .pm-opt{padding:12px 14px;border-radius:12px;border:1px solid var(--pm-border);background:rgba(255,255,255,0.03);color:#eef4ff;font-size:14px;text-align:left;cursor:pointer;}
       .pm-root .pm-opt.correct{background:rgba(61,255,160,0.14);border-color:var(--pm-good);color:var(--pm-good);}
       .pm-root .pm-opt.wrong{background:rgba(255,95,122,0.14);border-color:var(--pm-bad);color:var(--pm-bad);}
       .pm-root .pm-opt[disabled]{cursor:default;}
       .pm-root .pm-weak-item{background:var(--pm-panel);border:1px solid var(--pm-border);border-radius:14px;padding:14px 16px;margin-bottom:10px;text-align:left;}
-      .pm-root .pm-weak-word{font-size:16px;font-weight:700;color:#ffe9c7;}
-      .pm-root .pm-weak-meta{font-size:11px;color:#c9a37a;margin-top:4px;line-height:1.6;}
-      .pm-root .pm-known-item{display:flex;justify-content:space-between;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,180,84,0.16);border-radius:10px;padding:8px 12px;margin-bottom:6px;font-size:12.5px;}
-      .pm-root .pm-known-item b{color:#ffe9c7;}
-      .pm-root .pm-known-item span{color:#c9a37a;}
-      .pm-root .pm-empty{text-align:center;padding:30px 10px;color:#c9a37a;font-size:13px;}
-      .pm-root .pm-loading{text-align:center;padding:40px 10px;color:#c9a37a;font-size:13px;}
-      .pm-root .pm-back-link{display:block;text-align:center;font-size:11.5px;color:#c9a37a;margin-top:4px;cursor:pointer;text-decoration:underline;}
+      .pm-root .pm-weak-word{font-size:16px;font-weight:700;color:#eef4ff;}
+      .pm-root .pm-weak-meta{font-size:11px;color:#8291b3;margin-top:4px;line-height:1.6;}
+      .pm-root .pm-known-item{display:flex;justify-content:space-between;gap:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(79,232,255,0.16);border-radius:10px;padding:8px 12px;margin-bottom:6px;font-size:12.5px;}
+      .pm-root .pm-known-item b{color:#eef4ff;}
+      .pm-root .pm-known-item span{color:#8291b3;}
+      .pm-root .pm-empty{text-align:center;padding:30px 10px;color:#8291b3;font-size:13px;}
+      .pm-root .pm-loading{text-align:center;padding:40px 10px;color:#8291b3;font-size:13px;}
+      .pm-root .pm-back-link{display:block;text-align:center;font-size:11.5px;color:#8291b3;margin-top:4px;cursor:pointer;text-decoration:underline;}
     `;
     document.head.appendChild(style);
   }
@@ -371,11 +398,10 @@
   function renderHome(){
     injectStyles();
     if(!dataLoaded){
-      root.innerHTML = '<div class="pm-root"><div class="pm-loading">Kisisel alan yukleniyor...</div></div>';
+      root.innerHTML = '<div class="pm-root"><div class="pm-loading">Kişisel alan yükleniyor...</div></div>';
       return;
     }
     checkTask5();
-    awardTask4IfQueueCleared();
     persistMeta();
 
     const L = LANGS[activeLang];
@@ -389,7 +415,7 @@
     const totalStudied = totalStudiedCount();
     const totalKnownLang = knownCountIn(poolForActiveLang());
     const catInfo = categoryAccuracy();
-    const due = dueWords();
+    const due = dailyReviewWords();
 
     let levelRows = '';
     L.levels.forEach(lv=>{
@@ -414,55 +440,58 @@
     });
 
     const t = meta.tasks;
+    const t4Sub = t.t4
+      ? ('Tamamlandı · +'+(due.length*2)+' XP')
+      : (due.length>0 ? (due.length+' kelime bekliyor · kelime başına +2 XP') : '[Geçen gün öğrenilen kelime yok]');
     const taskDefs = [
-      { icon:'🥉', label:'Bugun 50 yeni kelime ogren', sub:Math.min(today,50)+'/50 - +'+TASK_XP.t1+' XP', done:t.t1 },
-      { icon:'🥈', label:'Bugun 100 yeni kelime ogren', sub:Math.min(today,100)+'/100 - +'+TASK_XP.t2+' XP', done:t.t2 },
-      { icon:'🔁', label:'Genel tekrar yap', sub:'kelime basina +1.25 XP', done:t.t3 },
-      { icon:'📋', label:'Gunluk tekrari tamamla', sub: due.length>0 ? (due.length+' kelime bekliyor - kelime basina +2 XP') : 'bekleyen tekrar yok', done:t.t4 },
-      { icon:'⏱', label:'Bu oturumda 60dk calis', sub:'+'+TASK_XP.t5+' XP', done:t.t5 },
+      { icon:'💵', label:'Bugün 10 yeni kelime öğren', sub:Math.min(today,10)+'/10 · +'+TASK_XP.t1+' XP', done:t.t1 },
+      { icon:'💰', label:'Bugün 50 yeni kelime öğren', sub:Math.min(today,50)+'/50 · +'+TASK_XP.t2+' XP', done:t.t2 },
+      { icon:'🪎', label:'Bugün 100 yeni kelime öğren', sub:Math.min(today,100)+'/100 · +'+TASK_XP.t3+' XP', done:t.t3 },
+      { icon:'📋', label:'Günlük tekrarı tamamla', sub: t4Sub, done:t.t4 },
+      { icon:'⏱️', label:'Bu oturumda 60 dakika çalış', sub:'+'+TASK_XP.t5+' XP', done:t.t5 },
     ];
 
     let html = '<div class="pm-root">';
     html += '<div class="pm-head">';
-    html += '<div class="pm-eyebrow">Kisisel Ogrenme Alani</div>';
-    html += '<div class="pm-title">👤 '+escapeHtml(currentName)+'\'e Ozel</div>';
-    html += '<div class="pm-sub">'+L.native+' ogrenimi - ilerlemen tum cihazlarinda senkron</div>';
+    html += '<div class="pm-eyebrow">Kişisel Öğrenme Alanı</div>';
+    html += '<div class="pm-title">👤 '+escapeHtml(currentName)+'\'e Özel</div>';
+    html += '<div class="pm-sub">'+L.native+' öğrenimi - ilerlemen tüm cihazlarında senkron</div>';
     html += '<div class="pm-mini-select" id="pmLangSelect">';
     Object.keys(LANGS).forEach(code=>{
       html += '<div class="pm-chip '+(code===activeLang?'active':'')+'" data-lang="'+code+'">'+LANGS[code].label+'</div>';
     });
     html += '</div>';
     html += '<div class="pm-mini-select" id="pmLevelSelect">';
-    html += '<div class="pm-chip '+(activeLevel==='TÜMÜ'?'active':'')+'" data-level="TÜMÜ">TUMU</div>';
+    html += '<div class="pm-chip '+(activeLevel==='TÜMÜ'?'active':'')+'" data-level="TÜMÜ">TÜMÜ</div>';
     L.levels.forEach(lv=>{
       html += '<div class="pm-chip '+(lv===activeLevel?'active':'')+'" data-level="'+lv+'">'+lv+'</div>';
     });
     html += '</div>';
-    html += '<div class="pm-pill-row"><div class="pm-pill flame">🔥 '+(meta.streak||0)+' gunluk seri</div><div class="pm-pill">⭐ Seviye '+(Math.floor((meta.xp||0)/200)+1)+' - '+(meta.xp||0)+' XP</div></div>';
-    html += '<div class="pm-goal-wrap"><div class="pm-goal-row"><span>Bugun ogrenilen</span><span>'+today+' / '+goal+' kelime</span></div><div class="pm-bar"><div class="pm-bar-fill" style="width:'+goalPct+'%"></div></div></div>';
+    html += '<div class="pm-pill-row"><div class="pm-pill flame">🔥 '+(meta.streak||0)+' günlük seri</div><div class="pm-pill">⭐ Seviye '+(Math.floor((meta.xp||0)/200)+1)+' - '+(meta.xp||0)+' XP</div></div>';
+    html += '<div class="pm-goal-wrap"><div class="pm-goal-row"><span>Bugün öğrenilen</span><span>'+today+' / '+goal+' kelime</span></div><div class="pm-bar"><div class="pm-bar-fill" style="width:'+goalPct+'%"></div></div></div>';
     html += '</div>';
 
     if(due.length > 0){
-      html += '<div class="pm-due-banner"><div class="pm-due-text">📋 <b>'+due.length+'</b> kelimenin tekrar sirasi geldi</div><button id="pmDueBtn">Tekrar Et</button></div>';
+      html += '<div class="pm-due-banner"><div class="pm-due-text">📋 Dün öğrendiğin <b>'+due.length+'</b> kelimenin günlük tekrarı var</div><button id="pmDueBtn">Tekrar Et</button></div>';
     }
 
-    html += '<div class="pm-card"><h4>Ilerleme - '+activeLevel+' - '+filterKnown+' / '+filterPool.length+' kelime (%'+filterPct+')</h4>';
+    html += '<div class="pm-card"><h4>İlerleme - '+activeLevel+' - '+filterKnown+' / '+filterPool.length+' kelime (%'+filterPct+')</h4>';
     html += levelRows || '<div class="pm-empty">Bu dil icin henuz seviye tanimli degil.</div>';
     html += '</div>';
 
-    html += '<div class="pm-card"><h4>Genel Tekrar</h4><div class="pm-weak-meta">Bildigini varsaydigimiz kelimeleri tekrar sorar; yanlis yaparsan calisma listene geri doner.</div><div class="pm-group-row" id="pmGroupRow">'+groupRow+'</div></div>';
+    html += '<div class="pm-card"><h4>Genel Tekrar</h4><div class="pm-weak-meta">Bildiğini varsaydığımız kelimeleri tekrar sorar; yanlış yaparsan çalışma listene geri döner.</div><div class="pm-group-row" id="pmGroupRow">'+groupRow+'</div></div>';
 
     html += '<div class="pm-card"><h4>Istatistikler</h4><div class="pm-stat-grid">';
-    html += '<div class="pm-stat-box"><div class="pm-stat-num">'+totalKnownLang+'</div><div class="pm-stat-label">Ogrenilen ('+L.label+')</div></div>';
-    html += '<div class="pm-stat-box"><div class="pm-stat-num">'+today+'</div><div class="pm-stat-label">Bugun ogrenilen</div></div>';
-    html += '<div class="pm-stat-box"><div class="pm-stat-num">'+totalStudied+'</div><div class="pm-stat-label">Toplam calisilan</div></div>';
-    html += '<div class="pm-stat-box"><div class="pm-stat-num">'+(acc===null?'-':acc+'%')+'</div><div class="pm-stat-label">Dogruluk orani</div></div>';
+    html += '<div class="pm-stat-box"><div class="pm-stat-num">'+totalKnownLang+'</div><div class="pm-stat-label">Öğrenilen ('+L.label+')</div></div>';
+    html += '<div class="pm-stat-box"><div class="pm-stat-num">'+today+'</div><div class="pm-stat-label">Bugün öğrenilen</div></div>';
+    html += '<div class="pm-stat-box"><div class="pm-stat-num">'+totalStudied+'</div><div class="pm-stat-label">Toplam çalışılan</div></div>';
+    html += '<div class="pm-stat-box"><div class="pm-stat-num">'+(acc===null?'-':acc+'%')+'</div><div class="pm-stat-label">Doğruluk oranı</div></div>';
     html += '</div>';
     html += '<div class="pm-weak-meta" style="margin-top:10px;">'+(catInfo.best ? ('💪 En guclu kategori: <b>'+escapeHtml(catInfo.best.cat)+'</b>') : 'Henuz yeterli veri yok.')+'<br>'+(catInfo.worst ? ('🎯 Gelistirilecek kategori: <b>'+escapeHtml(catInfo.worst.cat)+'</b>') : '')+'</div>';
-    html += '<div class="pm-weak-meta" id="pmTotalTime" style="margin-top:6px;">⏱ Toplam calisma suresi yukleniyor...</div>';
+    html += '<div class="pm-weak-meta" id="pmTotalTime" style="margin-top:6px;">⏱ Toplam çalışma süresi yükleniyor...</div>';
     html += '</div>';
 
-    html += '<div class="pm-card"><h4>Bugunku Gorevler</h4>';
+    html += '<div class="pm-card"><h4>Bugünkü Görevler</h4>';
     taskDefs.forEach(td=>{
       html += '<div class="pm-task '+(td.done?'done':'')+'"><div class="pm-task-icon">'+(td.done?'✅':td.icon)+'</div><div class="pm-task-body"><div class="pm-task-label">'+td.label+'</div><div class="pm-task-sub">'+td.sub+'</div></div></div>';
     });
@@ -470,9 +499,9 @@
 
     html += '<div class="pm-card"><h4>Rozetler</h4><div class="pm-badges">'+badgeRow+'</div></div>';
 
-    html += '<button class="pm-btn primary" id="pmStartBtn">🚀 Calismaya Basla</button>';
-    html += '<button class="pm-btn small" id="pmKnownBtn">✅ Ogrendigim Kelimeler ('+totalKnownLang+')</button>';
-    html += '<button class="pm-btn small" id="pmWeakBtn">📉 Hata Yaptigim Kelimeler</button>';
+    html += '<button class="pm-btn primary" id="pmStartBtn">🚀 Çalışmaya Başla</button>';
+    html += '<button class="pm-btn small" id="pmKnownBtn">✅ Öğrendiğim Kelimeler ('+totalKnownLang+')</button>';
+    html += '<button class="pm-btn small" id="pmWeakBtn">📉 Hata Yaptığım Kelimeler</button>';
     html += '</div>';
 
     root.innerHTML = html;
@@ -504,7 +533,7 @@
     document.getElementById('pmKnownBtn').onclick = renderKnownWords;
     document.getElementById('pmWeakBtn').onclick = renderWeakWords;
     const dueBtn = document.getElementById('pmDueBtn');
-    if(dueBtn) dueBtn.onclick = startDueSession;
+    if(dueBtn) dueBtn.onclick = startDailyReview;
 
     if(window.LB_getTotalSeconds){
       window.LB_getTotalSeconds(currentName, (secs)=>{
@@ -512,7 +541,7 @@
         if(!el) return;
         const s = Math.floor(secs);
         const h = Math.floor(s/3600), m = Math.floor((s%3600)/60);
-        el.textContent = '⏱ Toplam calisma suresi: '+(h>0?h+'s ':'')+m+'dk';
+        el.textContent = '⏱ Toplam çalışma süresi: '+(h>0?h+'s ':'')+m+'dk';
       });
     }
   }
@@ -561,18 +590,19 @@
   function startSession(){
     batch = pickBatch();
     if(batch.length === 0){
-      root.innerHTML = '<div class="pm-root"><div class="pm-empty">🎉 Bu seviyede calisilacak yeni kelime kalmadi - harika is cikardin!<br><br>Istersen Genel Tekrar yaparak bildiklerini tazeleyebilirsin.</div><span class="pm-back-link" id="pmBackHome">← Ana sayfaya don</span></div>';
+      root.innerHTML = '<div class="pm-root"><div class="pm-empty">🎉 Bu seviyede çalışılacak yeni kelime kalmadı - harika iş çıkardın!<br><br>İstersen Genel Tekrar yaparak bildiklerini tazeleyebilirsin.</div><span class="pm-back-link" id="pmBackHome">← Ana sayfaya dön</span></div>';
       document.getElementById('pmBackHome').onclick = renderHome;
       return;
     }
     beginBatchFlow();
   }
 
-  function startDueSession(){
-    const due = dueWords().map(v=>({v,key:wordKeyFor(v)})).slice(0, BATCH_SIZE);
-    if(due.length === 0){ renderHome(); return; }
-    batch = due;
-    beginBatchFlow();
+  function startDailyReview(){
+    const list = dailyReviewWords();
+    if(list.length === 0){ renderHome(); return; }
+    shuffle(list);
+    reviewMode = { kind:'daily', group:'Günlük Tekrar', order:list, idx:0, stats:{ total:list.length, correct:0, wrong:0 } };
+    renderReviewCard();
   }
 
   function beginBatchFlow(){
@@ -596,34 +626,34 @@
     function draw(){
       let html = '<div class="pm-root">'+barHtml;
       html += '<div class="pm-study-card" id="pmCard">';
-      html += '<div class="pm-mode-tag">'+(flipped ? 'Turkcesi' : 'Yeni Kelime')+'</div>';
+      html += '<div class="pm-mode-tag">'+(flipped ? 'Türkçesi' : 'Yeni Kelime')+'</div>';
       html += '<div class="pm-word" dir="'+LANGS[v.lang].dir+'">'+(flipped ? escapeHtml(v.tr) : escapeHtml(v.w))+'</div>';
       html += '<div class="pm-word-sub">'+escapeHtml(v.pos||'')+'</div>';
-      if(!flipped){
-        html += '<div class="pm-speak-row"><div class="pm-speak-btn" id="pmRabbit" title="Hizli dinle">🐰</div><div class="pm-speak-btn" id="pmTurtle" title="Yavas dinle">🐢</div></div>';
-      }
-      html += '<div class="pm-word-sub" style="margin-top:10px;">'+(flipped ? 'Ileri gitmek icin karta dokun' : 'Anlami gormek icin karta dokun')+'</div>';
+      html += '<div class="pm-speak-row"><div class="pm-speak-btn" id="pmRabbit" title="Hızlı dinle">🐰</div><div class="pm-speak-btn" id="pmTurtle" title="Yavaş dinle">🐢</div></div>';
+      html += '<div class="pm-word-sub" style="margin-top:10px;">Çevirmek için karta dokun</div>';
       html += '</div>';
-      html += '<button class="pm-btn primary" id="pmNextCard">'+(flipped ? 'Sonraki Kelime' : 'Anlami Goster')+'</button>';
+      html += '<button class="pm-btn primary" id="pmNextCard">Sonraki Kelime</button>';
       html += '</div>';
       root.innerHTML = html;
+      // Karta her tıklandığında SADECE kelime/Türkçe arasında geçiş yapar
+      // (Kartlar sekmesindeki mantıkla birebir aynı) — bir sonraki kelimeye
+      // GEÇMEZ. İlerlemek için ayrı "Sonraki Kelime" butonu kullanılır.
       document.getElementById('pmCard').onclick = () => {
-        if(!flipped){ flipped = true; draw(); }
-        else { cardIdx++; renderCardsPhase(); }
+        flipped = !flipped;
+        draw();
+        if(!flipped) pmSpeak(v.w, LANGS[v.lang].voice, false);
       };
       document.getElementById('pmNextCard').onclick = (e) => {
         e.stopPropagation();
-        if(!flipped){ flipped = true; draw(); }
-        else { cardIdx++; renderCardsPhase(); }
+        cardIdx++;
+        renderCardsPhase();
       };
-      if(!flipped){
-        pmSpeak(v.w, LANGS[v.lang].voice, false);
-        const rb = document.getElementById('pmRabbit'), tb = document.getElementById('pmTurtle');
-        if(rb) rb.onclick = (e)=>{ e.stopPropagation(); pmSpeak(v.w, LANGS[v.lang].voice, false); };
-        if(tb) tb.onclick = (e)=>{ e.stopPropagation(); pmSpeak(v.w, LANGS[v.lang].voice, true); };
-      }
+      const rb = document.getElementById('pmRabbit'), tb = document.getElementById('pmTurtle');
+      if(rb) rb.onclick = (e)=>{ e.stopPropagation(); pmSpeak(v.w, LANGS[v.lang].voice, false); };
+      if(tb) tb.onclick = (e)=>{ e.stopPropagation(); pmSpeak(v.w, LANGS[v.lang].voice, true); };
     }
     draw();
+    pmSpeak(v.w, LANGS[v.lang].voice, false);
   }
 
   function pickDistractors(v, count){
@@ -725,6 +755,7 @@
         if(!rec.known){
           rec.known = true;
           rec.retryAfterSession = null;
+          rec.learnedDate = todayStr();
           sessionStats.newKnown++;
           meta.todayCount = (meta.todayCount||0) + 1;
           meta.xp = (meta.xp||0) + XP_PER_NEW_WORD;
@@ -746,7 +777,7 @@
       if(ref) ref.set(wordProgress[item.key]).catch(()=>{});
     });
     markStudyToday();
-    checkTask1and2();
+    checkThresholdTasks();
     checkBadges();
     sessionStats.xp = sessionStats.newKnown * XP_PER_NEW_WORD;
     persistMeta();
@@ -756,22 +787,22 @@
   function renderSessionSummary(){
     const s = sessionStats;
     let html = '<div class="pm-root">';
-    html += '<div class="pm-head"><div class="pm-eyebrow">Oturum Tamamlandi</div><div class="pm-title">🎉 Harika Is!</div><div class="pm-sub">'+s.newKnown+' yeni kelime ogrendin - +'+s.xp+' XP</div></div>';
-    html += '<div class="pm-card"><h4>Sonuc</h4><div class="pm-stat-grid"><div class="pm-stat-box"><div class="pm-stat-num">'+s.newKnown+'</div><div class="pm-stat-label">Yeni ogrenilen</div></div><div class="pm-stat-box"><div class="pm-stat-num">'+s.wrong+'</div><div class="pm-stat-label">Tekrar gerekiyor</div></div></div></div>';
+    html += '<div class="pm-head"><div class="pm-eyebrow">Oturum Tamamlandı</div><div class="pm-title">🎉 Harika İş!</div><div class="pm-sub">'+s.newKnown+' yeni kelime öğrendin - +'+s.xp+' XP</div></div>';
+    html += '<div class="pm-card"><h4>Sonuç</h4><div class="pm-stat-grid"><div class="pm-stat-box"><div class="pm-stat-num">'+s.newKnown+'</div><div class="pm-stat-label">Yeni öğrenilen</div></div><div class="pm-stat-box"><div class="pm-stat-num">'+s.wrong+'</div><div class="pm-stat-label">Tekrar gerekiyor</div></div></div></div>';
     if(s.newBadges.length){
       html += '<div class="pm-card"><h4>Yeni Rozetler</h4><div class="pm-weak-meta">'+s.newBadges.map(t=>'🏅 '+t+' kelime rozeti').join('<br>')+'</div></div>';
     }
     if(s.mistakes.length){
       html += '<button class="pm-btn small" id="pmSeeMistakes">Tekrar Gereken Kelimeleri Gor ('+s.mistakes.length+')</button>';
     }
-    html += '<button class="pm-btn primary" id="pmBackHomeBtn">Ana Sayfaya Don</button></div>';
+    html += '<button class="pm-btn primary" id="pmBackHomeBtn">Ana Sayfaya Dön</button></div>';
     root.innerHTML = html;
     document.getElementById('pmBackHomeBtn').onclick = renderHome;
     if(s.mistakes.length){
       document.getElementById('pmSeeMistakes').onclick = () => {
-        let h2 = '<div class="pm-root"><div class="pm-head"><div class="pm-title">Tekrar Gereken Kelimeler</div><div class="pm-sub">Bir sonraki oturumu atlayip, ondan sonrasinda tekrar karsina cikacaklar.</div></div>';
+        let h2 = '<div class="pm-root"><div class="pm-head"><div class="pm-title">Tekrar Gereken Kelimeler</div><div class="pm-sub">Bir sonraki oturumu atlayıp, ondan sonrasında tekrar karşına çıkacaklar.</div></div>';
         s.mistakes.forEach(m=>{
-          h2 += '<div class="pm-weak-item"><div class="pm-weak-word">'+escapeHtml(m.word)+'</div><div class="pm-weak-meta">Dogrusu: '+escapeHtml(m.tr)+'</div></div>';
+          h2 += '<div class="pm-weak-item"><div class="pm-weak-word">'+escapeHtml(m.word)+'</div><div class="pm-weak-meta">Doğrusu: '+escapeHtml(m.tr)+'</div></div>';
         });
         h2 += '<button class="pm-btn primary" id="pmBackSummary">Geri Don</button></div>';
         root.innerHTML = h2;
@@ -786,12 +817,12 @@
     const list = poolForActiveLang().filter(v=>group.levels.includes(v.level));
     const known = list.filter(v=>{ const r=getRecord(v); return r && r.known; });
     if(known.length === 0){
-      root.innerHTML = '<div class="pm-root"><div class="pm-empty">Bu grupta henuz bilinen kelime yok. Once biraz calisman gerekiyor.</div><span class="pm-back-link" id="pmBackHome">← Ana sayfaya don</span></div>';
+      root.innerHTML = '<div class="pm-root"><div class="pm-empty">Bu grupta henüz bilinen kelime yok. Önce biraz çalışman gerekiyor.</div><span class="pm-back-link" id="pmBackHome">← Ana sayfaya dön</span></div>';
       document.getElementById('pmBackHome').onclick = renderHome;
       return;
     }
     shuffle(known);
-    reviewMode = { group: groupName, order: known, idx: 0, stats: { total:known.length, correct:0, wrong:0 } };
+    reviewMode = { kind:'level', group: groupName, order: known, idx: 0, stats: { total:known.length, correct:0, wrong:0 } };
     renderReviewCard();
   }
 
@@ -846,14 +877,19 @@
       const ref = dbRef('progress/'+currentKey+'/words/'+key);
       if(ref) ref.set(wordProgress[key]).catch(()=>{});
     });
-    awardTask3(reviewMode.stats.total);
-    persistMeta();
     const stats = reviewMode.stats;
-    let html = '<div class="pm-root"><div class="pm-head"><div class="pm-eyebrow">Genel Tekrar Tamamlandi</div><div class="pm-title">🔁 '+reviewMode.group+'</div><div class="pm-sub">'+stats.correct+' / '+stats.total+' dogru</div></div>';
+    const isDaily = reviewMode.kind === 'daily';
+    if(isDaily){
+      awardTask4(stats.total);
+    }
+    persistMeta();
+    const titleEyebrow = isDaily ? 'Günlük Tekrar Tamamlandı' : 'Genel Tekrar Tamamlandı';
+    const titleIcon = isDaily ? '📋' : '🔁';
+    let html = '<div class="pm-root"><div class="pm-head"><div class="pm-eyebrow">'+titleEyebrow+'</div><div class="pm-title">'+titleIcon+' '+reviewMode.group+'</div><div class="pm-sub">'+stats.correct+' / '+stats.total+' doğru'+(isDaily ? (' · +'+(stats.total*2)+' XP') : '')+'</div></div>';
     if(stats.wrong>0){
       html += '<div class="pm-weak-meta" style="text-align:center;margin-bottom:14px;">'+stats.wrong+' kelime bilinmiyor listesine geri döndü, normal çalışmada tekrar karşına çıkacak.</div>';
     }
-    html += '<button class="pm-btn primary" id="pmBackHomeBtn">Ana Sayfaya Don</button></div>';
+    html += '<button class="pm-btn primary" id="pmBackHomeBtn">Ana Sayfaya Dön</button></div>';
     root.innerHTML = html;
     document.getElementById('pmBackHomeBtn').onclick = renderHome;
     reviewMode = null;
@@ -861,16 +897,16 @@
 
   function renderKnownWords(){
     const list = poolForActiveLang().filter(v=>{ const r=getRecord(v); return r && r.known; });
-    let html = '<div class="pm-root"><div class="pm-head"><div class="pm-title">✅ Ogrendigin Kelimeler</div><div class="pm-sub">'+list.length+' kelime ('+LANGS[activeLang].label+')</div></div>';
+    let html = '<div class="pm-root"><div class="pm-head"><div class="pm-title">✅ Öğrendiğin Kelimeler</div><div class="pm-sub">'+list.length+' kelime ('+LANGS[activeLang].label+')</div></div>';
     if(list.length===0){
-      html += '<div class="pm-empty">Henuz ogrenilmis kelime yok - calismaya basla!</div>';
+      html += '<div class="pm-empty">Henüz öğrenilmiş kelime yok - çalışmaya başla!</div>';
     } else {
       list.slice(0,300).forEach(v=>{
         html += '<div class="pm-known-item" dir="'+LANGS[v.lang].dir+'"><b>'+escapeHtml(v.w)+'</b><span>'+escapeHtml(v.tr)+'</span></div>';
       });
       if(list.length>300) html += '<div class="pm-weak-meta" style="text-align:center;">...ve '+(list.length-300)+' kelime daha</div>';
     }
-    html += '<button class="pm-btn primary" id="pmBackHomeBtn" style="margin-top:14px;">Ana Sayfaya Don</button></div>';
+    html += '<button class="pm-btn primary" id="pmBackHomeBtn" style="margin-top:14px;">Ana Sayfaya Dön</button></div>';
     root.innerHTML = html;
     document.getElementById('pmBackHomeBtn').onclick = renderHome;
   }
@@ -885,7 +921,7 @@
     const lookup = {};
     VOCAB.forEach(v=>{ lookup[wordKeyFor(v)] = v; });
 
-    let html = '<div class="pm-root"><div class="pm-head"><div class="pm-title">📉 Hata Yaptigin Kelimeler</div><div class="pm-sub">En cok yanlis yaptigin kelimeler</div></div>';
+    let html = '<div class="pm-root"><div class="pm-head"><div class="pm-title">📉 Hata Yaptığın Kelimeler</div><div class="pm-sub">En çok yanlış yaptığın kelimeler</div></div>';
     if(entries.length===0){
       html += '<div class="pm-empty">Hic hata yapmamissin - harika! 🎉</div>';
     } else {
@@ -893,10 +929,10 @@
         const v = lookup[e.key];
         if(!v) return;
         const status = e.rec.known ? '✅ Su an bilinen kelimeler arasinda' : '⏳ Tekrar bekliyor';
-        html += '<div class="pm-weak-item"><div class="pm-weak-word" dir="'+LANGS[v.lang].dir+'">'+escapeHtml(v.w)+' <span style="color:var(--pm-accent);font-size:12px;">- '+escapeHtml(v.tr)+'</span></div><div class="pm-weak-meta">❌ Yanlis: '+(e.rec.wrong||0)+' - ✅ Dogru: '+(e.rec.correct||0)+' - 👁 Gorulme: '+(e.rec.seen||0)+'<br>'+status+'</div></div>';
+        html += '<div class="pm-weak-item"><div class="pm-weak-word" dir="'+LANGS[v.lang].dir+'">'+escapeHtml(v.w)+' <span style="color:var(--pm-accent);font-size:12px;">- '+escapeHtml(v.tr)+'</span></div><div class="pm-weak-meta">❌ Yanlış: '+(e.rec.wrong||0)+' - ✅ Doğru: '+(e.rec.correct||0)+' - 👁 Görülme: '+(e.rec.seen||0)+'<br>'+status+'</div></div>';
       });
     }
-    html += '<button class="pm-btn primary" id="pmBackHomeBtn2">Ana Sayfaya Don</button></div>';
+    html += '<button class="pm-btn primary" id="pmBackHomeBtn2">Ana Sayfaya Dön</button></div>';
     root.innerHTML = html;
     document.getElementById('pmBackHomeBtn2').onclick = renderHome;
   }
@@ -906,12 +942,12 @@
     injectStyles();
     const name = window.LB_getUserName ? window.LB_getUserName() : '';
     if(!name){
-      root.innerHTML = '<div class="pm-root"><div class="pm-empty">Kisisel alani kullanmak icin once adini girmen gerekiyor.</div><button class="pm-btn primary" id="pmAskNameBtn">Adimi Gir</button></div>';
+      root.innerHTML = '<div class="pm-root"><div class="pm-empty">Kişisel alanı kullanmak için önce adını girmen gerekiyor.</div><button class="pm-btn primary" id="pmAskNameBtn">Adımı Gir</button></div>';
       document.getElementById('pmAskNameBtn').onclick = () => { if(window.LB_checkName) window.LB_checkName(); };
       return;
     }
     if(dataLoaded && currentName === name){ renderHome(); return; }
-    root.innerHTML = '<div class="pm-root"><div class="pm-loading">Kisisel alan yukleniyor...</div></div>';
+    root.innerHTML = '<div class="pm-root"><div class="pm-loading">Kişisel alan yükleniyor...</div></div>';
     loadUserData(name, renderHome);
   }
 
