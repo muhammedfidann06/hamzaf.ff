@@ -2,550 +2,357 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M HAMZA | Dil Kartları</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>M HAMZA | Premium Dil Kartları</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
+<meta name="theme-color" content="#0B0F19">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dil Kartları">
+
+<!-- Modern Fontlar -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;800;900&display=swap" rel="stylesheet">
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
 <style>
-  :root{
-    --bg:#04050a;
-    --panel:rgba(13,17,34,0.2);
-    --panel-2:rgba(19,26,51,0.24);
-    --cyan:#4fe8ff;
-    --cyan-soft:#8ff2ff;
-    --violet:#9b7bff;
-    --pink:#ff5fb8;
-    --gold:#ffd23b;
-    --green:#3dffa0;
-    --red:#ff3b5c;
-    --text:#eef4ff;
-    --muted:#8291b3;
-    --good:#3dffa0;
-    --bad:#ff5f7a;
-    --radius:20px;
+  :root {
+    --bg-dark: #07090F;
+    --bg-light: #131A2A;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-blur: blur(20px);
+    
+    --cyan: #00F0FF;
+    --violet: #8A2BE2;
+    --pink: #FF007F;
+    --gold: #FFD700;
+    --green: #00FF87;
+    --red: #FF3366;
+    
+    --text-main: #FFFFFF;
+    --text-muted: #8E9BB0;
+    
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 32px;
+    
+    --shadow-glow: 0 0 20px rgba(0, 240, 255, 0.2);
+    --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.4);
   }
-  *{box-sizing:border-box;}
-  html,body{margin:0;overflow-x:hidden;}
-  body{
-    background-image:
-      radial-gradient(circle at 50% -20%, rgba(90,110,200,0.20), transparent 55%),
-      radial-gradient(circle at 10% -8%, rgba(79,232,255,0.14), transparent 42%),
-      radial-gradient(circle at 105% 8%, rgba(155,123,255,0.14), transparent 46%),
-      radial-gradient(circle at 30% 108%, rgba(79,232,255,0.04), transparent 55%),
-      radial-gradient(circle at 90% 95%, rgba(255,210,59,0.05), transparent 45%),
-      linear-gradient(180deg, #050710 0%, #04050a 40%, #030308 100%);
-    background-color:var(--bg);
-    color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    padding:26px 14px 60px;
-  }
-  ::selection{background:rgba(79,232,255,0.3);}
-  .app{position:relative;z-index:1;width:100%;max-width:480px;opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .9s ease,transform .9s ease;}
-  .app.revealed{opacity:1;transform:none;pointer-events:auto;}
-  button, .chip, .opt, .tab, .level-opt, .lang-opt, .cat-trigger, .cat-close, a{
-    font-family:inherit;
-    -webkit-tap-highlight-color:transparent;
-    tap-highlight-color:transparent;
-    -webkit-touch-callout:none;
-    outline:none;
-  }
-  button, .chip, .opt, .tab, .level-opt, .lang-opt{-webkit-user-select:none;user-select:none;}
-  :focus-visible{outline:2px solid var(--cyan-soft);outline-offset:2px;}
 
-  /* ===== SPLASH ===== */
-  #splash{
-    position:fixed;inset:0;z-index:999;
-    background:radial-gradient(circle at 50% 42%, rgba(79,232,255,0.18), transparent 60%),
-      linear-gradient(180deg,#03040a,#050914 55%,#060a18);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    cursor:pointer;transition:opacity .8s ease,visibility .8s;
-  }
-  #splash.hidden{opacity:0;visibility:hidden;}
-  #snowCanvas{position:absolute;inset:0;width:100%;height:100%;}
-  .splash-content{position:relative;z-index:2;text-align:center;padding:0 24px;display:flex;flex-direction:column;align-items:center;}
-  .splash-name{
-    font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
-    font-size:54px;font-weight:700;letter-spacing:.09em;margin:0;
-    color:rgba(238,244,255,0.3);
-    -webkit-text-stroke:1px rgba(143,242,255,0.6);
-    text-shadow:0 0 10px rgba(79,232,255,0.6),0 0 28px rgba(79,232,255,0.48),0 0 66px rgba(79,232,255,0.36),0 0 110px rgba(155,123,255,0.28);
-    animation:neonBreathe 3.4s ease-in-out infinite;
-  }
-  @keyframes neonBreathe{
-    0%,100%{text-shadow:0 0 8px rgba(79,232,255,0.55),0 0 24px rgba(79,232,255,0.42),0 0 56px rgba(79,232,255,0.32),0 0 96px rgba(155,123,255,0.22);}
-    50%{text-shadow:0 0 14px rgba(79,232,255,0.85),0 0 38px rgba(79,232,255,0.65),0 0 82px rgba(79,232,255,0.5),0 0 140px rgba(155,123,255,0.36);}
-  }
-  .splash-sub{
-    margin-top:24px;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--cyan-soft);text-shadow:0 0 10px rgba(79,232,255,0.55);
-    animation:pulse 2.2s ease-in-out infinite;
-  }
-  @keyframes pulse{0%,100%{opacity:.5;}50%{opacity:1;}}
-  .ig-link{
-    display:inline-flex;align-items:center;gap:7px;margin-top:30px;
-    padding:8px 16px;border-radius:999px;
-    background:rgba(255,255,255,0.04);border:1px solid rgba(255,95,184,0.35);
-    color:var(--pink);text-decoration:none;font-size:12px;letter-spacing:.04em;
-    box-shadow:0 0 16px rgba(255,95,184,0.18);transition:transform .2s ease, box-shadow .2s ease;
-  }
-  .ig-link:hover{transform:translateY(-1px);box-shadow:0 0 22px rgba(255,95,184,0.32);}
-  .ig-link svg{width:16px;height:16px;flex-shrink:0;}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   
-  .goethe-note{
-    margin-top:26px;
-    font-size:10.5px;
-    letter-spacing:.08em;
-    color:var(--green);
-    text-shadow: 0 0 6px rgba(61,255,160,0.6), 0 0 14px rgba(61,255,160,0.5), 0 0 22px rgba(61,255,160,0.3);
-    text-align:center;
-    max-width:320px;
-    line-height:1.6;
-    font-weight:700;
+  html, body {
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
   }
 
-  .top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
-  .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--cyan-soft);margin-bottom:4px;text-shadow:0 0 10px rgba(79,232,255,0.4);}
-  h1{font-family:Georgia,'Iowan Old Style',serif;font-size:27px;margin:0 0 6px;font-weight:700;letter-spacing:.01em;}
-  .lang-pair{font-size:13.5px;font-weight:700;margin-bottom:14px;}
-  .lang-pair .a{text-shadow:0 0 10px currentColor;}
-  .sub{color:var(--muted);font-size:13px;margin-bottom:16px;}
-
-  .sound-btn{
-    flex-shrink:0;width:44px;height:44px;border-radius:14px;
-    background:var(--panel);border:1px solid rgba(79,232,255,0.25);
-    display:flex;align-items:center;justify-content:center;cursor:pointer;
-    box-shadow:0 0 14px rgba(79,232,255,0.12);transition:box-shadow .2s ease, border-color .2s ease;
-  }
-  .sound-btn.on{border-color:rgba(79,232,255,0.7);box-shadow:0 0 18px rgba(79,232,255,0.35);}
-  .sound-btn svg{width:20px;height:20px;stroke:var(--cyan-soft);}
-  .sound-btn.off svg{stroke:var(--muted);}
-
-  .lang-box{display:flex;gap:8px;margin-bottom:14px;}
-  .lang-opt{
-    flex:1;text-align:center;padding:12px 4px;border-radius:16px;cursor:pointer;
-    background:var(--panel);border:1px solid rgba(255,255,255,0.06);transition:all .2s ease;
-  }
-  .lang-opt .flag{font-size:20px;line-height:1;margin-bottom:4px;}
-  .lang-opt .lname{font-size:12px;font-weight:700;color:var(--muted);}
-  .lang-opt.active[data-lang="de"]{background:linear-gradient(135deg, rgba(255,59,92,0.22), rgba(255,210,59,0.14));border-color:rgba(255,210,59,0.6);box-shadow:0 0 16px rgba(255,59,92,0.25);}
-  .lang-opt.active[data-lang="de"] .lname{color:var(--gold);}
-  .lang-opt.active[data-lang="en"]{background:linear-gradient(135deg, rgba(62,168,255,0.24), rgba(223,238,255,0.10));border-color:rgba(62,168,255,0.6);box-shadow:0 0 16px rgba(62,168,255,0.25);}
-  .lang-opt.active[data-lang="en"] .lname{color:var(--cyan-soft);}
-  .lang-opt.active[data-lang="ar"]{background:linear-gradient(135deg, rgba(41,224,122,0.24), rgba(255,210,59,0.12));border-color:rgba(41,224,122,0.6);box-shadow:0 0 16px rgba(41,224,122,0.25);}
-  .lang-opt.active[data-lang="ar"] .lname{color:var(--green);}
-
-  .level-box{display:flex;gap:6px;background:rgba(255,255,255,0.03);border:1px solid rgba(79,232,255,0.18);border-radius:14px;padding:5px;margin-bottom:14px;}
-  .level-opt{flex:1;text-align:center;padding:8px 0;border-radius:10px;font-size:12.5px;font-weight:700;letter-spacing:.04em;color:var(--muted);cursor:pointer;transition:all .2s ease;}
-  .level-opt.active{background:linear-gradient(135deg, rgba(79,232,255,0.24), rgba(155,123,255,0.2));color:var(--cyan-soft);box-shadow:0 0 16px rgba(79,232,255,0.28), inset 0 0 0 1px rgba(79,232,255,0.45);text-shadow:0 0 8px rgba(79,232,255,0.4);}
-
-  .tabs{display:flex;gap:8px;margin-bottom:16px;}
-  .tab{flex:1;padding:10px 0;text-align:center;border-radius:12px;border:1px solid rgba(79,232,255,0.16);background:var(--panel);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--muted);font-size:13px;cursor:pointer;transition:all .15s ease;}
-  .tab:active{opacity:.6;transform:scale(.97);}
-  .tab.active{
-    position:relative;
-    background:linear-gradient(135deg, rgba(79,232,255,0.2), rgba(155,123,255,0.2), rgba(255,95,184,0.16));
-    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-    color:#eafcff;border:1px solid rgba(255,255,255,0.35);font-weight:700;
-    box-shadow:0 0 24px rgba(79,232,255,0.45), 0 0 46px rgba(155,123,255,0.28), inset 0 0 12px rgba(255,255,255,0.14);
-    text-shadow:0 0 10px rgba(255,255,255,0.6);
-    animation:tabGlow 3s ease-in-out infinite;
-  }
-  @keyframes tabGlow{
-    0%,100%{box-shadow:0 0 24px rgba(79,232,255,0.5), 0 0 46px rgba(155,123,255,0.3), inset 0 0 14px rgba(255,255,255,0.18);}
-    50%{box-shadow:0 0 32px rgba(79,232,255,0.7), 0 0 58px rgba(155,123,255,0.45), inset 0 0 18px rgba(255,255,255,0.26);}
-  }
-  .tab.active:active{opacity:.8;}
-
-  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
-  .chip{padding:5px 12px;border-radius:999px;font-size:11.5px;background:var(--panel);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--muted);border:1px solid rgba(79,232,255,0.14);cursor:pointer;}
-  .chip.active{background:rgba(79,232,255,0.1);color:var(--cyan-soft);border-color:rgba(79,232,255,0.55);box-shadow:0 0 10px rgba(79,232,255,0.2);}
-  .cat-trigger{background:rgba(155,123,255,0.08);color:var(--violet);border-color:rgba(155,123,255,0.4);font-weight:700;}
-  .cat-overlay{
-    position:fixed;inset:0;z-index:500;
-    background:rgba(4,6,12,0.72);
-    display:none;align-items:flex-end;justify-content:center;
-  }
-  .cat-overlay.open{display:flex;}
-  .cat-panel{
-    width:100%;max-width:480px;max-height:68vh;overflow-y:auto;
-    background:linear-gradient(160deg, var(--panel-2), var(--panel));
-    -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
-    border:1px solid rgba(79,232,255,0.3);border-top-left-radius:22px;border-top-right-radius:22px;
-    padding:18px 16px 26px;box-shadow:0 -10px 44px rgba(0,0,0,0.55);
-  }
-  .cat-panel-header{
-    display:flex;justify-content:space-between;align-items:center;
-    font-size:14px;font-weight:700;color:var(--cyan-soft);margin-bottom:14px;
-    padding-bottom:10px;border-bottom:1px solid rgba(79,232,255,0.15);
-    text-shadow:0 0 8px rgba(79,232,255,0.35);
-  }
-  .cat-close{cursor:pointer;color:var(--muted);font-size:15px;padding:4px 10px;border-radius:8px;}
-  .cat-close:active{background:rgba(255,255,255,0.08);}
-  .cat-grid{display:flex;flex-wrap:wrap;gap:8px;}
-  .cat-grid .chip{margin:0;}
-
-  .progress-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);margin-bottom:10px;}
-  .bar{height:3px;background:rgba(255,255,255,0.07);border-radius:3px;margin-bottom:20px;overflow:hidden;}
-  .bar-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));box-shadow:0 0 10px rgba(79,232,255,0.7);transition:width .25s ease;}
-
-  .stage{perspective:1400px;margin-bottom:18px;}
-  .card{position:relative;height:250px;border-radius:var(--radius);cursor:pointer;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.8,.2,1);}
-  .card.flipped{transform:rotateY(180deg);}
-  .face{position:absolute;inset:0;border-radius:var(--radius);backface-visibility:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;text-align:center;overflow:hidden;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);}
-  .face-front{
-    background:
-      linear-gradient(135deg, rgba(79,232,255,0.09), rgba(155,123,255,0.07), rgba(255,210,59,0.05)),
-      linear-gradient(160deg,var(--panel-2),var(--panel));
-    box-shadow:0 8px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(79,232,255,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
-  }
-  .face-back{
-    background:
-      linear-gradient(135deg, rgba(255,95,184,0.09), rgba(155,123,255,0.07), rgba(79,232,255,0.05)),
-      linear-gradient(160deg,rgba(28,16,48,0.32),var(--panel));
-    box-shadow:0 8px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,95,184,0.32), inset 0 1px 0 rgba(255,255,255,0.06);
-    transform:rotateY(180deg);
-  }
-  .tag{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan-soft);text-shadow:0 0 8px rgba(79,232,255,0.4);margin-bottom:10px;}
-  .face-back .tag{
-    background:linear-gradient(90deg, #ff3b30 0%, #ff3b30 42%, #ffffff 58%, #ffffff 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    filter:drop-shadow(0 0 6px rgba(255,59,48,0.35));
-  }
-  .tr-flag-text{
-    background:linear-gradient(90deg, #ff3b30 0%, #ff3b30 42%, #ffffff 58%, #ffffff 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent!important;
-    filter:drop-shadow(0 0 6px rgba(255,59,48,0.3));
-  }
-  .level-badge{position:absolute;top:14px;right:16px;font-size:10px;font-weight:800;letter-spacing:.05em;padding:3px 9px;border-radius:999px;background:rgba(79,232,255,0.18);color:var(--cyan-soft);border:1px solid rgba(79,232,255,0.45);}
-  .speak-controls{position:absolute;top:12px;left:14px;display:flex;gap:6px;z-index:5;}
-  .speak-icon-btn{
-    width:30px;height:30px;border-radius:999px;font-size:14px;line-height:1;
-    background:rgba(79,232,255,0.14);border:1px solid rgba(79,232,255,0.3);
-    display:flex;align-items:center;justify-content:center;cursor:pointer;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .speak-icon-btn:active{opacity:.6;transform:scale(.92);}
-  #turtleBtn{background:rgba(155,123,255,0.14);border-color:rgba(155,123,255,0.3);}
-  .word{font-size:29px;font-weight:700;line-height:1.25;font-family:Georgia,'Iowan Old Style',serif;}
-  .word[dir="rtl"]{font-family:'Segoe UI',Tahoma,sans-serif;}
-  .pos{font-size:12px;color:var(--muted);margin-top:8px;}
-  .example{font-size:12.5px;margin-top:13px;font-style:italic;line-height:1.5;opacity:.95;}
-  .example[dir="rtl"]{font-style:normal;}
-  .example span{font-weight:700;}
-  .hint{font-size:11px;color:var(--muted);text-align:center;margin-bottom:16px;}
-
-  .controls{display:flex;gap:8px;}
-  button.ctrl{flex:1;padding:12px 0;border-radius:14px;border:1px solid rgba(79,232,255,0.22);background:var(--panel);color:var(--text);font-size:13.5px;cursor:pointer;transition:all .2s;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
-  button.ctrl:hover{background:rgba(79,232,255,0.14);}
-  button.ctrl:active{opacity:.55;transform:scale(.97);}
-  button.ctrl.primary{
-    position:relative;overflow:hidden;
-    background:linear-gradient(135deg, rgba(79,232,255,0.32), rgba(155,123,255,0.32), rgba(255,95,184,0.28));
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,0.4);color:#fff;font-weight:800;
-    box-shadow:0 4px 20px rgba(79,232,255,0.35), 0 0 30px rgba(155,123,255,0.3), inset 0 0 12px rgba(255,255,255,0.15);
-    text-shadow:0 0 10px rgba(255,255,255,0.5);
-    background-size:200% 200%;
-    animation:primaryShine 3.5s ease-in-out infinite;
-  }
-  @keyframes primaryShine{
-    0%,100%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-  }
-  button.ctrl.primary:hover{box-shadow:0 6px 26px rgba(79,232,255,0.55), 0 0 44px rgba(155,123,255,0.5), inset 0 0 18px rgba(255,255,255,0.3);}
-  button.ctrl.primary:active{opacity:.7;box-shadow:0 2px 10px rgba(155,123,255,0.3);}
-
-  .quiz-card{
-    background:
-      linear-gradient(135deg, rgba(79,232,255,0.09), rgba(155,123,255,0.07), rgba(255,95,184,0.05)),
-      linear-gradient(160deg,var(--panel-2),var(--panel));
-    box-shadow:0 8px 30px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(79,232,255,0.26), inset 0 1px 0 rgba(255,255,255,0.06);
-    border-radius:var(--radius);padding:28px 22px;text-align:center;margin-bottom:18px;overflow:hidden;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
-  }
-  .quiz-word{font-size:29px;font-weight:700;margin-bottom:6px;font-family:Georgia,'Iowan Old Style',serif;}
-  .quiz-sub{font-size:12px;color:var(--muted);}
-  .options{display:flex;flex-direction:column;gap:10px;}
-  .opt{padding:13px 16px;border-radius:14px;border:1px solid rgba(79,232,255,0.2);background:var(--panel);color:var(--text);font-size:14.5px;text-align:left;cursor:pointer;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
-  .opt.correct{background:rgba(61,255,160,0.14);border-color:var(--good);color:var(--good);box-shadow:0 0 14px rgba(61,255,160,0.3);}
-  .opt.wrong{background:rgba(255,95,122,0.14);border-color:var(--bad);color:var(--bad);box-shadow:0 0 14px rgba(255,95,122,0.3);}
-  .opt[disabled]{cursor:default;}
-
-  .score-pill{display:inline-block;font-size:12px;color:var(--cyan-soft);background:rgba(79,232,255,0.14);padding:5px 13px;border-radius:999px;margin-bottom:14px;text-shadow:0 0 8px rgba(79,232,255,0.3);}
-  .done{text-align:center;padding:40px 20px;}
-  .done .word{font-size:34px;margin-bottom:6px;font-family:Georgia,'Iowan Old Style',serif;}
-
-  .mistake-item{
-    background:var(--panel-2); border:1px solid rgba(255,95,122,0.3); border-radius:14px; padding:16px; text-align:left; margin-bottom:12px;
-  }
-  .mistake-word{font-size:18px; font-weight:bold; margin-bottom:8px; color:var(--text);}
-  .mistake-given{font-size:13px; color:var(--bad); margin-bottom:4px;}
-  .mistake-correct{font-size:13px; color:var(--good);}
-
-  .session-timer{
-    text-align:center;font-size:11.5px;color:var(--cyan-soft);margin-top:22px;
-    letter-spacing:.05em;font-weight:700;
-    background:rgba(79,232,255,0.08);border:1px solid rgba(79,232,255,0.25);
-    padding:7px 12px;border-radius:999px;
-    text-shadow:0 0 8px rgba(79,232,255,0.4);
-  }
-  .credit{text-align:center;font-size:11px;color:var(--muted);margin-top:26px;letter-spacing:.06em;opacity:.75;background:rgba(10,14,24,0.35);padding:8px 12px;border-radius:10px;}
-  .credit b{color:var(--cyan-soft);font-weight:700;text-shadow:0 0 8px rgba(79,232,255,0.5);}
-
-  /* ===== KAYAN YILDIZ ===== */
-  #fxLayer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
-  .shooting-star{
-    position:absolute;height:2px;border-radius:3px;
-    background:linear-gradient(90deg, rgba(255,255,255,0.95), rgba(180,215,255,0.5), transparent);
-    box-shadow:0 0 10px 2px rgba(79,232,255,0.85), 0 0 22px 6px rgba(155,123,255,0.45);
-    transform-origin:left center;opacity:0;
-    animation:shoot var(--dur,1s) ease-out forwards;
-  }
-  .shooting-star::after{
-    content:'';position:absolute;left:0;top:50%;width:5px;height:5px;border-radius:50%;
-    background:#fff;box-shadow:0 0 12px 5px rgba(255,255,255,0.95), 0 0 24px 10px rgba(155,123,255,0.5);
-    transform:translate(-50%,-50%);
-  }
-  @keyframes shoot{
-    0%{transform:translate(0,0) rotate(var(--ang,-22deg)) scaleX(0.15);opacity:0;}
-    12%{opacity:1;transform:translate(0,0) rotate(var(--ang,-22deg)) scaleX(1);}
-    100%{transform:translate(var(--dx,-320px),var(--dy,150px)) rotate(var(--ang,-22deg)) scaleX(1);opacity:0;}
+  /* --- AURORA BACKGROUND --- */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: 
+      radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.15), transparent 40%),
+      radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.1), transparent 30%),
+      radial-gradient(circle at 20% 80%, rgba(255, 0, 127, 0.08), transparent 40%);
+    animation: auroraDrift 20s ease-in-out infinite alternate;
+    z-index: -1;
+    pointer-events: none;
   }
 
-  /* ===== AY VE YILDIZLAR ===== */
-  .moon{
-    position:absolute;top:6%;right:8%;width:72px;height:72px;border-radius:50%;
-    background:radial-gradient(circle at 35% 35%, #fdfdf7, #d7dceb 55%, #a9b0c4 100%);
-    box-shadow:0 0 30px 10px rgba(230,238,255,0.4), 0 0 70px 26px rgba(140,170,255,0.18);
-    animation:moonFloat 10s ease-in-out infinite;
-  }
-  .moon::after{
-    content:'';position:absolute;top:18%;left:58%;width:14px;height:14px;border-radius:50%;
-    background:rgba(160,170,190,0.35);box-shadow:10px 16px 0 -3px rgba(160,170,190,0.25);
-  }
-  @keyframes moonFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-  .star{
-    position:absolute;border-radius:50%;
-    background:radial-gradient(circle, #fff 0%, rgba(255,255,255,0.55) 45%, transparent 75%);
-    animation:twinkle ease-in-out infinite;
-  }
-  .star.sparkle::before,.star.sparkle::after{
-    content:'';position:absolute;top:50%;left:50%;
-    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
-    transform:translate(-50%,-50%);
-  }
-  .star.sparkle::before{width:var(--ray,10px);height:1px;}
-  .star.sparkle::after{width:1px;height:var(--ray,10px);}
-  @keyframes twinkle{0%,100%{opacity:.15;transform:scale(.7);}50%{opacity:1;transform:scale(1.15);}}
-
-  /* ===== BULUTLAR (gerçekçi, ayın önünden geçebilir) ===== */
-  .cloud{
-    position:absolute;left:-200px;border-radius:50%;
-    background:rgba(222,231,244,0.5);
-    filter:blur(3px);
-    animation-name:cloudDrift;animation-timing-function:linear;animation-iteration-count:infinite;
-    transition:opacity .4s ease;
-  }
-  .cloud::before,.cloud::after{
-    content:'';position:absolute;background:inherit;border-radius:50%;
-  }
-  .cloud::before{width:55%;height:150%;top:-52%;left:16%;}
-  .cloud::after{width:42%;height:120%;top:-32%;left:56%;}
-  @keyframes cloudDrift{
-    0%{transform:translateX(0);}
-    100%{transform:translateX(calc(100vw + 400px));}
+  @keyframes auroraDrift {
+    0% { transform: rotate(0deg) scale(1); }
+    100% { transform: rotate(15deg) scale(1.1); }
   }
 
-  /* ===== KELEBEK (yakında, sürekli süzülen) ===== */
-  .butterfly{position:absolute;width:22px;height:16px;top:48%;left:15%;animation:flutterPath 16s ease-in-out infinite;}
-  .butterfly svg{width:100%;height:100%;display:block;overflow:visible;}
-  .butterfly .bwing-l{transform-origin:11px 8px;animation:bflapL .13s ease-in-out infinite alternate;}
-  .butterfly .bwing-r{transform-origin:11px 8px;animation:bflapR .13s ease-in-out infinite alternate;}
-  @keyframes bflapL{0%{transform:rotate(0deg) scaleX(1);}100%{transform:rotate(24deg) scaleX(0.55);}}
-  @keyframes bflapR{0%{transform:rotate(0deg) scaleX(1);}100%{transform:rotate(-24deg) scaleX(0.55);}}
-  @keyframes flutterPath{
-    0%{transform:translate(0,0);}
-    18%{transform:translate(60px,-45px);}
-    36%{transform:translate(130px,15px);}
-    54%{transform:translate(80px,70px);}
-    72%{transform:translate(-30px,40px);}
-    88%{transform:translate(-50px,-20px);}
-    100%{transform:translate(0,0);}
+  body {
+    display: flex;
+    justify-content: center;
+    padding: 20px 16px 80px;
   }
 
-  /* ===== KUŞLAR (gerçekçi gövde + kanat, sürü hâlinde uçuş) ===== */
-  .bird{position:absolute;width:26px;height:14px;opacity:0;pointer-events:none;}
-  .bird svg{width:100%;height:100%;display:block;overflow:visible;}
-  .bird .wing-l{transform-origin:13px 8px;animation:flapL .28s ease-in-out infinite alternate;}
-  .bird .wing-r{transform-origin:13px 8px;animation:flapR .28s ease-in-out infinite alternate;}
-  @keyframes flapL{0%{transform:rotate(2deg);}100%{transform:rotate(24deg);}}
-  @keyframes flapR{0%{transform:rotate(-2deg);}100%{transform:rotate(-24deg);}}
-  @keyframes birdFlyA{
-    0%{opacity:0;transform:translate(-30px,0);}
-    8%{opacity:.85;}
-    22%{transform:translate(22vw,-22px);}
-    40%{transform:translate(40vw,8px);}
-    58%{transform:translate(58vw,-16px);}
-    76%{transform:translate(76vw,6px);}
-    92%{opacity:.85;}
-    100%{opacity:0;transform:translate(calc(100vw + 30px),-24px);}
-  }
-  @keyframes birdFlyB{
-    0%{opacity:0;transform:translate(-30px,0);}
-    8%{opacity:.85;}
-    22%{transform:translate(22vw,10px);}
-    40%{transform:translate(40vw,-18px);}
-    58%{transform:translate(58vw,4px);}
-    76%{transform:translate(76vw,-14px);}
-    92%{opacity:.85;}
-    100%{opacity:0;transform:translate(calc(100vw + 30px),18px);}
-  }
-  .bird.flying-a{animation-name:birdFlyA;animation-timing-function:linear;animation-fill-mode:forwards;}
-  .bird.flying-b{animation-name:birdFlyB;animation-timing-function:linear;animation-fill-mode:forwards;}
+  ::selection { background: rgba(0, 240, 255, 0.3); }
 
-  /* ===== İSİM MODALI ===== */
-  #nameOverlay{
-    position:fixed;inset:0;z-index:1000;
-    background:rgba(10,4,12,0.78);
-    display:none;align-items:center;justify-content:center;padding:20px;
-  }
-  #nameOverlay.open{display:flex;}
-  .name-card{
-    width:100%;max-width:380px;
-    background:linear-gradient(160deg, var(--panel-2), var(--panel));
-    -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
-    border:1px solid rgba(79,232,255,0.35);border-radius:22px;
-    padding:26px 22px;text-align:center;
-    box-shadow:0 10px 40px rgba(0,0,0,0.5);
-  }
-  .name-card h3{margin:0 0 6px;font-size:19px;color:var(--text);font-family:Georgia,'Iowan Old Style',serif;}
-  .name-card p{margin:0 0 18px;font-size:12.5px;color:var(--muted);line-height:1.5;}
-  .name-card input{
-    width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(79,232,255,0.3);
-    background:rgba(0,0,0,0.2);color:var(--text);font-size:15px;margin-bottom:14px;text-align:center;
-  }
-  .name-card input:focus{outline:2px solid var(--cyan-soft);}
-  .name-card button{
-    width:100%;padding:12px 0;border-radius:12px;border:none;cursor:pointer;
-    background:linear-gradient(135deg,var(--cyan),var(--pink));color:#2a1420;font-weight:700;font-size:14px;
-    box-shadow:0 4px 18px rgba(255,95,184,0.35);
+  h1, h2, h3, .word, .splash-name, .quiz-word {
+    font-family: 'Outfit', sans-serif;
   }
 
-  /* ===== LİDERLİK TABLOSU (giriş ekranının altında sabit) ===== */
-  .splash-lb{
-    margin-top:28px;width:100%;max-width:300px;
-    background:rgba(13,17,34,0.55);
-    border:1px solid rgba(255,210,59,0.3);border-radius:16px;
-    padding:12px 14px 8px;
-    max-height:none;overflow:visible;touch-action:none;
+  .app {
+    position: relative; z-index: 1; width: 100%; max-width: 500px;
+    opacity: 0; transform: translateY(20px); pointer-events: none;
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .splash-lb-title{
-    font-size:11.5px;font-weight:700;color:var(--gold);letter-spacing:.04em;
-    margin-bottom:8px;text-align:center;
-  }
-  .splash-lb-list{display:flex;flex-direction:column;gap:6px;padding-bottom:6px;}
-  .lb-row{
-    display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:10px;
-    background:rgba(255,255,255,0.03);border:1px solid transparent;
-  }
-  .lb-row.me{background:rgba(255,210,59,0.14);border-color:rgba(255,210,59,0.4);}
-  .lb-rank{width:20px;text-align:center;font-weight:800;font-size:12px;color:var(--muted);}
-  .lb-name{flex:1;font-size:12px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;}
-  .lb-time{font-size:11px;color:var(--cyan-soft);font-weight:700;}
-  .lb-empty{text-align:center;color:var(--muted);font-size:11.5px;padding:10px 0;}
+  .app.revealed { opacity: 1; transform: none; pointer-events: auto; }
 
-  /* İlk 3 için neon altın / gümüş / bronz */
-  .lb-row:nth-child(1){
-    background:rgba(255,214,59,0.12);border-color:rgba(255,214,59,0.55);
-    box-shadow:0 0 16px rgba(255,214,59,0.3), inset 0 0 10px rgba(255,214,59,0.12);
+  button, a {
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    outline: none; border: none; cursor: pointer;
   }
-  .lb-row:nth-child(1) .lb-rank{color:#ffe45c;text-shadow:0 0 10px rgba(255,214,59,0.9);}
-  .lb-row:nth-child(1) .lb-time{color:#ffe45c;font-weight:900;text-shadow:0 0 10px rgba(255,214,59,0.8),0 0 18px rgba(255,214,59,0.4);}
-  .lb-row:nth-child(1) .lb-name{color:#ffe45c;font-weight:900;text-shadow:0 0 10px rgba(255,214,59,0.8),0 0 18px rgba(255,214,59,0.4);}
-  .lb-row:nth-child(2){
-    background:rgba(210,220,235,0.12);border-color:rgba(210,220,235,0.55);
-    box-shadow:0 0 16px rgba(210,220,235,0.28), inset 0 0 10px rgba(210,220,235,0.12);
-  }
-  .lb-row:nth-child(2) .lb-rank{color:#eef3fb;text-shadow:0 0 10px rgba(220,230,245,0.9);}
-  .lb-row:nth-child(2) .lb-time{color:#eef3fb;font-weight:900;text-shadow:0 0 10px rgba(220,230,245,0.75),0 0 18px rgba(220,230,245,0.4);}
-  .lb-row:nth-child(2) .lb-name{color:#eef3fb;font-weight:900;text-shadow:0 0 10px rgba(220,230,245,0.75),0 0 18px rgba(220,230,245,0.4);}
-  .lb-row:nth-child(3){
-    background:rgba(224,140,79,0.14);border-color:rgba(224,140,79,0.55);
-    box-shadow:0 0 16px rgba(224,140,79,0.3), inset 0 0 10px rgba(224,140,79,0.12);
-  }
-  .lb-row:nth-child(3) .lb-rank{color:#f0a468;text-shadow:0 0 10px rgba(224,140,79,0.9);}
-  .lb-row:nth-child(3) .lb-time{color:#f0a468;font-weight:900;text-shadow:0 0 10px rgba(224,140,79,0.8),0 0 18px rgba(224,140,79,0.4);}
-  .lb-row:nth-child(3) .lb-name{color:#f0a468;font-weight:900;text-shadow:0 0 10px rgba(224,140,79,0.8),0 0 18px rgba(224,140,79,0.4);}
 
-  @media (prefers-reduced-motion: reduce){
-    .app, #splash, .card, .bar-fill{transition:none !important;}
-    .splash-name, .splash-sub{animation:none !important;}
-    .shooting-star, .moon, .star, .cloud, .bird, .butterfly{animation:none !important;display:none !important;}
+  /* ===== SPLASH EKRANI (LÜKS TASARIM) ===== */
+  #splash {
+    position: fixed; inset: 0; z-index: 999;
+    background: var(--bg-dark);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; transition: opacity 0.6s ease, visibility 0.6s;
+    backdrop-filter: var(--glass-blur);
   }
+  #splash.hidden { opacity: 0; visibility: hidden; }
+  
+  .splash-content {
+    text-align: center; padding: 40px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(40px);
+    display: flex; flex-direction: column; align-items: center;
+  }
+
+  .splash-name {
+    font-size: 48px; font-weight: 900; line-height: 1.1;
+    background: linear-gradient(135deg, #FFF, #A0B0C0);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px; letter-spacing: -1px;
+  }
+
+  .splash-sub {
+    font-size: 13px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--cyan);
+    animation: pulseGlow 2s infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    0% { opacity: 0.6; text-shadow: 0 0 10px rgba(0, 240, 255, 0.2); }
+    100% { opacity: 1; text-shadow: 0 0 20px rgba(0, 240, 255, 0.6); }
+  }
+
+  .goethe-note {
+    margin-top: 24px; font-size: 11px; letter-spacing: 1px;
+    color: var(--green); opacity: 0.8;
+  }
+
+  /* ===== ÜST BAR ===== */
+  .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--cyan); text-transform: uppercase; margin-bottom: 4px; }
+  h1 { font-size: 32px; font-weight: 800; margin: 0; letter-spacing: -0.5px; }
+  
+  .top-btn-row { display: flex; gap: 10px; }
+  .sound-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-main); font-size: 18px;
+    backdrop-filter: var(--glass-blur); transition: all 0.3s ease;
+  }
+  .sound-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+  .sound-btn.on { color: var(--cyan); border-color: rgba(0, 240, 255, 0.3); box-shadow: var(--shadow-glow); }
+
+  /* ===== DİL & SEVİYE SEÇİMİ ===== */
+  .lang-box, .level-box, .tabs {
+    display: flex; gap: 8px; margin-bottom: 16px;
+    background: rgba(0,0,0,0.2); padding: 6px; border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+  }
+  
+  .lang-opt, .level-opt, .tab {
+    flex: 1; text-align: center; padding: 12px 0; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 600; color: var(--text-muted);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
+  }
+  
+  .lang-opt.active, .level-opt.active, .tab.active {
+    background: rgba(255,255,255,0.1); color: #FFF;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  
+  .lang-opt .flag { font-size: 22px; margin-bottom: 4px; }
+  .lang-opt .lname { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .tab.active { background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(138, 43, 226, 0.15)); border: 1px solid rgba(0,240,255,0.3); }
+
+  /* ===== CHIPS (KATEGORİLER) ===== */
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .chip {
+    padding: 8px 16px; border-radius: 30px; font-size: 12px; font-weight: 600;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    color: var(--text-muted); transition: all 0.3s ease;
+  }
+  .chip.active {
+    background: rgba(0, 240, 255, 0.1); color: var(--cyan);
+    border-color: rgba(0, 240, 255, 0.4); box-shadow: var(--shadow-glow);
+  }
+
+  /* ===== KART ALANI (3D GLASSMORPHISM) ===== */
+  .stage { perspective: 1000px; margin-bottom: 24px; }
+  .card {
+    position: relative; height: 320px; border-radius: var(--radius-lg);
+    transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  
+  .face {
+    position: absolute; inset: 0; border-radius: var(--radius-lg);
+    backface-visibility: hidden; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; padding: 32px; text-align: center;
+    background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-card), inset 0 1px 1px rgba(255,255,255,0.1);
+    backdrop-filter: var(--glass-blur);
+  }
+  .face-back { transform: rotateY(180deg); border-color: rgba(138, 43, 226, 0.3); }
+
+  .level-badge {
+    position: absolute; top: 20px; right: 20px;
+    font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 20px;
+    background: rgba(0, 240, 255, 0.1); color: var(--cyan); border: 1px solid rgba(0,240,255,0.3);
+  }
+
+  .speak-controls { position: absolute; top: 20px; left: 20px; display: flex; gap: 8px; }
+  .speak-icon-btn {
+    width: 36px; height: 36px; border-radius: 50%; font-size: 16px;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+    color: #FFF; transition: all 0.2s ease;
+  }
+  .speak-icon-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.2); }
+
+  .tag { font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+  .word { font-size: 42px; font-weight: 800; margin-bottom: 8px; letter-spacing: -1px; }
+  .pos { font-size: 13px; color: var(--cyan); font-weight: 500; margin-bottom: 16px; }
+  .example { font-size: 15px; color: var(--text-muted); font-style: italic; line-height: 1.6; }
+
+  /* ===== KONTROLLER ===== */
+  .controls { display: flex; gap: 12px; }
+  button.ctrl {
+    flex: 1; padding: 16px 0; border-radius: var(--radius-md);
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    color: #FFF; font-size: 15px; font-weight: 600;
+    transition: all 0.3s ease; backdrop-filter: var(--glass-blur);
+  }
+  button.ctrl:hover { background: rgba(255,255,255,0.1); }
+  button.ctrl:active { transform: scale(0.96); }
+  
+  button.ctrl.primary {
+    background: linear-gradient(135deg, var(--cyan), var(--violet));
+    color: #000; border: none; font-weight: 800;
+    box-shadow: 0 10px 20px rgba(0, 240, 255, 0.3);
+  }
+  button.ctrl.primary:hover { box-shadow: 0 12px 25px rgba(0, 240, 255, 0.5); transform: translateY(-2px); }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-row { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+  .bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 24px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--violet)); transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+  /* ===== QUIZ EKRANI ===== */
+  .quiz-card {
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg); padding: 40px 24px; text-align: center; margin-bottom: 24px;
+    backdrop-filter: var(--glass-blur); box-shadow: var(--shadow-card);
+  }
+  .options { display: flex; flex-direction: column; gap: 12px; }
+  .opt {
+    padding: 18px 20px; border-radius: var(--radius-md); font-size: 15px; font-weight: 500;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    color: #FFF; text-align: left; transition: all 0.2s; backdrop-filter: var(--glass-blur);
+  }
+  .opt:hover:not([disabled]) { background: rgba(255,255,255,0.1); transform: translateX(4px); }
+  .opt.correct { background: rgba(0, 255, 135, 0.2); border-color: var(--green); color: var(--green); }
+  .opt.wrong { background: rgba(255, 51, 102, 0.2); border-color: var(--red); color: var(--red); }
+
+  /* ===== OVERLAY & MODALS ===== */
+  .cat-overlay, #nameOverlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(7, 9, 15, 0.8); backdrop-filter: blur(10px);
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .cat-overlay.open, #nameOverlay.open { display: flex; }
+  
+  .name-card, .cat-panel {
+    width: 100%; max-width: 400px;
+    background: rgba(20, 25, 40, 0.9); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-lg); padding: 32px 24px; text-align: center;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+  }
+  
+  .name-card input {
+    width: 100%; padding: 16px; border-radius: var(--radius-md);
+    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+    color: #FFF; font-size: 15px; margin-bottom: 16px; font-family: 'Inter', sans-serif;
+  }
+  .name-card input:focus { border-color: var(--cyan); box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2); }
+  
+  .name-card button {
+    width: 100%; padding: 16px; border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--cyan), var(--violet));
+    color: #000; font-weight: 800; font-size: 16px; margin-top: 8px;
+  }
+
+  /* Alt Bilgiler */
+  .session-timer { text-align: center; font-size: 12px; color: var(--cyan); margin-top: 32px; font-weight: 600; letter-spacing: 1px; }
+  .credit { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 16px; opacity: 0.6; }
 </style>
 </head>
 <body>
 
-<div id="fxLayer">
-  <div class="moon"></div>
-  <div id="starsField"></div>
-  <div class="cloud" style="top:10%;width:120px;height:40px;animation-duration:75s;animation-delay:-10s;"></div>
-  <div class="cloud" style="top:20%;width:85px;height:28px;animation-duration:95s;animation-delay:-45s;"></div>
-  <div class="cloud" style="top:4%;width:65px;height:22px;animation-duration:62s;animation-delay:-25s;"></div>
-  <div class="butterfly" aria-hidden="true">
-    <svg viewBox="0 0 22 16">
-      <line x1="11" y1="3" x2="11" y2="13" stroke="rgba(255,255,255,0.9)" stroke-width="1"/>
-      <ellipse class="bwing-l" cx="5" cy="7" rx="5.5" ry="4" fill="rgba(255,255,255,0.88)"/>
-      <ellipse class="bwing-r" cx="17" cy="7" rx="5.5" ry="4" fill="rgba(255,255,255,0.88)"/>
-    </svg>
-  </div>
-</div>
-
+<!-- Giriş Ekranı (Leaderboard.js için gerekli) -->
 <div id="nameOverlay">
   <div class="name-card">
-    <h3>Hoş geldin! 👋</h3>
-    <p>Liderlik tablosunda görünmek için adını gir. Sitede geçirdiğin süre kalıcı olarak bu isme eklenecek.</p>
-    <input type="text" id="nameInput" maxlength="20" placeholder="Adını yaz...">
-    <button id="nameSubmit">Başla</button>
+    <h3 style="font-size: 24px; margin-bottom: 8px;">Hoş Geldin 👋</h3>
+    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">İlerlemeni kaydetmek için giriş yap.</p>
+    <input type="text" id="nameInput" maxlength="20" placeholder="Kullanıcı Adı">
+    <div class="pw-field-wrap">
+      <input type="password" id="passwordInput" maxlength="30" placeholder="Şifre">
+    </div>
+    <div class="login-error" id="loginError" style="color: var(--red); font-size: 12px; margin-bottom: 16px;"></div>
+    <button id="nameSubmit">Sisteme Gir</button>
   </div>
 </div>
 
+<!-- Splash Ekranı -->
 <div id="splash">
-  <canvas id="snowCanvas"></canvas>
   <div class="splash-content">
     <h1 class="splash-name">M HAMZA</h1>
-    <div class="splash-sub">GİRİŞ İÇİN EKRANA TIKLAYIN</div>
-    <a class="ig-link" id="igLink" href="https://www.instagram.com/muhammedf.fdn" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
-      muhammedf.fdn
-    </a>
-    <div class="goethe-note">☉ BU SAYFADA KULLANILAN KELİMELER GOETHE İLE BİREBİR UYUMLUDUR.</div>
-
-    <div class="splash-lb" id="splashLb">
-      <div class="splash-lb-title">🏆 En Çok Vakit Geçirenler</div>
-      <div id="splashLbList" class="splash-lb-list"></div>
+    <h1 class="splash-name" style="font-size: 32px; margin-bottom: 24px;">DİL KARTLARI</h1>
+    <div class="splash-sub">Giriş İçin Dokun</div>
+    <div class="goethe-note">CEFR & GOETHE UYUMLU</div>
+    
+    <div class="splash-lb" id="splashLb" style="margin-top: 32px; text-align: left; width: 100%; background: rgba(0,0,0,0.2); border-radius: 16px; padding: 16px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="font-size: 12px; color: var(--gold); font-weight: 700; margin-bottom: 12px; text-align: center;">🏆 Liderlik Tablosu</div>
+      <div id="splashLbList" style="display: flex; flex-direction: column; gap: 8px;"></div>
     </div>
   </div>
 </div>
 
+<!-- Ana Uygulama -->
 <div class="app" id="mainApp">
+  
   <div class="top-row">
     <div>
-      <div class="eyebrow">Kelime Kartları</div>
-      <h1>Dil Kartları</h1>
+      <div class="eyebrow">Öğrenim Merkezi</div>
+      <h1 id="langPair">🇩🇪 Almanca</h1>
     </div>
-    <div class="sound-btn on" id="soundBtn" title="Sesi aç/kapat">
-      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" id="soundIcon">
-        <path d="M4 9v6h4l5 4V5L8 9H4z"/>
-        <path d="M16.5 8.5a5 5 0 0 1 0 7"/>
-        <path d="M19 6a9 9 0 0 1 0 12"/>
-      </svg>
+    <div class="top-btn-row">
+      <button class="sound-btn on" id="soundBtn">🔊</button>
+      <button class="sound-btn" id="fullscreenBtn">⛶</button>
     </div>
   </div>
-  <div class="lang-pair" id="langPair"></div>
-  <div class="sub">Seviye, dil ve kategori seç — kartına dokun, dinle, öğren</div>
 
   <div class="lang-box" id="langBox">
     <div class="lang-opt active" data-lang="de"><div class="flag">🇩🇪</div><div class="lname">Almanca</div></div>
@@ -557,29 +364,31 @@
 
   <div class="tabs">
     <div class="tab active" id="tabCards">Kartlar</div>
-    <div class="tab" id="tabQuiz">Quiz</div>
+    <div class="tab" id="tabQuiz">Test</div>
     <div class="tab" id="tabPersonal">🎯 Kişisel</div>
   </div>
 
   <div class="chips" id="chips">
     <div class="chip active" id="catAllChip">Tümü</div>
-    <div class="chip cat-trigger" id="catTrigger">📂 Kategori Seç</div>
+    <div class="chip" id="catTrigger">📂 Kategori Seç</div>
   </div>
 
+  <!-- Kategori Seçim Modali -->
   <div class="cat-overlay" id="catOverlay">
     <div class="cat-panel">
-      <div class="cat-panel-header">
+      <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; color: var(--cyan);">
         <span>Kategori Seç</span>
-        <span class="cat-close" id="catClose">✕</span>
+        <span id="catClose" style="cursor: pointer; color: white;">✕</span>
       </div>
-      <div class="cat-grid" id="catGrid"></div>
+      <div id="catGrid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
     </div>
   </div>
 
+  <!-- Kart Görünümü -->
   <div id="cardsView">
     <div class="progress-row">
       <span id="cardCount">1 / 40</span>
-      <span id="cardCat">Tümü</span>
+      <span id="cardCat" style="color: var(--cyan);">Tümü</span>
     </div>
     <div class="bar"><div class="bar-fill" id="cardBar" style="width:5%"></div></div>
 
@@ -588,8 +397,8 @@
         <div class="face face-front">
           <div class="level-badge" id="levelBadgeFront">A1</div>
           <div class="speak-controls">
-            <button type="button" class="speak-icon-btn" id="rabbitBtn" title="Hızlı dinle">🐰</button>
-            <button type="button" class="speak-icon-btn" id="turtleBtn" title="Yavaş dinle">🐢</button>
+            <button type="button" class="speak-icon-btn" id="rabbitBtn">🐰</button>
+            <button type="button" class="speak-icon-btn" id="turtleBtn">🐢</button>
           </div>
           <div class="tag" id="tagFront">Deutsch</div>
           <div class="word" id="frontWord">Hallo</div>
@@ -598,13 +407,14 @@
         </div>
         <div class="face face-back">
           <div class="level-badge" id="levelBadgeBack">A1</div>
-          <div class="tag">Türkçe</div>
+          <div class="tag" style="color: var(--pink);">Türkçe</div>
           <div class="word" id="trWord">Merhaba</div>
           <div class="example" id="trExample"></div>
         </div>
       </div>
     </div>
-    <div class="hint">Çevirmek için karta dokun</div>
+    
+    <div style="text-align: center; font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">Çevirmek için karta dokun</div>
 
     <div class="controls">
       <button class="ctrl" id="prevBtn">Önceki</button>
@@ -613,819 +423,56 @@
     </div>
   </div>
 
+  <!-- Quiz Görünümü -->
   <div id="quizView" style="display:none;">
     <div class="progress-row">
       <span id="quizCount">Soru 1 / 40</span>
-      <span class="score-pill" id="scorePill">0 doğru</span>
+      <span id="scorePill" style="color: var(--green);">0 doğru</span>
     </div>
     <div class="bar"><div class="bar-fill" id="quizBar" style="width:5%"></div></div>
 
     <div class="quiz-card">
-      <div class="tag" style="color:var(--cyan-soft)">Bu kelimenin anlamı nedir?</div>
+      <div class="tag" style="color:var(--cyan); margin-bottom: 16px;">Bu kelimenin anlamı nedir?</div>
       <div class="quiz-word" id="quizWord">Hallo</div>
-      <div class="quiz-sub" id="quizPos">ünlem</div>
+      <div class="pos" id="quizPos" style="margin-top: 8px;">ünlem</div>
     </div>
 
     <div class="options" id="options"></div>
   </div>
 
-  <div id="doneView" class="done" style="display:none;">
+  <!-- Sonuç Ekranları -->
+  <div id="doneView" style="display:none; text-align: center; padding: 60px 20px;">
     <div class="word">Bitti! 🎉</div>
-    <div class="sub" id="finalScore" style="margin-top:6px;"></div>
-    <div class="controls" style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
-      <button class="ctrl" id="showMistakesBtn" style="display:none;">Hatalarını Gör</button>
-      <button class="ctrl primary" id="restartBtn">Tekrar Başla</button>
-    </div>
+    <div id="finalScore" style="font-size: 16px; color: var(--text-muted); margin-bottom: 30px;"></div>
+    <button class="ctrl primary" id="showMistakesBtn" style="width: 100%; margin-bottom: 12px; display: none;">Hatalarını Gör</button>
+    <button class="ctrl" id="restartBtn" style="width: 100%;">Tekrar Başla</button>
   </div>
 
-  <div id="mistakesView" class="done" style="display:none; padding-top:20px;">
-    <div class="word" style="color:var(--bad); font-size:24px;">Quiz Hataların</div>
-    <div id="mistakesList" style="margin-top:20px; max-height:50vh; overflow-y:auto; padding-right:5px;"></div>
-    <div class="controls" style="margin-top:20px;">
-      <button class="ctrl primary" id="backToDoneBtn">Sonuçlara Dön</button>
-    </div>
+  <div id="mistakesView" style="display:none; padding-top: 20px;">
+    <h2 style="color: var(--red); text-align: center; margin-bottom: 24px;">Hataların</h2>
+    <div id="mistakesList" style="max-height: 50vh; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;"></div>
+    <button class="ctrl primary" id="backToDoneBtn" style="width: 100%; margin-top: 24px;">Geri Dön</button>
   </div>
 
+  <!-- Kişisel Mod (Progress.js İçin Alan) -->
   <div id="personalView" style="display:none;"></div>
 
+  <!-- Durum Bilgileri -->
   <div class="session-timer" id="sessionTimer">⏱ Bu oturumda: 0sn</div>
-  <div class="session-timer" id="profileTimer">👤 Profil yükleniyor...</div>
-  <div class="credit">İsim hakları <b>M HAMZA</b>'ya aittir</div>
+  <div class="session-timer" id="profileTimer" style="margin-top: 8px; color: var(--text-muted);">👤 Profil yükleniyor...</div>
+  <div class="credit">Tasarım & Altyapı: M. Hamza Fidan</div>
 </div>
 
+<!-- Senin Mevcut Script Dosyaların (Sakın Silme) -->
 <script src="vocab-core.js"></script>
 <script src="vocab-de.js"></script>
 <script src="vocab-en.js"></script>
 <script src="vocab-ar.js"></script>
 <script src="leaderboard.js"></script>
-<script>
-/* Kelime verisi artık vocab-core.js / vocab-de.js / vocab-en.js / vocab-ar.js
-   dosyalarından yükleniyor (bkz. yukarıdaki <script src> etiketleri). */
-/* ======================= CONFIG ======================= */
-const LANGS = {
-  de:{ label:"Almanca", native:"Deutsch", levels:["A1","A2"], voice:"de-DE", dir:"ltr" },
-  en:{ label:"İngilizce", native:"English", levels:["A1","A2","B1","B2"], voice:"en-US", dir:"ltr" },
-  ar:{ label:"Arapça", native:"العربية", levels:["A1","A2","B1","B2"], voice:"ar-SA", dir:"rtl" }
-};
-
-let activeLang = "de";
-let activeLevel = "TÜMÜ";
-let activeCat = "Tümü";
-let deck = [];
-let idx = 0;
-let flipped = false;
-let soundOn = true;
-
-let quizDeck = [];
-let qIdx = 0;
-let score = 0;
-let answered = false;
-let mistakes = []; // QUIZ HATALARINI TUTACAĞIMIZ DİZİ
-
-/* ======================= TTS (best available system voice) ======================= */
-let voicesCache = [];
-function loadVoices(){ voicesCache = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
-if('speechSynthesis' in window){
-  loadVoices();
-  window.speechSynthesis.onvoiceschanged = loadVoices;
-}
-
-function pickVoice(langCode){
-  loadVoices();
-  const prefix = langCode.split('-')[0].toLowerCase();
-  const candidates = voicesCache.filter(v => v.lang && v.lang.toLowerCase().startsWith(prefix));
-  if(candidates.length === 0) return null;
-  const exact = candidates.filter(v => v.lang.toLowerCase() === langCode.toLowerCase());
-  const pool = exact.length ? exact : candidates;
-  const priorityKeywords = [
-    "Siri","Enhanced","Premium","Pro",
-    "Natural","Neural","Wavenet","Google","Online",
-    "Samantha","Alex","Ava","Serena","Daniel","Anna","Markus","Petra"
-  ];
-  for(const kw of priorityKeywords){
-    const found = pool.find(v => v.name && v.name.indexOf(kw) !== -1);
-    if(found) return found;
-  }
-  return pool[0];
-}
-
-/* Google Translate'in gayriresmi ses uç noktası kullanılıyor — resmi/desteklenen
-   bir API değildir, bu yüzden bazen yavaşlayabilir ya da engellenebilir. Bu
-   yüzden HER ZAMAN tarayıcının kendi sesine (speechSynthesis) yedek olarak
-   düşüyoruz; site bu ses hiç çalışmasa bile bozulmaz. */
-function googleTTSUrl(text, langCode, slow){
-  const speed = slow ? 0.24 : 1;
-  return `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${langCode}&client=tw-ob&ttsspeed=${speed}`;
-}
-function speakGoogle(text, langCode, slow, onEnd){
-  try{
-    const audio = new Audio(googleTTSUrl(text, langCode, slow));
-    let done = false;
-    const finish = (ok) => { if(done) return; done = true; if(onEnd) onEnd(ok); };
-    audio.onended = () => finish(true);
-    audio.onerror = () => finish(false);
-    const timeout = setTimeout(() => finish(false), 4000);
-    audio.addEventListener('playing', () => clearTimeout(timeout), { once:true });
-    audio.play().catch(() => finish(false));
-  }catch(e){ if(onEnd) onEnd(false); }
-}
-window.PM_speakGoogle = speakGoogle;
-
-function speakNative(text, lang, rate){
-  if(!('speechSynthesis' in window)) return;
-  try{
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    const voice = pickVoice(lang);
-    if(voice){ u.voice = voice; u.lang = voice.lang; } else { u.lang = lang; }
-    u.rate = rate || 0.92;
-    u.pitch = 1.0;
-    u.volume = 1.0;
-    window.speechSynthesis.speak(u);
-  }catch(e){}
-}
-
-function speak(text, lang){
-  if(!soundOn) return;
-  if(lang.startsWith('tr')) return; // TÜRKÇE OKUMAYI ENGELLER
-  const code = lang.split('-')[0];
-  speakGoogle(text, code, false, (ok) => { if(!ok) speakNative(text, lang, 0.92); });
-}
-function speakSlow(text, lang){
-  if(!soundOn) return;
-  if(lang.startsWith('tr')) return;
-  const code = lang.split('-')[0];
-  speakGoogle(text, code, true, (ok) => { if(!ok) speakNative(text, lang, 0.55); });
-}
-
-function warmUpSpeech(){
-  if(!('speechSynthesis' in window)) return;
-  try{
-    loadVoices();
-    const u = new SpeechSynthesisUtterance(' ');
-    u.volume = 0;
-    window.speechSynthesis.speak(u);
-  }catch(e){}
-}
-
-/* ======================= OTURUM SÜRESİ GÖSTERGESİ ======================= */
-function startSessionTimer(){
-  const el = document.getElementById('sessionTimer');
-  if(!el) return;
-  const start = Date.now();
-  function fmt(totalSeconds){
-    const s = Math.max(0, Math.floor(totalSeconds));
-    const h = Math.floor(s / 3600);
-    const m = Math.floor((s % 3600) / 60);
-    const sec = s % 60;
-    if(h > 0) return `${h}s ${m}dk ${sec}sn`;
-    if(m > 0) return `${m}dk ${sec}sn`;
-    return `${sec}sn`;
-  }
-  function tick(){
-    const elapsed = (window.LB_getActiveSeconds ? window.LB_getActiveSeconds() : (Date.now() - start) / 1000);
-    const idle = (window.LB_isIdle ? window.LB_isIdle() : false);
-    el.textContent = `⏱ Bu oturumda: ${fmt(elapsed)}${idle ? ' ⏸' : ''}`;
-  }
-  tick();
-  setInterval(tick, 1000);
-}
-
-document.getElementById('soundBtn').onclick = () => {
-  soundOn = !soundOn;
-  const btn = document.getElementById('soundBtn');
-  btn.classList.toggle('on', soundOn);
-  btn.classList.toggle('off', !soundOn);
-  if(!soundOn && 'speechSynthesis' in window) window.speechSynthesis.cancel();
-};
-
-/* ======================= COLOR SPLIT (kök eşleştirmeli) ======================= */
-function normalizeWord(w){
-  return String(w)
-    .replace(/^(der|die|das)\s+/i, '')
-    .replace(/\s*\(.*?\)\s*/g, ' ')
-    .trim();
-}
-
-function buildCandidates(word){
-  const w = word.toLowerCase();
-  const cands = new Set([w]);
-  if(/mek$/.test(w) && w.length > 5){ cands.add(w.slice(0, -3)); cands.add(w.slice(0, -4)); }
-  else if(/mak$/.test(w) && w.length > 5){ cands.add(w.slice(0, -3)); cands.add(w.slice(0, -4)); }
-  if(/en$/.test(w) && w.length > 4) cands.add(w.slice(0, -2));
-  if(w.length > 4) cands.add(w.slice(0, Math.ceil(w.length * 0.7)));
-  return Array.from(cands).filter(c => c.length >= 2).sort((a, b) => b.length - a.length);
-}
-
-function findStemMatch(sentence, dictWord){
-  const clean = normalizeWord(dictWord);
-  if(!clean) return null;
-  const skip = new Set(['sich','zu','to','a','an','the','in','on','at','for','with','of','up','out','get','be']);
-  const tokens = clean.split(/\s+/).filter(t => t && !skip.has(t.toLowerCase()));
-  const mainToken = tokens.sort((a, b) => b.length - a.length)[0] || clean;
-  const isShort = mainToken.length <= 2;
-  const candidates = isShort ? [mainToken.toLowerCase()] : buildCandidates(mainToken);
-
-  const parts = sentence.split(/(\s+)/);
-  for(const target of candidates){
-    let bestIdx = -1, bestLen = -1;
-    for(let i = 0; i < parts.length; i++){
-      const clean2 = parts[i].toLowerCase().replace(/[^a-zçğıöşüäöüß]/gi, '');
-      if(!clean2) continue;
-      if(isShort){
-        if(clean2 === target){ bestIdx = i; break; }
-        continue;
-      }
-      if(clean2.length < target.length) continue;
-      let common = 0;
-      for(let k = 0; k < target.length; k++){
-        if(clean2[k] === target[k]) common++; else break;
-      }
-      if(common === target.length && clean2.length > bestLen){
-        bestLen = clean2.length; bestIdx = i;
-      }
-    }
-    if(bestIdx !== -1){
-      let offset = 0;
-      for(let i = 0; i < bestIdx; i++) offset += parts[i].length;
-      return { start: offset, end: offset + parts[bestIdx].length };
-    }
-  }
-  return null;
-}
-
-function colorSplit(sentence, word, c1, c2){
-  if(!sentence) return '';
-  const range = findStemMatch(sentence, word);
-  if(!range){
-    return `<span style="color:${c1}">${sentence}</span>`;
-  }
-  const before = sentence.slice(0, range.start);
-  const match = sentence.slice(range.start, range.end);
-  const after = sentence.slice(range.end);
-  return `${before}<span style="color:${c1}">${match}</span><span style="color:${c2}">${after}</span>`;
-}
-
-/* ======================= RENDER: LANG / LEVEL / CHIPS ======================= */
-function renderLangPair(){
-  const L = LANGS[activeLang];
-  const colorMap = { de:"var(--gold)", en:"var(--cyan-soft)", ar:"var(--green)" };
-  document.getElementById('langPair').innerHTML =
-    `<span class="a" style="color:${colorMap[activeLang]}">${L.native}</span> <span style="color:var(--muted)">⇄</span> <span class="a tr-flag-text">Türkçe</span>`;
-}
-
-function rebuildLevelBox(){
-  const L = LANGS[activeLang];
-  const allLevels = ["TÜMÜ", ...L.levels];
-  if(!allLevels.includes(activeLevel)) activeLevel = "TÜMÜ";
-  const box = document.getElementById('levelBox');
-  box.innerHTML = '';
-  allLevels.forEach(lv => {
-    const d = document.createElement('div');
-    d.className = 'level-opt' + (lv===activeLevel ? ' active' : '');
-    d.textContent = lv;
-    d.onclick = () => { activeLevel = lv; activeCat='Tümü'; rebuildLevelBox(); rebuildChips(); applyFilter(); };
-    box.appendChild(d);
-  });
-}
-
-function poolForLevel(){
-  if(activeLevel === "TÜMÜ") return VOCAB.filter(v => v.lang===activeLang);
-  return VOCAB.filter(v => v.lang===activeLang && v.level===activeLevel);
-}
-
-function rebuildChips(){
-  const pool = poolForLevel();
-  const cats = Array.from(new Set(pool.map(v=>v.cat))).sort((a,b)=>a.localeCompare(b,'tr'));
-  if(cats.length && !cats.includes(activeCat) && activeCat !== 'Tümü') activeCat = 'Tümü';
-
-  const gridEl = document.getElementById('catGrid');
-  gridEl.innerHTML = '';
-  cats.forEach(cat=>{
-    const c = document.createElement('div');
-    c.className = 'chip' + (cat===activeCat ? ' active' : '');
-    c.textContent = cat;
-    c.onclick = () => {
-      activeCat = cat;
-      applyFilter();
-      closeCatPanel();
-    };
-    gridEl.appendChild(c);
-  });
-  updateCatUI();
-}
-
-function updateCatUI(){
-  const allChip = document.getElementById('catAllChip');
-  const trigger = document.getElementById('catTrigger');
-  const isAll = activeCat === 'Tümü';
-  allChip.classList.toggle('active', isAll);
-  trigger.classList.toggle('active', !isAll);
-  trigger.textContent = isAll ? '📂 Kategori Seç' : ('📂 ' + activeCat);
-  document.querySelectorAll('#catGrid .chip').forEach(c=>{
-    c.classList.toggle('active', c.textContent===activeCat);
-  });
-}
-
-function openCatPanel(){ document.getElementById('catOverlay').classList.add('open'); }
-function closeCatPanel(){ document.getElementById('catOverlay').classList.remove('open'); }
-
-document.getElementById('catAllChip').onclick = () => { activeCat = 'Tümü'; applyFilter(); };
-document.getElementById('catTrigger').onclick = openCatPanel;
-document.getElementById('catClose').onclick = closeCatPanel;
-document.getElementById('catOverlay').onclick = (e) => { if(e.target.id === 'catOverlay') closeCatPanel(); };
-
-document.querySelectorAll('.lang-opt').forEach(opt=>{
-  opt.onclick = () => {
-    activeLang = opt.dataset.lang;
-    document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('active', o===opt));
-    activeLevel = "TÜMÜ";
-    activeCat = 'Tümü';
-    renderLangPair();
-    rebuildLevelBox();
-    rebuildChips();
-    applyFilter();
-  };
-});
-
-function applyFilter(){
-  updateCatUI();
-  const pool = poolForLevel();
-  deck = activeCat==='Tümü' ? [...pool] : pool.filter(v=>v.cat===activeCat);
-  idx = 0; flipped = false;
-  restoreCardPosition();
-  renderCard();
-  buildQuizDeck();
-}
-
-/* ======================= CARD RENDER ======================= */
-function renderCard(){
-  if(deck.length===0){
-     document.getElementById('frontWord').textContent = "Kelime Yok";
-     document.getElementById('trWord').textContent = "";
-     document.getElementById('frontExample').textContent = "";
-     document.getElementById('trExample').textContent = "";
-     return;
-  }
-  const v = deck[idx];
-  const L = LANGS[v.lang];
-  const frontWordEl = document.getElementById('frontWord');
-  frontWordEl.textContent = v.w;
-  frontWordEl.setAttribute('dir', L.dir);
-  document.getElementById('frontPos').textContent = v.pos;
-  document.getElementById('tagFront').textContent = L.native;
-  document.getElementById('trWord').textContent = v.tr;
-
-  const frontEx = document.getElementById('frontExample');
-  frontEx.innerHTML = colorSplit(v.ex, v.w, v.c1, v.c2);
-  frontEx.setAttribute('dir', L.dir);
-
-  const trEx = document.getElementById('trExample');
-  trEx.innerHTML = colorSplit(v.exTr, v.tr, v.c1, v.c2);
-  trEx.setAttribute('dir','ltr');
-
-  document.getElementById('cardCount').textContent = `${idx+1} / ${deck.length}`;
-  document.getElementById('cardCat').textContent = activeCat;
-  document.getElementById('cardBar').style.width = `${((idx+1)/deck.length)*100}%`;
-  document.getElementById('levelBadgeFront').textContent = v.level;
-  document.getElementById('levelBadgeBack').textContent = v.level;
-  document.getElementById('card').classList.remove('flipped');
-  flipped = false;
-}
-
-document.getElementById('rabbitBtn').onclick = (e) => {
-  e.stopPropagation();
-  const v = deck[idx]; if(!v) return;
-  speak(v.w, LANGS[v.lang].voice);
-};
-document.getElementById('turtleBtn').onclick = (e) => {
-  e.stopPropagation();
-  const v = deck[idx]; if(!v) return;
-  speakSlow(v.w, LANGS[v.lang].voice);
-};
-
-document.getElementById('card').onclick = () => {
-  flipped = !flipped;
-  document.getElementById('card').classList.toggle('flipped', flipped);
-  const v = deck[idx];
-  if(!v) return;
-  if(!flipped){ speak(v.w, LANGS[v.lang].voice); }
-  saveCardPosition();
-};
-
-document.getElementById('nextBtn').onclick = () => {
-  if(deck.length===0) return;
-  idx = (idx+1) % deck.length;
-  renderCard();
-  const v = deck[idx];
-  speak(v.w, LANGS[v.lang].voice);
-  spawnShootingStar();
-  saveCardPosition();
-};
-document.getElementById('prevBtn').onclick = () => {
-  if(deck.length===0) return;
-  idx = (idx-1+deck.length) % deck.length;
-  renderCard();
-  const v = deck[idx];
-  speak(v.w, LANGS[v.lang].voice);
-  saveCardPosition();
-};
-document.getElementById('shuffleBtn').onclick = () => {
-  for(let i=deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [deck[i],deck[j]]=[deck[j],deck[i]]; }
-  idx = 0; renderCard();
-  saveCardPosition();
-};
-
-/* ======================= KART KONUMU HAFIZASI (sessionStorage) =======================
-   Sekme/uygulama arka plana atılsa veya ekran kilitlense bile kaldığı yerden
-   devam etsin diye sessionStorage kullanıyoruz (localStorage DEĞİL): tarayıcı
-   sekmesi tamamen kapatılıp yeniden açıldığında (yeni gün, yeni oturum) bu
-   veri otomatik silinir ve kullanıcı en baştan başlar — istenen davranış budur. */
-const CARD_POS_KEY = 'cardPos_v1';
-function saveCardPosition(){
-  try{
-    sessionStorage.setItem(CARD_POS_KEY, JSON.stringify({ lang:activeLang, level:activeLevel, cat:activeCat, idx }));
-  }catch(e){}
-}
-function restoreCardPosition(){
-  try{
-    const raw = sessionStorage.getItem(CARD_POS_KEY);
-    if(!raw) return;
-    const saved = JSON.parse(raw);
-    if(saved.lang===activeLang && saved.level===activeLevel && saved.cat===activeCat && saved.idx < deck.length){
-      idx = saved.idx;
-    }
-  }catch(e){}
-}
-
-/* ======================= QUIZ ======================= */
-function buildQuizDeck(){
-  quizDeck = [...deck];
-  mistakes = [];
-  for(let i=quizDeck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [quizDeck[i],quizDeck[j]]=[quizDeck[j],quizDeck[i]]; }
-  qIdx = 0; score = 0; answered = false;
-  const quizTabActive = document.getElementById('tabQuiz').classList.contains('active');
-  document.getElementById('doneView').style.display = 'none';
-  document.getElementById('mistakesView').style.display = 'none';
-  if(quizTabActive){ document.getElementById('quizView').style.display = 'block'; }
-  renderQuiz();
-}
-
-function renderQuiz(){
-  const quizTabActive = document.getElementById('tabQuiz').classList.contains('active');
-  if(quizDeck.length===0) return;
-  if(qIdx >= quizDeck.length){
-    if(quizTabActive){
-      document.getElementById('quizView').style.display = 'none';
-      document.getElementById('doneView').style.display = 'block';
-      const mistakeBtn = document.getElementById('showMistakesBtn');
-      if(mistakes.length > 0) {
-        mistakeBtn.style.display = 'block';
-      } else {
-        mistakeBtn.style.display = 'none';
-      }
-    }
-    document.getElementById('finalScore').textContent = `${score} / ${quizDeck.length} doğru cevap`;
-    return;
-  }
-  if(quizTabActive){
-    document.getElementById('quizView').style.display = 'block';
-    document.getElementById('doneView').style.display = 'none';
-    document.getElementById('mistakesView').style.display = 'none';
-  }
-  answered = false;
-  const v = quizDeck[qIdx];
-  const qWordEl = document.getElementById('quizWord');
-  qWordEl.textContent = v.w;
-  qWordEl.setAttribute('dir', LANGS[v.lang].dir);
-  document.getElementById('quizPos').textContent = v.pos;
-  document.getElementById('quizCount').textContent = `Soru ${qIdx+1} / ${quizDeck.length}`;
-  document.getElementById('quizBar').style.width = `${((qIdx+1)/quizDeck.length)*100}%`;
-  document.getElementById('scorePill').textContent = `${score} doğru`;
-
-  let opts = [v.tr];
-  let pool = poolForLevel().filter(x => x.tr !== v.tr);
-  if(pool.length < 3){
-    pool = VOCAB.filter(x => x.lang===activeLang && x.tr !== v.tr);
-  }
-  for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
-  opts = opts.concat(pool.slice(0,3).map(x=>x.tr));
-  for(let i=opts.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
-
-  const optionsEl = document.getElementById('options');
-  optionsEl.innerHTML = '';
-  opts.forEach(o=>{
-    const b = document.createElement('button');
-    b.className = 'opt';
-    b.textContent = o;
-    b.onclick = () => selectAnswer(o, v.tr, b);
-    optionsEl.appendChild(b);
-  });
-}
-
-function selectAnswer(chosen, correct, btnEl){
-  if(answered) return;
-  answered = true;
-  const v = quizDeck[qIdx];
-  document.querySelectorAll('.opt').forEach(b=>{
-    b.disabled = true;
-    if(b.textContent===correct) b.classList.add('correct');
-    else if(b===btnEl) b.classList.add('wrong');
-  });
-  
-  if(chosen===correct) {
-    score++;
-  } else {
-    mistakes.push({ word: v.w, correct: correct, given: chosen });
-  }
-  
-  document.getElementById('scorePill').textContent = `${score} doğru`;
-  setTimeout(()=>{ qIdx++; renderQuiz(); }, 700);
-}
-
-document.getElementById('restartBtn').onclick = buildQuizDeck;
-
-document.getElementById('showMistakesBtn').onclick = () => {
-    document.getElementById('doneView').style.display = 'none';
-    document.getElementById('mistakesView').style.display = 'block';
-    
-    const list = document.getElementById('mistakesList');
-    list.innerHTML = '';
-    
-    mistakes.forEach(m => {
-        list.innerHTML += `
-        <div class="mistake-item">
-            <div class="mistake-word">${m.word}</div>
-            <div class="mistake-given">Senin Cevabın: <b>${m.given}</b></div>
-            <div class="mistake-correct">Doğrusu: <b>${m.correct}</b></div>
-        </div>`;
-    });
-};
-
-document.getElementById('backToDoneBtn').onclick = () => {
-    document.getElementById('mistakesView').style.display = 'none';
-    document.getElementById('doneView').style.display = 'block';
-};
-
-/* ======================= TABS ======================= */
-// $ : küçük bir yardımcı — eleman yoksa (ör. dosyalardan biri eski kaldıysa)
-// sessizce atlar, TÜM script'in çökmesine (ve giriş tıklamasının bile
-// çalışmamasına) yol açmaz.
-function $(id){ return document.getElementById(id); }
-function setDisplay(id, val){ const el = $(id); if(el) el.style.display = val; }
-function toggleActive(id, on){ const el = $(id); if(el) el.classList.toggle('active', on); }
-
-function deactivateAllTabs(){
-  toggleActive('tabCards', false);
-  toggleActive('tabQuiz', false);
-  toggleActive('tabPersonal', false);
-  setDisplay('cardsView', 'none');
-  setDisplay('quizView', 'none');
-  setDisplay('doneView', 'none');
-  setDisplay('mistakesView', 'none');
-  setDisplay('personalView', 'none');
-  // Kişisel mod farklı bir tema/arkaplan kullandığı için sekmeden çıkınca
-  // ana chip/level seçicilerini tekrar görünür yapıyoruz.
-  setDisplay('levelBox', '');
-  setDisplay('chips', '');
-  setDisplay('langBox', '');
-}
-if($('tabCards')) $('tabCards').onclick = () => {
-  deactivateAllTabs();
-  toggleActive('tabCards', true);
-  setDisplay('cardsView', 'block');
-};
-if($('tabQuiz')) $('tabQuiz').onclick = () => {
-  deactivateAllTabs();
-  toggleActive('tabQuiz', true);
-  setDisplay('quizView', 'block');
-  buildQuizDeck();
-};
-if($('tabPersonal')) $('tabPersonal').onclick = () => {
-  deactivateAllTabs();
-  toggleActive('tabPersonal', true);
-  setDisplay('personalView', 'block');
-  setDisplay('levelBox', 'none');
-  setDisplay('chips', 'none');
-  if(window.PM_open) window.PM_open();
-};
-
-/* ======================= INIT ======================= */
-renderLangPair();
-rebuildLevelBox();
-rebuildChips();
-applyFilter();
-
-/* ======================= AY, YILDIZLAR & KAYAN YILDIZ ======================= */
-(function(){
-  const field = document.getElementById('starsField');
-  if(!field) return;
-  const n = 130;
-  for(let i=0;i<n;i++){
-    const s = document.createElement('div');
-    s.className = 'star';
-    const roll = Math.random();
-    let size;
-    if(roll < 0.68) size = Math.random()*0.9 + 0.5;
-    else if(roll < 0.9) size = Math.random()*1.5 + 1.6;
-    else size = Math.random()*2.2 + 3.2;
-    s.style.width = size.toFixed(1) + 'px';
-    s.style.height = size.toFixed(1) + 'px';
-    s.style.top = (Math.random()*92) + '%';
-    s.style.left = (Math.random()*100) + '%';
-    s.style.animationDuration = (Math.random()*3.5 + 1.8).toFixed(1) + 's';
-    s.style.animationDelay = (Math.random()*5).toFixed(1) + 's';
-    if(size > 2.2 && Math.random() < 0.5){
-      s.classList.add('sparkle');
-      s.style.setProperty('--ray', (size*6).toFixed(1) + 'px');
-    }
-    field.appendChild(s);
-  }
-})();
-
-/* ======================= KUŞLAR (1-3 kişilik oyunbaz sürü, arada bir geçer) ======================= */
-(function(){
-  const layer = document.getElementById('fxLayer');
-  if(!layer) return;
-
-  const BIRD_SVG = '<svg viewBox="0 0 26 14">' +
-    '<ellipse cx="13" cy="8" rx="3.4" ry="2.1" fill="rgba(222,231,244,0.85)"/>' +
-    '<path class="wing-l" d="M13 8 Q6 1 1 6.5" stroke="rgba(222,231,244,0.85)" stroke-width="1.9" fill="none" stroke-linecap="round"/>' +
-    '<path class="wing-r" d="M13 8 Q20 1 25 6.5" stroke="rgba(222,231,244,0.85)" stroke-width="1.9" fill="none" stroke-linecap="round"/>' +
-    '</svg>';
-
-  function spawnOneBird(baseTop, variant, delayMs, duration){
-    setTimeout(() => {
-      const bird = document.createElement('div');
-      bird.className = 'bird ' + (variant === 0 ? 'flying-a' : 'flying-b');
-      bird.style.top = baseTop + '%';
-      bird.style.animationDuration = duration + 's';
-      bird.innerHTML = BIRD_SVG;
-      layer.appendChild(bird);
-      setTimeout(() => bird.remove(), duration*1000 + 300);
-    }, delayMs);
-  }
-
-  function spawnFlock(){
-    const count = Math.floor(Math.random()*3) + 1;
-    const baseTop = Math.random()*22 + 8;
-    const duration = (Math.random()*3 + 8).toFixed(1);
-    for(let i=0;i<count;i++){
-      const top = baseTop + (Math.random()*8 - 4) + i*3;
-      const variant = i % 2;
-      const delay = i * (Math.random()*400 + 150);
-      const dur = (parseFloat(duration) + (Math.random()*1.2 - 0.6)).toFixed(1);
-      spawnOneBird(top, variant, delay, dur);
-    }
-  }
-
-  function scheduleFlock(){
-    const delay = Math.random()*18000 + 25000;
-    setTimeout(() => { spawnFlock(); scheduleFlock(); }, delay);
-  }
-  scheduleFlock();
-})();
-
-/* ======================= BULUT AYIN ÖNÜNDEN GEÇERSE IŞIĞINI KISAR ======================= */
-(function(){
-  const moon = document.querySelector('.moon');
-  if(!moon) return;
-  function tick(){
-    const clouds = document.querySelectorAll('.cloud');
-    const moonRect = moon.getBoundingClientRect();
-    const moonArea = Math.max(1, moonRect.width * moonRect.height);
-    let covered = 0;
-    clouds.forEach(cloud => {
-      const r = cloud.getBoundingClientRect();
-      const overlapX = Math.max(0, Math.min(r.right, moonRect.right) - Math.max(r.left, moonRect.left));
-      const overlapY = Math.max(0, Math.min(r.bottom, moonRect.bottom) - Math.max(r.top, moonRect.top));
-      if(overlapX > 0 && overlapY > 0){
-        covered = Math.max(covered, (overlapX * overlapY) / moonArea);
-      }
-    });
-    moon.style.opacity = (1 - Math.min(covered * 1.3, 0.7)).toFixed(2);
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-})();
-
-function spawnShootingStar(){
-  const layer = document.getElementById('fxLayer');
-  const star = document.createElement('div');
-  star.className = 'shooting-star';
-  const len = Math.random()*40 + 60;
-  star.style.width = len.toFixed(0) + 'px';
-  star.style.top = (Math.random()*40 + 5) + '%';
-  star.style.left = (Math.random()*40 + 45) + '%';
-  const dur = (Math.random()*0.4 + 0.6);
-  const dist = Math.random()*150 + 180;
-  const ang = -(Math.random()*16 + 16);
-  star.style.setProperty('--dur', dur.toFixed(2) + 's');
-  star.style.setProperty('--dx', (-dist).toFixed(0) + 'px');
-  star.style.setProperty('--dy', (dist*0.48).toFixed(0) + 'px');
-  star.style.setProperty('--ang', ang.toFixed(0) + 'deg');
-  layer.appendChild(star);
-  setTimeout(() => star.remove(), dur*1000 + 300);
-}
-
-/* ======================= SNOW / CRYSTAL EFFECT ======================= */
-(function(){
-  const canvas = document.getElementById('snowCanvas');
-  const ctx = canvas.getContext('2d');
-  let w, h, flakes, running = true, windPhase = 0;
-
-  function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-  window.addEventListener('resize', resize);
-  resize();
-
-  function makeFlakes(n){
-    return Array.from({length:n}, () => ({
-      x: Math.random()*w,
-      y: Math.random()*h,
-      r: Math.random()*8 + 3,
-      speedY: Math.random()*1.6 + 0.7,
-      speedX: Math.random()*1.0 - 0.5,
-      rot: Math.random()*Math.PI*2,
-      rotSpeed: (Math.random()*0.05 - 0.025),
-      drift: Math.random()*Math.PI*2,
-      driftSpeed: Math.random()*0.03 + 0.015,
-      opacity: Math.random()*0.55 + 0.4,
-      hue: Math.random() < 0.5 ? "190,235,255" : "210,220,255"
-    }));
-  }
-  
-  flakes = makeFlakes(40);
-
-  function drawCrystal(f){
-    ctx.save();
-    ctx.translate(f.x, f.y);
-    ctx.rotate(f.rot);
-    ctx.globalAlpha = f.opacity;
-    ctx.strokeStyle = `rgba(${f.hue},1)`;
-    ctx.fillStyle = `rgba(${f.hue},1)`;
-    ctx.lineWidth = Math.max(0.6, f.r*0.09);
-    
-    for(let i=0;i<6;i++){
-      ctx.save();
-      ctx.rotate((Math.PI/3)*i);
-      ctx.beginPath();
-      ctx.moveTo(0,0);
-      ctx.lineTo(0, f.r);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(0, f.r*0.45);
-      ctx.lineTo(f.r*0.22, f.r*0.62);
-      ctx.moveTo(0, f.r*0.45);
-      ctx.lineTo(-f.r*0.22, f.r*0.62);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(0, f.r*0.75);
-      ctx.lineTo(f.r*0.16, f.r*0.88);
-      ctx.moveTo(0, f.r*0.75);
-      ctx.lineTo(-f.r*0.16, f.r*0.88);
-      ctx.stroke();
-      ctx.restore();
-    }
-    ctx.beginPath();
-    ctx.arc(0,0,f.r*0.14,0,Math.PI*2);
-    ctx.fill();
-    ctx.restore();
-  }
-
-  function tick(){
-    if(!running) return;
-    ctx.clearRect(0,0,w,h);
-    windPhase += 0.012;
-    const gust = Math.sin(windPhase) * 0.6;
-    flakes.forEach(f=>{
-      f.drift += f.driftSpeed;
-      f.rot += f.rotSpeed;
-      f.y += f.speedY;
-      f.x += f.speedX + gust + Math.sin(f.drift)*0.6;
-      if(f.y > h + 12){ f.y = -12; f.x = Math.random()*w; }
-      if(f.x > w + 12) f.x = -12;
-      if(f.x < -12) f.x = w + 12;
-      drawCrystal(f);
-    });
-    ctx.globalAlpha = 1;
-    requestAnimationFrame(tick);
-  }
-  tick();
-
-  const splash = document.getElementById('splash');
-  const mainApp = document.getElementById('mainApp');
-  splash.addEventListener('click', () => {
-    splash.classList.add('hidden');
-    mainApp.classList.add('revealed');
-    setTimeout(()=>{ running = false; }, 900);
-    if(window.LB_checkName){
-      setTimeout(window.LB_checkName, 500);
-    }
-    if(typeof warmUpSpeech === 'function') warmUpSpeech();
-    startSessionTimer();
-  }, { once:true });
-})();
-</script>
 <script src="progress.js"></script>
+
+<!-- Kendi Yazdığın Inline Fonksiyonların Bulunduğu Script Etiketi Buraya Gelecek -->
+<!-- (Mevcut index.html dosyasındaki en alttaki <script> ... </script> bloğunu buraya yapıştır) -->
+
 </body>
 </html>
